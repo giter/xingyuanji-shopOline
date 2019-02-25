@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopoline.xingyuanji.mapper.UserAssetMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.UserAsset">
+        <id column="id" property="id" />
+        <result column="userId" property="userId" />
+        <result column="amount" property="amount" />
+        <result column="amountType" property="amountType" />
+        <result column="editTime" property="editTime" />
+        <result column="editBy" property="editBy" />
+        <result column="deltFlag" property="deltFlag" />
+        <result column="openId" property="openId" />
+    </resultMap>
+
+
+    <select id="sumAmountById" resultType="com.shopoline.xingyuanji.entity.UserAsset">
+        SELECT SUM(amount) AS amount,amountType FROM t_user_asset WHERE openId = #{openId} AND amountType = '0' AND deltFlag = '1';
+    </select>
+    <select id="selectUserXingBi" resultType="com.shopoline.xingyuanji.entity.UserAsset">
+        SELECT SUM(amount) AS amount FROM  t_user_asset WHERE amountType = '0' AND openId = #{openId} AND deltFlag != '0';
+    </select>
+
+</mapper>

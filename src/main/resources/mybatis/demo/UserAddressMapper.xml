@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopoline.xingyuanji.mapper.UserAddressMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.UserAddress">
+        <id column="id" property="id" />
+        <result column="userId" property="userId" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="address" property="address" />
+        <result column="def" property="def" />
+        <result column="editTime" property="editTime" />
+        <result column="editBy" property="editBy" />
+        <result column="deleteFlag" property="deleteFlag" />
+        <result column="area" property="area" />
+    </resultMap>
+</mapper>

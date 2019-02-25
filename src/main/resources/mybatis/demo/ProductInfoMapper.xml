@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopoline.xingyuanji.mapper.ProductInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.ProductInfo">
+        <id column="id" property="id" />
+        <result column="goodsname" property="goodsname" />
+        <result column="price" property="price" />
+        <result column="img" property="img" />
+        <result column="productCount" property="productCount" />
+        <result column="style" property="style" />
+        <result column="kind" property="kind" />
+        <result column="socer" property="socer" />
+        <result column="editTime" property="editTime" />
+        <result column="editBy" property="editBy" />
+        <result column="deleteFlag" property="deleteFlag" />
+    </resultMap>
+
+    <!--购盒成功后获取随机商品-->
+    <select id="getRedomProduct" resultType="com.shopoline.xingyuanji.entity.ProductInfo">
+        SELECT * FROM t_product_info WHERE style = #{productStyle} AND kind = #{productKind} AND productCount != '0' AND id != '0' ORDER BY rand() limit 1;
+    </select>
+
+</mapper>
