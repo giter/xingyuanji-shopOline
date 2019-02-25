@@ -10,17 +10,15 @@ import com.shopoline.xingyuanji.service.WxPayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class WxPayServiceImpl implements WxPayService {
 
-
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-    private WXPay wxPay = new WXPay(WxConfig.getPayInstance());
 
+    private WXPay wxPay = new WXPay(WxConfig.getPayInstance());
 
     /**
      * 微信统一下单

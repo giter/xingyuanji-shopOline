@@ -42,7 +42,7 @@ public class UserInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/login")
     public Object login(String code, HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(userInfoService.WXLogin(code));
         }catch (Exception e){
@@ -63,7 +63,7 @@ public class UserInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/getUserInfo")
     public Object getUserInfo(String ticketId,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<UserInfoVO> json = new JsonResult();
+        JsonResult<UserInfoVO> json = new JsonResult<>();
         try {
 
             json.setData(userInfoService.getUserInfo(ticketId));
@@ -85,7 +85,7 @@ public class UserInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/getSign")
     public Object getSign(HttpServletRequest request, HttpServletResponse response){
-        JsonResult<SignModel> json = new JsonResult();
+        JsonResult<SignModel> json = new JsonResult<>();
         try {
             json.setData(userInfoService.getSign());
         }catch (Exception e){

@@ -47,7 +47,7 @@ public class UserAddressController extends BaseController {
     @ResponseBody
     @RequestMapping("/setAdderss")
     public Object setAdderss(String ticketId, @RequestBody UserAddressModel userAddressModel, HttpServletRequest request, HttpServletResponse response) {
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             userAddressService.insertAddress(ticketId,userAddressModel);
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class UserAddressController extends BaseController {
     @ResponseBody
     @RequestMapping("/getAdderss")
     public Object getAdderss(String ticketId,HttpServletRequest request, HttpServletResponse response) {
-        JsonResult<List<UserAddress>> json = new JsonResult();
+        JsonResult<List<UserAddress>> json = new JsonResult<>();
         try {
             json.setData(userAddressService.getAdress(ticketId));
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class UserAddressController extends BaseController {
     @ResponseBody
     @RequestMapping("/setAddressDef")
     public Object setAddressDef(String ticketId,String id,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             userAddressService.setAddressDef(ticketId,id);
         } catch (Exception e) {
@@ -112,7 +112,7 @@ public class UserAddressController extends BaseController {
     @ResponseBody
     @RequestMapping("/deleteAddress")
     public Object deleteAddress(String ticketId,String id,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             userAddressService.deleteAddress(ticketId,id);
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class UserAddressController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateAddress")
     public Object updateAddress(String ticketId,String id,@RequestBody UserAddressModel userAddressModel,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             userAddressService.updateAddress(ticketId,id,userAddressModel);
         } catch (Exception e) {

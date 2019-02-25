@@ -71,7 +71,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/deductXingBi")
     public Object deductXingBi(String ticketId,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             shopLogService.deductXingBi(ticketId);
         }catch (Exception e){
@@ -91,7 +91,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/notify")
     public Object payNotify(String string){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(wxPayService.payNotify(string));
         }catch (Exception e){
@@ -110,7 +110,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/getOpenRandomGoods")
     public Object getOpenRandomGoods(String ticketId,String useXingBi,String isPay,String randomToken,String UUID,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(shopLogService.afterPaySuccess(ticketId,useXingBi,isPay,randomToken,UUID));
         }catch (Exception e){
@@ -129,7 +129,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/getShopLog")
     public Object getShopLog(String ticketId,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<List<ShopLogModel>> json = new JsonResult();
+        JsonResult<List<ShopLogModel>> json = new JsonResult<>();
         try {
             json.setData(shopLogService.getShopLog(ticketId));
         }catch (Exception e){
@@ -148,7 +148,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/getShopLogInfo")
     public Object getShopLogInfo(String ticketId,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<ShopLogInfoVO> json = new JsonResult();
+        JsonResult<ShopLogInfoVO> json = new JsonResult<>();
         try {
             json.setData(shopLogService.getShopLogInfo(ticketId));
         }catch (Exception e){
@@ -165,7 +165,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/getZIPAmount")
     public Object getZIPAmount(String ticketId, HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(shopLogService.getZIPAmount(ticketId));
         }catch (Exception e){
@@ -182,7 +182,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/sendHome")
     public Object sendHome(String ticketId,String productId,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(shopLogService.sendHome(ticketId,productId));
         }catch (Exception e){
@@ -199,7 +199,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/deleteOrder")
     public Object deleteOrder(String ticketId,String orderId,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(shopLogService.deleteOrder(ticketId,orderId));
         }catch (Exception e){
@@ -217,7 +217,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/buyXingBiProduct")
     public Object buyXingBiProduct(String ticketId,String productId,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(shopLogService.buyXingBiProduct(ticketId,productId));
         }catch (Exception e){
@@ -240,7 +240,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/getLogisticInformation")
     public Object getLogisticInformation(String ticketId,String productId,String tradeNo,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<LogisticInformationVO> json = new JsonResult();
+        JsonResult<LogisticInformationVO> json = new JsonResult<>();
         try {
             json.setData(shopLogService.getLogisticInformation(ticketId,productId,tradeNo));
         }catch (Exception e){

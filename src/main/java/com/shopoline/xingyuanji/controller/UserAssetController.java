@@ -39,7 +39,7 @@ public class UserAssetController extends BaseController {
     @ResponseBody
     @RequestMapping("/quertUserCoin")
     public Object quertUserCoin(String ticketId, HttpServletRequest request, HttpServletResponse response){
-        JsonResult<UserCoinVO> json = new JsonResult();
+        JsonResult<UserCoinVO> json = new JsonResult<>();
         try {
             json.setData(userAssetService.quertUserCoin(ticketId));
         }catch (Exception e){
@@ -62,7 +62,7 @@ public class UserAssetController extends BaseController {
     @ResponseBody
     @RequestMapping("/exchangeCoin")
     public Object exchangeCoin(String ticketId,String goodsId, HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(userAssetService.exchangeCoin(ticketId,goodsId));
         }catch (Exception e){

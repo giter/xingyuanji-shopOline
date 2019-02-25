@@ -46,7 +46,7 @@ public class ProductInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/getBoxInfo")
     public Object getBoxInfo(String ticketId,String type,String kind,HttpServletRequest request,HttpServletResponse response){
-        JsonResult<ProductInfoVO> json = new JsonResult();
+        JsonResult<ProductInfoVO> json = new JsonResult<>();
         try {
             json.setData(productInfoService.getBoxInfo(type,kind));
         }catch (Exception e){
@@ -67,7 +67,7 @@ public class ProductInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/getBoxDeductionPrice")
     public Object getBoxDeductionPrice(String ticketId,String type,String kind,Integer boxCount,String boxId,HttpServletRequest request,HttpServletResponse response){
-        JsonResult<Float> json = new JsonResult();
+        JsonResult<Float> json = new JsonResult<>();
         try {
             json.setData(productInfoService.getBoxDeductionPrice(ticketId,type,kind,boxCount));
         }catch (Exception e){
@@ -89,7 +89,7 @@ public class ProductInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/getShopList")
     public Object getShopList(String ticketId,HttpServletRequest request,HttpServletResponse response){
-        JsonResult<List<ProductInfo>> json = new JsonResult();
+        JsonResult<List<ProductInfo>> json  = new JsonResult<>();
         try {
             json.setData(productInfoService.getShopList());
         }catch (Exception e){
@@ -112,7 +112,7 @@ public class ProductInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/getShopProductInfo")
     public Object getShopProductInfo(String ticketId,String productId,HttpServletRequest request,HttpServletResponse response){
-        JsonResult<ProductInfo> json = new JsonResult();
+        JsonResult<ProductInfo> json = new JsonResult<>();
         try {
             json.setData(productInfoService.getShopProductInfo(productId));
         }catch (Exception e){
@@ -134,7 +134,7 @@ public class ProductInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/getBoxImg")
     public Object getBoxImg(String ticketId,String boxId,HttpServletRequest request,HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult();
+        JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(productInfoService.getBoxImg(boxId));
         }catch (Exception e){
