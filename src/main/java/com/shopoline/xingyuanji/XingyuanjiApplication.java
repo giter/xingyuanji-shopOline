@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 
@@ -12,6 +13,7 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 @MapperScan(basePackages = {"com.shopoline.xingyuanji.mapper"})
 @EntityScan(basePackages= {"com.shopoline.xingyuanji.entity"})
+@ServletComponentScan
 public class XingyuanjiApplication extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
