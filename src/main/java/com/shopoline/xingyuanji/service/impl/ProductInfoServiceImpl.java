@@ -149,7 +149,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public List<ProductInfo> getShopList() {
 
         List<ProductInfo> productInfo = this.selectList(new EntityWrapper<ProductInfo>().eq("style", Constants.JIFEN_PRODUCT).
-                eq("kind",Constants.JIFEN_PRODUCT).eq("deleteFlag",Constants.QIYONG));
+                eq("kind",Constants.JIFEN_PRODUCT).eq("deleteFlag",Constants.QIYONG).orderBy("price",false));
         return productInfo;
     }
 
