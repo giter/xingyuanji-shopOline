@@ -44,7 +44,7 @@ public interface IUserAddressService extends IService<UserAddress> {
      * @param ticketId
      * @param id
      */
-    void deleteAddress(String ticketId, String id) throws Exception;
+    void deleteAddress(String ticketId, String id);
 
     /**
      *更新地址
