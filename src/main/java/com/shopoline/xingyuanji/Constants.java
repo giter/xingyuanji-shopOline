@@ -70,4 +70,8 @@ public class Constants {
     public final static String BOX_ID_BOX="BOX";
 
     public final static String ISPAY="1";
+
+    public final static Integer DEF_ADDRESS=1;
+
+    public final static Integer NO_DEF_ADDRESS=0;
 }

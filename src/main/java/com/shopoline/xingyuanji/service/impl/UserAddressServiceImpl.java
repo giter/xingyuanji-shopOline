@@ -59,8 +59,11 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).eq("deleteFlag", Constants.QIYONG));
 
+
         // 写入地址信息
-        UserAddress userAddress = new UserAddress();
+        UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
+                eq("def",Constants.DEF_ADDRESS));
+
         userAddress.setId(IdWorker.get32UUID());
         userAddress.setUserId(userInfo.getUserId());
         userAddress.setName(userAddressModel.getName());
@@ -68,10 +71,14 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         userAddress.setProvince(userAddressModel.getProvince());
         userAddress.setCity(userAddressModel.getCity());
         userAddress.setAddress(userAddressModel.getAddress());
-        userAddress.setDef(0);
+        userAddress.setDef(Constants.DEF_ADDRESS);
         userAddress.setEditTime(new Date());
         userAddress.setEditBy("admin");
-        userAddress.setDeleteFlag(1);
+        if(userAddress == null){
+            userAddress.setDeleteFlag(Constants.DEF_ADDRESS);
+        }else{
+            userAddress.setDeleteFlag(Constants.NO_DEF_ADDRESS);
+        }
         userAddress.setArea(userAddressModel.getArea());
         this.insert(userAddress);
 
