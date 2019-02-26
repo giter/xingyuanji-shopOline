@@ -62,7 +62,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
 
         // 判断用户是否存在默认地址
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
-                eq("def",Constants.DEF_ADDRESS));
+                eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG));
         // 写入地址信息
         UserAddress insertUserAddress = new UserAddress();
         insertUserAddress.setId(IdWorker.get32UUID());
