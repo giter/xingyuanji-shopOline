@@ -145,8 +145,10 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         this.updateById(userAddress);
         // 如果删除的是默认地址，选取一条变更为默认地址
         if(userAddress.getDef().equals(Constants.DEF_ADDRESS)){
-            UserAddress SetOtherAddressDef = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
+            UserAddress setOtherAddressDef = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                     eq("deleteFlag",Constants.QIYONG).last("LIMIT 1"));
+            setOtherAddressDef.setDef(Constants.DEF_ADDRESS);
+            this.updateById(setOtherAddressDef);
         }
 
     }
