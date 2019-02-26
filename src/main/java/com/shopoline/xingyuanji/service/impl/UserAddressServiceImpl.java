@@ -110,7 +110,8 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
 
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
-        List<UserAddress> userAddressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()));
+        List<UserAddress> userAddressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
+                eq("deleteFlag",Constants.QIYONG));
         for(UserAddress userAddress:userAddressList){
             if(userAddress.getDef() == 1){
                 UserAddress address = new UserAddress();
