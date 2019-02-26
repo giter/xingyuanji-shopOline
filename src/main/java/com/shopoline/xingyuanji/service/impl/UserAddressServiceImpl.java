@@ -43,6 +43,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      */
     @Override
     public void insertAddress(String ticketId,UserAddressModel userAddressModel) throws Exception {
+        Assert.isTrue(userAddressModel.getPhone().length()==11,ExceptionEnum.EXCEPTION_21.getDesc());
         if (userAddressModel.getAddress() == null || userAddressModel.getAddress().equals("")){
             throw new Exception(ExceptionEnum.EXCEPTION_8.getDesc());
         }else if(userAddressModel.getArea() == null || userAddressModel.getArea().equals("")){
@@ -161,6 +162,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      */
     @Override
     public void updateAddress(String ticketId, String id, UserAddressModel userAddressModel) {
+        Assert.isTrue(userAddressModel.getPhone().length()==11,ExceptionEnum.EXCEPTION_21.getDesc());
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).eq("userId",userInfo.getUserId()));
@@ -175,4 +177,5 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         userAddress.setEditTime(new Date());
         this.updateById(userAddress);
     }
+
 }
