@@ -71,14 +71,14 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         userAddress.setProvince(userAddressModel.getProvince());
         userAddress.setCity(userAddressModel.getCity());
         userAddress.setAddress(userAddressModel.getAddress());
-        userAddress.setDef(Constants.DEF_ADDRESS);
+        if(userAddress == null){
+            userAddress.setDef(Constants.DEF_ADDRESS);
+        }else{
+            userAddress.setDef(Constants.NO_DEF_ADDRESS);
+        }
         userAddress.setEditTime(new Date());
         userAddress.setEditBy("admin");
-        if(userAddress == null){
-            userAddress.setDeleteFlag(Constants.DEF_ADDRESS);
-        }else{
-            userAddress.setDeleteFlag(Constants.NO_DEF_ADDRESS);
-        }
+        userAddress.setDeleteFlag(Constants.QIYONG);
         userAddress.setArea(userAddressModel.getArea());
         this.insert(userAddress);
 
