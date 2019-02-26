@@ -20,7 +20,8 @@ public enum ExceptionEnum {
     EXCEPTION_16(16,"请输入地址"),
     EXCEPTION_17(17,"请勿重复操作"),
     EXCEPTION_18(18,"暂未查询到物流信息"),
-    EXCEPTION_19(19,"商品已售罄");
+    EXCEPTION_19(19,"商品已售罄"),
+    EXCEPTION_20(20,"请勿删除最后默认地址");
 
     public Integer key;
     public String desc;
