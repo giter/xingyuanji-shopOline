@@ -2,12 +2,12 @@ package com.shopoline.xingyuanji.vo;
 
 import com.shopoline.xingyuanji.model.RespResultModel;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LogisticInformationVO {
 
-    private List<RespResultModel> logisticInformation = new ArrayList<>();
+    private List<RespResultModel> logisticInformation = new LinkedList<>();
 
     private String productName;
 
