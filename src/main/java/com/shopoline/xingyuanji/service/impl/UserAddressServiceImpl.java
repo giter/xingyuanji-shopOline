@@ -94,7 +94,8 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     public List<UserAddress> getAdress(String ticketId) {
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
-        List<UserAddress> addressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).eq("deleteFlag",Constants.QIYONG));
+        List<UserAddress> addressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
+                eq("deleteFlag",Constants.QIYONG));
         Assert.isTrue(!addressList.isEmpty(),ExceptionEnum.EXCEPTION_16.getDesc());
         return addressList;
     }
@@ -140,8 +141,14 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).eq("userId",userInfo.getUserId()));
-        userAddress.setDeleteFlag(0);
+        userAddress.setDeleteFlag(Constants.WEIQIYONG);
         this.updateById(userAddress);
+        // 如果删除的是默认地址，选取一条变更为默认地址
+        if(userAddress.getDef().equals(Constants.DEF_ADDRESS)){
+            UserAddress SetOtherAddressDef = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
+                    eq("deleteFlag",Constants.QIYONG).last("LIMIT 1"));
+        }
+
     }
 
     /**
