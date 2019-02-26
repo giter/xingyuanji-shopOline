@@ -128,13 +128,12 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 获取用户信息
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
-        //获取随机商品
+        // 获取随机商品
         ProductInfo productInfo = productInfoService.getRedomProduct(ticketId,Integer.parseInt(Constants.HEZI_PRODUCT),
                     Integer.parseInt(Constants.HEZI_PRODUCT),randomToken,UUID);
         productInfo.setImg(productInfo.getGoodsname()+".png");
         // 扣除猩币
         if(useXingBi.equals("1") || useXingBi == "1"){
-
             userAssetService.setUseXingBi(userInfo);
         }
             // 从Redis中获取微信JSAPI付款后存入的唯一交易标识
@@ -155,7 +154,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             shopLog.setIsPay(isPay);
             shopLog.setTotalFee(totalFee);
             shopLogService.insert(shopLog);
-        //写入购盒奖励
+        // 写入购盒奖励
         UserAsset userAsset = new UserAsset();
         userAsset.setId(IdWorker.get32UUID());
         userAsset.setUserId(userInfo.getUserId());
@@ -326,11 +325,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     public Object buyXingBiProduct(String ticketId, String productId) throws Exception{
 
         UserCoinVO userCoinVO = userAssetService.quertUserCoin(ticketId);
-
         ProductInfo productInfo = productInfoService.getShopProductInfo(productId);
-
         String openId = RedisUtil.getValue(ticketId);
-
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
 
         if(userCoinVO.getAmount() < Integer.parseInt(productInfo.getSocer())){
@@ -339,7 +335,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         if(productInfo.getProductCount().equals(0)){
             throw new Exception(ExceptionEnum.EXCEPTION_4.getDesc());
         }
-
         //扣除用户猩币
         userAssetService.dedUserXingbi(productInfo,userInfo);
         //写入消费记录
@@ -401,7 +396,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         //获取商品信息
         ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId));
         // 获取物流信息
-
         List<RespResultModel> respResultModelList= SFUtils.getOrderStatus(tradeNo);
 
         LogisticInformationVO logisticInformationVO = new LogisticInformationVO();

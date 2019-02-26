@@ -35,6 +35,7 @@ import java.util.Date;
  * @since 2019-01-09
  */
 @Service
+@Transactional
 public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset> implements IUserAssetService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
@@ -94,7 +95,6 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
      * @return
      */
     @Override
-    @Transactional
     public Object exchangeCoin(String ticketId, String goodsId) {
 
         String openId = GetOpenId.getOpenId(ticketId);
@@ -113,14 +113,12 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         userAsset.setDeltFlag(Constants.QIYONG);
         userAsset.setOpenId(openId);
         this.insert(userAsset);
-
         //更改用户购买商品信息
         ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("goodsId",goodsId).
                 eq("openId",openId).eq("deleteFlag",Constants.QIYONG));
         shopLog.setExpress(Constants.MALEHUANBI);
         shopLog.setEditTime(new Date());
         shopLogService.updateExchangeCoinInfo(shopLog);
-
 //        //返回积分商品列表
 //        List<ProductInfo> productInfoList = productInfoService.selectList(new EntityWrapper<ProductInfo>().
 //                eq("style",Constants.JIFEN_PRODUCT).eq("kind",Constants.JIFEN_PRODUCT).eq("deleteFlag",Constants.QIYONG));
