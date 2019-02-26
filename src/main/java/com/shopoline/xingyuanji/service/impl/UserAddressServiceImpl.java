@@ -60,27 +60,28 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).eq("deleteFlag", Constants.QIYONG));
 
 
-        // 写入地址信息
+        // 判断用户是否存在默认地址
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("def",Constants.DEF_ADDRESS));
-
-        userAddress.setId(IdWorker.get32UUID());
-        userAddress.setUserId(userInfo.getUserId());
-        userAddress.setName(userAddressModel.getName());
-        userAddress.setPhone(userAddressModel.getPhone());
-        userAddress.setProvince(userAddressModel.getProvince());
-        userAddress.setCity(userAddressModel.getCity());
-        userAddress.setAddress(userAddressModel.getAddress());
+        // 写入地址信息
+        UserAddress insertUserAddress = new UserAddress();
+        insertUserAddress.setId(IdWorker.get32UUID());
+        insertUserAddress.setUserId(userInfo.getUserId());
+        insertUserAddress.setName(userAddressModel.getName());
+        insertUserAddress.setPhone(userAddressModel.getPhone());
+        insertUserAddress.setProvince(userAddressModel.getProvince());
+        insertUserAddress.setCity(userAddressModel.getCity());
+        insertUserAddress.setAddress(userAddressModel.getAddress());
         if(userAddress == null){
-            userAddress.setDef(Constants.DEF_ADDRESS);
+            insertUserAddress.setDef(Constants.DEF_ADDRESS);
         }else{
-            userAddress.setDef(Constants.NO_DEF_ADDRESS);
+            insertUserAddress.setDef(Constants.NO_DEF_ADDRESS);
         }
-        userAddress.setEditTime(new Date());
-        userAddress.setEditBy("admin");
-        userAddress.setDeleteFlag(Constants.QIYONG);
-        userAddress.setArea(userAddressModel.getArea());
-        this.insert(userAddress);
+        insertUserAddress.setEditTime(new Date());
+        insertUserAddress.setEditBy("admin");
+        insertUserAddress.setDeleteFlag(Constants.QIYONG);
+        insertUserAddress.setArea(userAddressModel.getArea());
+        this.insert(insertUserAddress);
 
     }
 
