@@ -68,13 +68,13 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public Float getBoxDeductionPrice(String ticketId,String type, String kind,Integer boxCount) {
 
         ProductInfoVO productInfoVO = getBoxInfo(type,kind);
-        //获取用户猩币信息
+        // 获取用户猩币信息
         UserCoinVO userCoinVO = userAssetService.quertUserCoin(ticketId);
-        //判断
+        // 判断
         Assert.isTrue(userCoinVO.getAmount() != 0,ExceptionEnum.EXCEPTION_5.getDesc());
         Assert.isTrue(userCoinVO.getAmount()>= Constants.XINGBI_DUIHUAN_ZUIDI_COUNT,ExceptionEnum.EXCEPTION_15.getDesc());
         Assert.isTrue(userCoinVO.getAmount() > Constants.BOX_USER_DEDUCTION_XINGBI * boxCount,ExceptionEnum.EXCEPTION_5.getDesc());
-            Float deductionPrice = productInfoVO.getPrice() - Constants.XINGBI_DIKOU * boxCount;
+        Float deductionPrice = productInfoVO.getPrice() - Constants.XINGBI_DIKOU * boxCount;
         return deductionPrice;
     }
 
