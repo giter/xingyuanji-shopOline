@@ -142,16 +142,10 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).eq("userId",userInfo.getUserId()));
-        String def = String.valueOf(userAddress.getDef());
+        // 判断是否为默认地址，如果是则断言
+        Assert.isTrue( userAddress.getDef() != Constants.DEF_ADDRESS , ExceptionEnum.EXCEPTION_20.desc);
         userAddress.setDeleteFlag(Constants.WEIQIYONG);
         this.updateById(userAddress);
-        // 如果删除的是默认地址，选取一条变更为默认地址
-        if(def.equals(Constants.DEF_ADDRESS)){
-            UserAddress setOtherAddressDef = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
-                    eq("deleteFlag",Constants.QIYONG).last("LIMIT 1"));
-            setOtherAddressDef.setDef(Constants.DEF_ADDRESS);
-            this.updateById(setOtherAddressDef);
-        }
 
     }
 
