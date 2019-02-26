@@ -137,7 +137,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     }
 
     @Override
-    public void deleteAddress(String ticketId, String id) {
+    public void deleteAddress(String ticketId, String id) throws Exception{
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).eq("userId",userInfo.getUserId()));
