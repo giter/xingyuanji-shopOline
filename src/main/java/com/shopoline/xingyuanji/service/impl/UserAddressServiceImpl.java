@@ -83,7 +83,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         insertUserAddress.setDeleteFlag(Constants.QIYONG);
         insertUserAddress.setArea(userAddressModel.getArea());
         this.insert(insertUserAddress);
-
     }
 
     /**

@@ -21,6 +21,7 @@
         <result column="ZIPAmount" property="ZIPAmount" />
         <result column="ZIPFileName" property="ZIPFileName" />
         <result column="ZIPOutTradeNo" property="ZIPOutTradeNo" />
+        <result column="addressId" property="addressId" />
     </resultMap>
 
     <select id="getShopList" resultType="com.shopoline.xingyuanji.model.ShopLogModel">

@@ -12,7 +12,7 @@ import java.util.Date;
  * </p>
  *
  * @author wuty
- * @since 2019-02-25
+ * @since 2019-02-27
  */
 @TableName("t_shop_log")
 public class ShopLog extends Model<ShopLog> {
@@ -85,6 +85,10 @@ public class ShopLog extends Model<ShopLog> {
      * 邮费微信付款单号
      */
     private String ZIPOutTradeNo;
+    /**
+     * 地址Id
+     */
+    private String addressId;
 
 
     public String getId() {
@@ -240,6 +244,15 @@ public class ShopLog extends Model<ShopLog> {
         return this;
     }
 
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public ShopLog setAddressId(String addressId) {
+        this.addressId = addressId;
+        return this;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -265,6 +278,7 @@ public class ShopLog extends Model<ShopLog> {
         ", ZIPAmount=" + ZIPAmount +
         ", ZIPFileName=" + ZIPFileName +
         ", ZIPOutTradeNo=" + ZIPOutTradeNo +
+        ", addressId=" + addressId +
         "}";
     }
 }

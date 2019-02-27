@@ -65,7 +65,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     public Object setOrder(String ticketId,PayModel payModel)throws Exception{
 
         String openId = GetOpenId.getOpenId(ticketId);
-
         // 写入微信支付数据
         ConcurrentHashMap<String,String> data = new ConcurrentHashMap<>();
         // 商品的简单描述
@@ -227,8 +226,11 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     public ShopLogInfoVO getShopLogInfo(String ticketId) {
         String openId = GetOpenId.getOpenId(ticketId);
         ShopLogInfoVO shopLogInfoVO = new ShopLogInfoVO();
+        // 获取购买记录
         ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("openId",openId).eq("deleteFlag",Constants.QIYONG));
-        ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",shopLog.getGoodsId()).eq("deleteFlag",Constants.QIYONG));
+        // 获取商品信息
+        ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",shopLog.getGoodsId()).
+                eq("deleteFlag",Constants.QIYONG));
         shopLogInfoVO.setGoodsname(productInfo.getGoodsname());
         shopLogInfoVO.setPrice(productInfo.getPrice());
         shopLogInfoVO.setImg(productInfo.getImg() + ".png");
@@ -258,11 +260,17 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      */
     @Override
     public SFResult sendHome(String ticketId,String productId) throws Exception {
-        SendHomeModel sendHomeModel = new SendHomeModel();
+
+        // 获取用户openId
         String openId = GetOpenId.getOpenId(ticketId);
         SFResult sfResult = new SFResult();
+        // 获取用户信息
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
-        UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).eq("def","1").eq("deleteFlag",Constants.QIYONG));
+        // 获取用户默认地址
+        UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
+                eq("def","1").eq("deleteFlag",Constants.QIYONG));
+
+        SendHomeModel sendHomeModel = new SendHomeModel();
         sendHomeModel.setName(userAddress.getName());
         sendHomeModel.setPhone(String.valueOf(userAddress.getPhone()));
         sendHomeModel.setArea(userAddress.getArea());
@@ -270,12 +278,12 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         sendHomeModel.setCity(userAddress.getCity());
         sendHomeModel.setAddress(userAddress.getAddress());
         sendHomeModel.setProductId(productId);
-
-        //写入邮费
+        // 写入邮费
         sfResult.setZIPAmount(CheckZIPAmount.checkAmount(sendHomeModel));
-        //获取产品详情
+        // 获取产品详情
        ProductInfo productInfo = productInfoService.getShopProductInfo(productId);
         try {
+            // 顺丰下单
             sfResult = SFUtils.addOrder(sendHomeModel,productInfo,sfResult);
         } catch (Exception e) {
             e.printStackTrace();
@@ -283,7 +291,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 从redis中获取邮费支付订单号
         String ZIPTradeNum = RedisUtil.getValue(ticketId+"tradeNum");
         String totalFee = RedisUtil.getValue(ticketId+"totalFee");
-        //写相关记录
+        //写入相关记录
         ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("openId",openId).eq("goodsId",productInfo.getId()).
                 eq("express",Constants.KUAIDI_FROM_ZANDING));
         shopLog.setExpress(Constants.YOU_HUI_JIA);
@@ -292,10 +300,13 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         shopLog.setZIPAmount(totalFee);
         shopLog.setZIPFileName(sfResult.getZIPFileName());
         shopLog.setZIPOutTradeNo(ZIPTradeNum);
+        shopLog.setAddressId(userAddress.getId());
+        shopLog.setEditTime(new Date());
         this.updateById(shopLog);
 
         logger.info("SEND_HOME-\t"+"UserName："+userInfo.getNickName()+"\tRealName："+userAddress.getName()+"\tTradeNo："+shopLog.getTradeNo()+
                 "\tZIPAmount："+shopLog.getZIPAmount()+"\tZIPOutTradeNo:"+ZIPTradeNum+"\tDate："+new Date());
+        // 删除缓存中的TOKEN
         RedisUtil.delete(ticketId+"tradeNum");
         RedisUtil.delete(ticketId+"totalFee");
         return sfResult;
@@ -311,12 +322,15 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     @Override
     public Object getZIPAmount(String ticketId) {
         String openId = RedisUtil.getValue(ticketId);
+        // 获取用户信息
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        // 获取地址信息
         UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("deleteFlag",Constants.QIYONG));
         SendHomeModel sendHomeModel = new SendHomeModel();
         sendHomeModel.setProvince(userAddress.getProvince());
         sendHomeModel.setCity(userAddress.getCity());
+        // 计算邮费
         Integer ZIPAmount = CheckZIPAmount.checkAmount(sendHomeModel);
         return ZIPAmount;
     }
@@ -373,6 +387,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     public void deductXingBi(String ticketId) {
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        // 扣除猩币
         userAssetService.setUseXingBi(userInfo);
     }
 
