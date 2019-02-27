@@ -19,4 +19,6 @@
         <result column="update_id" property="updateId" />
     </resultMap>
 
+
+
 </mapper>

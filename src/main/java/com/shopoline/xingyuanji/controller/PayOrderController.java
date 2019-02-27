@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
  * @since 2019-01-17
  */
 @Controller
-@RequestMapping("/xingyuanji/payOrder")
+@RequestMapping("/payOrder")
 public class PayOrderController {
 
 }
