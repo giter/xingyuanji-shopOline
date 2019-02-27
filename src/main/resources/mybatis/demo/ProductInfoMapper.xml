@@ -19,7 +19,8 @@
 
     <!--购盒成功后获取随机商品-->
     <select id="getRedomProduct" resultType="com.shopoline.xingyuanji.entity.ProductInfo">
-        SELECT * FROM t_product_info WHERE style = #{productStyle} AND kind = #{productKind} AND productCount != '0' AND id != '0' ORDER BY rand() limit 1;
+        SELECT * FROM t_product_info WHERE style = #{productStyle} AND kind = #{productKind} AND productCount != '0'
+        AND id != '0' AND deleteFlag = '1' ORDER BY rand() limit 1;
     </select>
 
 </mapper>
