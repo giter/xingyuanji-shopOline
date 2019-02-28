@@ -23,8 +23,8 @@
     </resultMap>
 
     <select id="getShopList" resultType="com.shopoline.xingyuanji.model.ShopLogModel">
-        SELECT a.express,a.goodsId,a.isPay,a.editTime,a.tradeNo,b.goodsname,b.price,b.img,b.style,b.socer FROM t_shop_log a LEFT JOIN t_product_info b ON b.id = a.goodsId
-        WHERE a.deleteFlag = '1'AND a.openId = #{openId} ORDER BY a.editTime DESC ;
+        SELECT a.express,a.goodsId,a.isPay,a.editTime,a.tradeNo,b.goodsname,b.price,b.img,b.style,b.socer FROM t_shop_log a
+        LEFT JOIN t_product_info b ON b.id = a.goodsId WHERE a.deleteFlag = '1'AND a.openId = #{openId} ORDER BY a.editTime DESC ;
     </select>
 
     <!--查询当天线上销售数量-->
