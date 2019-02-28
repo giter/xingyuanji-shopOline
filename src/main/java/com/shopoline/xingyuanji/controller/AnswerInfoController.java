@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
  * @since 2019-01-10
  */
 @Controller
-@RequestMapping("/xingyuanji/answerInfo")
+@RequestMapping("/answerInfo")
 public class AnswerInfoController {
 
 }
