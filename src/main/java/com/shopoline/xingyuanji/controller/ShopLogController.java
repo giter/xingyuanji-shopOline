@@ -182,9 +182,9 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/sendHome")
     public Object sendHome(String ticketId,String productId,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult<>();
+        JsonResult json = new JsonResult();
         try {
-            json.setData(shopLogService.sendHome(ticketId,productId));
+            shopLogService.sendHome(ticketId,productId);
         }catch (Exception e){
             logger.info(e.getMessage());
             json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));

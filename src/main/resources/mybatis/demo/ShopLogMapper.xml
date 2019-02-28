@@ -14,25 +14,12 @@
         <result column="deleteFlag" property="deleteFlag" />
         <result column="express" property="express" />
         <result column="outTradeNo" property="outTradeNo" />
-        <result column="orderId" property="orderId" />
         <result column="tradeNo" property="tradeNo" />
         <result column="isPay" property="isPay" />
         <result column="totalFee" property="totalFee" />
         <result column="ZIPAmount" property="ZIPAmount" />
-        <result column="ZIPFileName" property="ZIPFileName" />
         <result column="ZIPOutTradeNo" property="ZIPOutTradeNo" />
         <result column="addressId" property="addressId" />
     </resultMap>
-
-    <select id="getShopList" resultType="com.shopoline.xingyuanji.model.ShopLogModel">
-        SELECT a.express,a.goodsId,a.isPay,a.editTime,a.tradeNo,b.goodsname,b.price,b.img,b.style,b.socer FROM t_shop_log a LEFT JOIN t_product_info b ON b.id = a.goodsId
-        WHERE a.deleteFlag = '1' AND b.deleteFlag = '1' AND a.openId = #{openId} ORDER BY a.editTime DESC ;
-    </select>
-
-    <!--查询当天线上销售数量-->
-    <select id="selectTodaySellCount" resultType="java.lang.Integer">
-        select COUNT(id) from t_shop_log where to_days(editTime) = to_days(now()) AND boxId = #{boxIdBox}
-        AND isPay = 'ispay' AND deleteFlag = '1';
-    </select>
 
 </mapper>

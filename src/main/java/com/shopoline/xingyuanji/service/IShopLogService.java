@@ -3,7 +3,6 @@ package com.shopoline.xingyuanji.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.ShopLog;
 import com.shopoline.xingyuanji.model.PayModel;
-import com.shopoline.xingyuanji.model.SFResult;
 import com.shopoline.xingyuanji.model.ShopLogModel;
 import com.shopoline.xingyuanji.vo.LogisticInformationVO;
 import com.shopoline.xingyuanji.vo.ShopLogInfoVO;
@@ -61,7 +60,7 @@ public interface IShopLogService extends IService<ShopLog> {
      * @param ticketId
      * @return
      */
-    SFResult sendHome(String ticketId, String productId) throws Exception;
+    void sendHome(String ticketId, String productId) throws Exception;
 
     /**
      * 取消订单

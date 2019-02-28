@@ -259,11 +259,10 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
-    public SFResult sendHome(String ticketId,String productId) throws Exception {
+    public void sendHome(String ticketId,String productId) throws Exception{
 
         // 获取用户openId
         String openId = GetOpenId.getOpenId(ticketId);
-        SFResult sfResult = new SFResult();
         // 获取用户信息
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
         // 获取用户默认地址
@@ -278,16 +277,18 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         sendHomeModel.setCity(userAddress.getCity());
         sendHomeModel.setAddress(userAddress.getAddress());
         sendHomeModel.setProductId(productId);
-        // 写入邮费
-        sfResult.setZIPAmount(CheckZIPAmount.checkAmount(sendHomeModel));
+        // SFResult sfResult = new SFResult();
+          // 写入邮费
+          // sfResult.setZIPAmount(CheckZIPAmount.checkAmount(sendHomeModel));
         // 获取产品详情
        ProductInfo productInfo = productInfoService.getShopProductInfo(productId);
-        try {
-            // 顺丰下单
-            sfResult = SFUtils.addOrder(sendHomeModel,productInfo,sfResult);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+          // try {
+           // 顺丰下单
+             // sfResult = SFUtils.addOrder(sendHomeModel,productInfo,sfResult);
+         // } catch (Exception e) {
+            // e.printStackTrace();
+         // }
+
         // 从redis中获取邮费支付订单号
         String ZIPTradeNum = RedisUtil.getValue(ticketId+"tradeNum");
         String totalFee = RedisUtil.getValue(ticketId+"totalFee");
@@ -295,10 +296,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("openId",openId).eq("goodsId",productInfo.getId()).
                 eq("express",Constants.KUAIDI_FROM_ZANDING));
         shopLog.setExpress(Constants.YOU_HUI_JIA);
-        shopLog.setTradeNo(sfResult.getMailNo());
-        shopLog.setOrderId(sfResult.getOrderId());
         shopLog.setZIPAmount(totalFee);
-        shopLog.setZIPFileName(sfResult.getZIPFileName());
         shopLog.setZIPOutTradeNo(ZIPTradeNum);
         shopLog.setAddressId(userAddress.getId());
         shopLog.setEditTime(new Date());
@@ -309,7 +307,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 删除缓存中的TOKEN
         RedisUtil.delete(ticketId+"tradeNum");
         RedisUtil.delete(ticketId+"totalFee");
-        return sfResult;
+
     }
 
     @Override

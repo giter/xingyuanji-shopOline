@@ -12,7 +12,7 @@ import java.util.Date;
  * </p>
  *
  * @author wuty
- * @since 2019-02-27
+ * @since 2019-02-28
  */
 @TableName("t_shop_log")
 public class ShopLog extends Model<ShopLog> {
@@ -57,12 +57,7 @@ public class ShopLog extends Model<ShopLog> {
      */
     private String outTradeNo;
     /**
-     * 顺丰OrderId
-     */
-    private String orderId;
-    /**
-     * 顺丰
-订单号
+     * 运单号
      */
     private String tradeNo;
     /**
@@ -77,10 +72,6 @@ public class ShopLog extends Model<ShopLog> {
      * 邮费
      */
     private String ZIPAmount;
-    /**
-     * 运单
-     */
-    private String ZIPFileName;
     /**
      * 邮费微信付款单号
      */
@@ -181,15 +172,6 @@ public class ShopLog extends Model<ShopLog> {
         return this;
     }
 
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public ShopLog setOrderId(String orderId) {
-        this.orderId = orderId;
-        return this;
-    }
-
     public String getTradeNo() {
         return tradeNo;
     }
@@ -223,15 +205,6 @@ public class ShopLog extends Model<ShopLog> {
 
     public ShopLog setZIPAmount(String ZIPAmount) {
         this.ZIPAmount = ZIPAmount;
-        return this;
-    }
-
-    public String getZIPFileName() {
-        return ZIPFileName;
-    }
-
-    public ShopLog setZIPFileName(String ZIPFileName) {
-        this.ZIPFileName = ZIPFileName;
         return this;
     }
 
@@ -271,12 +244,10 @@ public class ShopLog extends Model<ShopLog> {
         ", deleteFlag=" + deleteFlag +
         ", express=" + express +
         ", outTradeNo=" + outTradeNo +
-        ", orderId=" + orderId +
         ", tradeNo=" + tradeNo +
         ", isPay=" + isPay +
         ", totalFee=" + totalFee +
         ", ZIPAmount=" + ZIPAmount +
-        ", ZIPFileName=" + ZIPFileName +
         ", ZIPOutTradeNo=" + ZIPOutTradeNo +
         ", addressId=" + addressId +
         "}";
