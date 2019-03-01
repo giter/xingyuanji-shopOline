@@ -299,7 +299,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         shopLog.setZIPAmount(totalFee);
         shopLog.setZIPOutTradeNo(ZIPTradeNum);
         shopLog.setAddressId(userAddress.getId());
-        shopLog.setEditTime(new Date());
+        shopLog.setUpdateTime(new Date());
         this.updateById(shopLog);
 
         logger.info("SEND_HOME-\t"+"UserName："+userInfo.getNickName()+"\tRealName："+userAddress.getName()+"\tTradeNo："+shopLog.getTradeNo()+

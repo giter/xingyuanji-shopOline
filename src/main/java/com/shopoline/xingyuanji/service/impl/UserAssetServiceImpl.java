@@ -117,7 +117,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("goodsId",goodsId).
                 eq("openId",openId).eq("deleteFlag",Constants.QIYONG));
         shopLog.setExpress(Constants.MALEHUANBI);
-        shopLog.setEditTime(new Date());
+        shopLog.setUpdateTime(new Date());
         shopLogService.updateExchangeCoinInfo(shopLog);
 //        //返回积分商品列表
 //        List<ProductInfo> productInfoList = productInfoService.selectList(new EntityWrapper<ProductInfo>().

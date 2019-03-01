@@ -20,6 +20,7 @@
         <result column="ZIPAmount" property="ZIPAmount" />
         <result column="ZIPOutTradeNo" property="ZIPOutTradeNo" />
         <result column="addressId" property="addressId" />
+        <result column="updateTime" property="updateTime" />
     </resultMap>
 
     <select id="getShopList" resultType="com.shopoline.xingyuanji.model.ShopLogModel">
