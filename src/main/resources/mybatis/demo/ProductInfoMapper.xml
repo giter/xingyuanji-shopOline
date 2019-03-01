@@ -19,29 +19,8 @@
 
     <!--购盒成功后获取随机商品-->
     <select id="getRedomProduct" resultType="com.shopoline.xingyuanji.entity.ProductInfo">
-         SELECT
-               t1.id,t1.goodsname,t1.price,t1.img,t1.productCount,t1.style,t1.kind,t1.socer,t1.editTime,t1.editBy,t1.deleteFlag
-         FROM
-               t_product_info AS t1
-	     JOIN
-	     (SELECT ROUND(RAND( ) * ( ( SELECT MAX( id ) FROM t_product_info ) - ( SELECT MIN( id ) FROM t_product_info ) ) +
-            ( SELECT MIN( id ) FROM t_product_info ) ) AS id )
-         AS
-         t2
-         WHERE
-	     t1.id >= t2.id
-	     AND
-	     t1.id != '0'
-	     AND
-	     deleteFlag = '1'
-	     AND
-	     productCount = '1'
-	     AND
-	     style = #{productStyle}
-	     AND
-	     kind = #{productKind}
-         ORDER BY
-	     t1.id LIMIT 1;
+        SELECT * FROM t_product_info WHERE style = #{productStyle} AND kind = #{productKind} AND productCount != '0'
+        AND id != '0' AND deleteFlag = '1' ORDER BY rand() limit 1;
     </select>
 
 
