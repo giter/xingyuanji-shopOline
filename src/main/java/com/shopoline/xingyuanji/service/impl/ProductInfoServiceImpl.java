@@ -24,13 +24,11 @@ import java.util.Random;
  * <p>
  *  服务实现类
  * </p>
- *
  * @author wuty
  * @since 2019-01-09
  */
 @Service
 public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, ProductInfo> implements IProductInfoService {
-
 
     @Autowired
     private IUserAssetService userAssetService;

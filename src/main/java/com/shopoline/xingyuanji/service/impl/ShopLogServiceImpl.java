@@ -62,7 +62,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
-    public Object setOrder(String ticketId,PayModel payModel)throws Exception{
+    public Object setOrder(String ticketId,PayModel payModel){
 
         String openId = GetOpenId.getOpenId(ticketId);
         // 写入微信支付数据
