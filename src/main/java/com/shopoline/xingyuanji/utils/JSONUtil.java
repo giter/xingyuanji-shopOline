@@ -1,26 +1,20 @@
 package com.shopoline.xingyuanji.utils;
 
-/**
- * Author: songzhonglin
- * Date: 2018/4/11
- * Time: 9:10
- * Description:
- **/
-
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.*;
 
+
+/**
+ *
+ * @author wangwei JSON工具类
+ * @param
+ *
+ */
 public class JSONUtil {
-    /**
-     *
-     * @author wangwei JSON工具类
-     * @param
-     *
-     */
+
 
     /***
      * 将List对象序列化为JSON文本
@@ -137,8 +131,9 @@ public class JSONUtil {
      * @param object
      * @return
      */
-    // 返回非实体类型(Map)的List
+
     public static List<Map<String, Object>> toList(Object object) {
+        // 返回非实体类型(Map)的List
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         JSONArray jsonArray = JSONArray.fromObject(object);
         for (Object obj : jsonArray) {

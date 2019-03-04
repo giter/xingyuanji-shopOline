@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class EmojiConvertUtil {
 
     public static final Logger logger = LoggerFactory.getLogger(EmojiConvertUtil.class);
