@@ -16,10 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-
 /**
  * 拦截器：记录用户操作日志，检查用户是否登录……
- * @author XuJijun
+ * @author Wuty
  */
 @Aspect
 @Component
