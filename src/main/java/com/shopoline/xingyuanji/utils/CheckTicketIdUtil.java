@@ -11,8 +11,9 @@ public class CheckTicketIdUtil {
         if (RedisUtil.hasKey(openId)){
             RedisUtil.delete(RedisUtil.getValue(openId));
         }
-        RedisUtil.setValueHOURS(ticketId, openId);
-        RedisUtil.setValueHOURS(openId, ticketId);
+        // 将TOKEN写入redis
+        RedisUtil.setValueMinutes(ticketId, openId);
+        RedisUtil.setValueMinutes(openId, ticketId);
 
         LoginVO loginVO = new LoginVO();
         loginVO.setTicketId(ticketId);

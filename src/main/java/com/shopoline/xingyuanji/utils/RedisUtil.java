@@ -19,7 +19,11 @@ public class RedisUtil {
     }
 
     public static void setValueHOURS(String key, String code) {
-        stringRedisTemplate.opsForValue().set(key, code, 1, TimeUnit.HOURS);
+        stringRedisTemplate.opsForValue().set(key,code,1, TimeUnit.HOURS);
+    }
+
+    public static void setValueMinutes(String key, String code) {
+        stringRedisTemplate.opsForValue().set(key,code,30, TimeUnit.MINUTES);
     }
 
     public static String getValue(String key){
