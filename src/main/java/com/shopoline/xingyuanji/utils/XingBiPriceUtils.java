@@ -6,9 +6,4 @@ public class XingBiPriceUtils {
         return count*10;
     }
 
-    public static Integer getUseRmbPrice(Integer amount){
-        return amount *10;
-    }
-
-
 }

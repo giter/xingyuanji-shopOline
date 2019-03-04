@@ -25,7 +25,6 @@ public class RedisUtil {
         stringRedisTemplate.opsForValue().set(key, code, 1, TimeUnit.DAYS);
     }
 
-
     /**
      * 设置VALUE有效时间为n秒
      * @param key
