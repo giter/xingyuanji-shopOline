@@ -16,6 +16,12 @@ import org.apache.ibatis.annotations.Param;
 public interface UserAssetMapper extends BaseMapper<UserAsset> {
 
 
+    /**
+     * 根据OpenId获取用户猩币数量
+     * @param openId
+     * @param xingbi
+     * @return
+     */
     UserAsset sumAmountById(@Param("openId") String openId,@Param("xingbi") Integer xingbi);
 
     UserAsset selectUserXingBi(@Param("xingbi") Integer xingbi,@Param("openId") String openId);

@@ -14,8 +14,6 @@ public class SFPrintInfoModel {
 
     private String destRouteLable;
 
-
-
     private String sourceTeamCode;
     //出港映射
     private String codingMappingOut;

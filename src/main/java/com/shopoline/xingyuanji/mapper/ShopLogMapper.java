@@ -17,6 +17,11 @@ import java.util.List;
  */
 public interface ShopLogMapper extends BaseMapper<ShopLog> {
 
+    /**
+     * 获取用户购物记录
+     * @param openId
+     * @return
+     */
     List<ShopLogModel> getShopList(@Param("openId") String openId);
 
     /**
