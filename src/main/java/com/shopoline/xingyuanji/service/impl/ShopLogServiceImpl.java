@@ -66,7 +66,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
 
         String openId = GetOpenId.getOpenId(ticketId);
         // 获取用户信息
-            UserInfoVO userInfo = userInfoService.getUserInfo(ticketId);
+        UserInfoVO userInfo = userInfoService.getUserInfo(ticketId);
         // 写入微信支付数据
         ConcurrentHashMap<String,String> data = new ConcurrentHashMap<>();
         // 商品的简单描述
