@@ -111,11 +111,16 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
                 "\"area_code\": \"440305\",\n" +
                 "\"address\": \"心愿有限公司\" }}\n");
         JSONObject jsonObject = wxPayService.unifiedorder(data);
+        // 向Redis中写入交易数据在后续接口中获取写入数据库
+        // 写入微信支付订单号
         RedisUtil.setValue(ticketId+"tradeNum",tradeNum);
+        // 写入支付金额
         RedisUtil.setValue(ticketId+"totalFee", String.valueOf(payModel.getTotalFee()));
+        // 向Redis中写入交易的TOKEN，防止盗刷
         String randomToken = IdWorker.get32UUID();
         String UUID = IdWorker.get32UUID();
         RedisUtil.setValueSeconds("RandomToken"+ticketId+UUID,randomToken);
+
         jsonObject.put("randomToken",randomToken);
         jsonObject.put("UUID",UUID);
 
@@ -144,8 +149,10 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         if(useXingBi.equals("1") || useXingBi == "1"){
             userAssetService.setUseXingBi(userInfo);
         }
-            // 从Redis中获取微信JSAPI付款后存入的唯一交易标识
+            // 从Redis中获取微信JSAPI付款后存入的交易数据
+            // 获取支付订单号
             String tradeNum = RedisUtil.getValue(ticketId+"tradeNum");
+            // 获取支付金额
             String totalFee = RedisUtil.getValue(ticketId+"totalFee");
             // 将商品写入ShopLog表
             ShopLog shopLog = new ShopLog();
@@ -174,12 +181,13 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         userAsset.setDeltFlag(Constants.QIYONG);
         userAsset.setOpenId(openId);
         userAssetService.insert(userAsset);
-        // 流程结束删除Redis中的标识
+        // 流程结束删除Redis中存入的交易TOKEN
         RedisUtil.delete(ticketId+"tradeNum");
         RedisUtil.delete(ticketId+"totalFee");
         //记录Log
         logger.info("<-AFTER_PAY->\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
                 productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tAssert："+XingBi+"\tDate："+userAsset.getEditTime());
+
         return productInfo;
     }
 
@@ -425,6 +433,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         logisticInformationVO.setLogisticInformation(respResultModelList);
         logisticInformationVO.setProductName(productInfo.getGoodsname());
         logisticInformationVO.setPrice(String.valueOf(productInfo.getPrice()));
+
         return logisticInformationVO;
     }
 
