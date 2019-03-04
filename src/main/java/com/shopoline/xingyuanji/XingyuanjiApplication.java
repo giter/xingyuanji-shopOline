@@ -9,11 +9,12 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 
-@SpringBootApplication
+
 @EnableCaching
+@ServletComponentScan
+@SpringBootApplication
 @MapperScan(basePackages = {"com.shopoline.xingyuanji.mapper"})
 @EntityScan(basePackages= {"com.shopoline.xingyuanji.entity"})
-@ServletComponentScan
 public class XingyuanjiApplication extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

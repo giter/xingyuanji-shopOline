@@ -41,14 +41,16 @@ public class ControllerInterceptor {
     @Around("controllerMethodPointcut()") //指定拦截器规则；也可以直接把“execution(* com.xjj.........)”写进这里
     public Object Interceptor(ProceedingJoinPoint pjp) throws Throwable {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
-        Method method = signature.getMethod(); //获取被拦截的方法
-        String methodName = method.getName(); //获取被拦截的方法名
+        // 获取被拦截的方法
+        Method method = signature.getMethod();
+        // 获取被拦截的方法名
+        String methodName = method.getName();
         Object[] args = pjp.getArgs();
         Object result = null;
 
         if (!Constants.IGNORE_METHOD.contains("all") && !Constants.IGNORE_METHOD.contains(methodName)){
             if (args == null || StringUtils.isEmpty(args[Constants.LIST_SIZE_ZERO].toString()) ||
-                    StringUtils.isEmpty(RedisUtil.getValue(args[Constants.LIST_SIZE_ZERO].toString()))){
+                StringUtils.isEmpty(RedisUtil.getValue(args[Constants.LIST_SIZE_ZERO].toString()))){
 
                 JsonResult<String> json = new JsonResult<>();
                 json.setState(ExceptionEnum.getKeyByValue(ExceptionEnum.EXCEPTION_2.getDesc()));
@@ -61,7 +63,7 @@ public class ControllerInterceptor {
             // 一切正常的情况下，继续执行被拦截的方法
             result = pjp.proceed();
         }
-
+        logger.info("CONTROLLER_AOP："+result);
         return result;
     }
 }
