@@ -15,7 +15,9 @@ public class TicketUtil {
     public static String get32_UUID() {
         UUID uuid=UUID.randomUUID();
         String str = uuid.toString();
-        System.out.println("str: " + str); // bb01a3cd-987f-469d-9e0f-04dffa2d3278
-        return str.replace("-", ""); // bb01a3cd987f469d9e0f04dffa2d3278
+        // bb01a3cd-987f-469d-9e0f-04dffa2d3278
+        System.out.println("str: " + str);
+        // bb01a3cd987f469d9e0f04dffa2d3278
+        return str.replace("-", "");
     }
 }
