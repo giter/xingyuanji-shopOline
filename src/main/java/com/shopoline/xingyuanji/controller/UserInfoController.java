@@ -35,10 +35,13 @@ public class UserInfoController extends BaseController {
     private IUserInfoService userInfoService;
 
 
-
-    /*
-    * 微信登陆
-    * */
+    /**
+     * 微信登陆
+     * @param code
+     * @param request
+     * @param response
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/login")
     public Object login(String code, HttpServletRequest request, HttpServletResponse response){

@@ -64,7 +64,7 @@ public class ControllerInterceptor {
             // 一切正常的情况下，继续执行被拦截的方法
             result = pjp.proceed();
         }
-        logger.info("CONTROLLER_AOP："+result);
+        logger.info("\t<-AOP_METHOD_NAME->："+methodName+"\t<-AOP_METHOD->："+method+"\t<-AOP_RESULT->："+result);
         return result;
     }
 }
