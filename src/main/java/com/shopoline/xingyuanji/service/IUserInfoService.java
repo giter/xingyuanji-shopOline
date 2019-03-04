@@ -7,8 +7,7 @@ import com.shopoline.xingyuanji.vo.UserInfoVO;
 
 /**
  * <p>
- * 用户信息
- 服务类
+ * 用户信息相关接口
  * </p>
  *
  * @author wuty

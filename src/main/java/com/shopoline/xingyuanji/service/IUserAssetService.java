@@ -8,8 +8,7 @@ import com.shopoline.xingyuanji.vo.UserCoinVO;
 
 /**
  * <p>
- * 用户资产表
- 服务类
+ * 用户资产相关接口
  * </p>
  *
  * @author wuty

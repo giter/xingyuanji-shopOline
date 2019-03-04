@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * <p>
- * 用户邮寄地址 服务类
+ * 用户地址相关接口
  * </p>
  *
  * @author wuty

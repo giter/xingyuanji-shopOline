@@ -27,8 +27,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 用户资产表
- 服务实现类
+ * 用户资产服务实现类
  * </p>
  *
  * @author wuty

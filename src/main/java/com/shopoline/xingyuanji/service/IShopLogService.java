@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ *  购物记录，业务相关接口
  * </p>
  *
  * @author wuty
@@ -25,7 +25,6 @@ public interface IShopLogService extends IService<ShopLog> {
      * @return
      */
     Object setOrder(String ticketId, PayModel payModel) throws Exception;
-
 
     /**
      * 交易成功后业务
@@ -84,7 +83,6 @@ public interface IShopLogService extends IService<ShopLog> {
      * @return
      */
     Object buyXingBiProduct(String ticketId, String productId) throws Exception;
-
 
     /**
      * 扣除猩币

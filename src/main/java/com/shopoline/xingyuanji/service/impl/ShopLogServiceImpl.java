@@ -29,9 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
- *  服务实现类
+ *  购物记录，业务相关实现
  * </p>
- *
  * @author wuty
  * @since 2019-01-10
  */

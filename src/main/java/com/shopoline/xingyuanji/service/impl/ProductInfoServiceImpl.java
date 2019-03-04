@@ -22,7 +22,7 @@ import java.util.Random;
 
 /**
  * <p>
- *  服务实现类
+ *  商品信息相关实现
  * </p>
  * @author wuty
  * @since 2019-01-09

@@ -21,9 +21,8 @@ import java.util.List;
 
 /**
  * <p>
- * 用户邮寄地址 服务实现类
+ * 用户邮寄地址服务实现类
  * </p>
- *
  * @author wuty
  * @since 2019-01-09
  */

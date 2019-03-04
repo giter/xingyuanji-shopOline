@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.util.Map;
 
+/**
+ * 微信支付接口
+ */
 public interface WxPayService {
 
     /**

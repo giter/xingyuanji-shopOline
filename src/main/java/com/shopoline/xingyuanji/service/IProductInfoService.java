@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ *  商品信息相关接口
  * </p>
  *
  * @author wuty
@@ -28,7 +28,6 @@ public interface IProductInfoService extends IService<ProductInfo> {
      */
     Float getBoxDeductionPrice(String ticketId,String type, String kind,Integer boxCount);
 
-
     /**
      * 购盒成功后获取随机商品
      * @param productStyle 0：盒子商品 1：积分商品
@@ -43,7 +42,6 @@ public interface IProductInfoService extends IService<ProductInfo> {
      * @return
      */
     List<ProductInfo> getShopList();
-
 
     /**
      * 获取商城商品详情

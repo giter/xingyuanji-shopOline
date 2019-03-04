@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+
+/**
+ * 微信支付相关实现
+ */
 @Service
 public class WxPayServiceImpl implements WxPayService {
 
