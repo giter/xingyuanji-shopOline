@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
  * 用户资产表
  前端控制器
  * </p>
- *
  * @author wuty
  * @since 2019-01-09
  */
