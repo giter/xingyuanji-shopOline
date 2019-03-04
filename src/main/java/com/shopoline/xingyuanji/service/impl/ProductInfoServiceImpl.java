@@ -155,7 +155,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public ProductInfo getShopProductInfo(String productId) throws Exception {
 
         ProductInfo productInfo = this.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId));
-        if(productInfo.getProductCount().equals("0")){
+        if(productInfo.getProductCount().equals(Constants.NULL)){
             throw new Exception(ExceptionEnum.EXCEPTION_19.getDesc());
         }
         productInfo.setImg(productInfo.getGoodsname() + ".png");

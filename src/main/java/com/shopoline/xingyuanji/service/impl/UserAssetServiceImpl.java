@@ -58,7 +58,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         Assert.isTrue(openId != null, ExceptionEnum.EXCEPTION_1.getDesc());
         UserAsset asset = baseMapper.sumAmountById(openId, Constants.XINGBI);
         if(asset == null){
-            userCoinVO.setAmount(0);
+            userCoinVO.setAmount(Constants.NULL);
         }else {
             userCoinVO.setAmount(asset.getAmount());
         }
@@ -78,11 +78,11 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
             UserAsset userAsset1 = new UserAsset();
             userAsset1.setId(IdWorker.get32UUID());
             userAsset1.setUserId(userInfo.getUserId());
-            userAsset1.setAmount(-50);
+            userAsset1.setAmount(Constants.GOUHE_DIKOU);
             userAsset1.setAmountTye(Constants.XINGBI);
             userAsset1.setDeltFlag(Constants.QIYONG);
             userAsset1.setEditTime(new Date());
-            userAsset1.setEditBy("admin");
+            userAsset1.setEditBy(Constants.ADMIN);
             userAsset1.setOpenId(userInfo.getOpenId());
             logger.info("<-DELETE_USER_XINGBI->\t"+"NickName："+userInfo.getNickName()+"\tOpenId："+userInfo.getOpenId()+
                     "\tDELETE_XINGBI_AMOUNT："+userAsset1.getAmount()+"\tAMOUNT_TYPE：猩币"+"DATE："+userAsset1.getEditTime());
@@ -112,7 +112,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         userAsset.setAmount(Integer.valueOf(productInfo.getSocer()));
         userAsset.setAmountTye(Constants.XINGBI);
         userAsset.setEditTime(new Date());
-        userAsset.setEditBy("admin");
+        userAsset.setEditBy(Constants.ADMIN);
         userAsset.setDeltFlag(Constants.QIYONG);
         userAsset.setOpenId(openId);
         this.insert(userAsset);
@@ -147,7 +147,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         userAsset.setAmount(- Integer.parseInt(productInfo.getSocer()));
         userAsset.setAmountTye(Constants.XINGBI);
         userAsset.setEditTime(new Date());
-        userAsset.setEditBy("admin");
+        userAsset.setEditBy(Constants.ADMIN);
         userAsset.setDeltFlag(Constants.QIYONG);
         userAsset.setOpenId(userInfo.getOpenId());
         // log

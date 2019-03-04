@@ -54,7 +54,6 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
                 + "&secret=" + Constants.SECRET + "&code=" + code
                 + "&grant_type=authorization_code";
         String str = OkhttpUtil.get(url);
-        System.out.println(str);
         JSONObject jsonObject = JSON.parseObject(str);
         String accessToken = jsonObject.getString("access_token");
         String openId = jsonObject.getString("openid");
@@ -64,7 +63,6 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             //拉取用户信息
             url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN";
             str = OkhttpUtil.get(url);
-            System.out.println("wxuser:"+str);
             jsonObject = JSON.parseObject(str);
 
             UserInfo user = new UserInfo();
@@ -76,8 +74,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             user.setHeadImgUrl(jsonObject.getString("headimgurl"));
             user.setEditTime(new Date());
             user.setUpdateTime(new Date());
-            user.setEditBy("admin");
-            user.setDeleteFlag(1);
+            user.setEditBy(Constants.ADMIN);
+            user.setDeleteFlag(Constants.QIYONG);
             this.insert(user);
         }
 
@@ -97,10 +95,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         UserInfo userInfo = this.selectOne(new EntityWrapper<UserInfo>().eq("openid",openId).eq("deleteFlag",Constants.QIYONG));
         UserCoinVO userCoinVO = userAssetService.quertUserCoin(ticketId);
         String sex;
-        if(userInfo.getSex() == 1){
+        if(userInfo.getSex() == Constants.MAN){
             sex = "男";
-        }else{
+        }else if(userInfo.getSex() == Constants.WOMAN){
             sex = "女";
+        }else{
+            sex = "未知";
         }
         UserInfoVO userInfoVO = new UserInfoVO();
         userInfoVO.setUserId(userInfo.getUserId());

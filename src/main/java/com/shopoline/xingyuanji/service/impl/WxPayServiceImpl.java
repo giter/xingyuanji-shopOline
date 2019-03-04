@@ -34,26 +34,28 @@ public class WxPayServiceImpl implements WxPayService {
             if (!"SUCCESS".equals(result.get("result_code"))){
                 jsonObject.put("object",result);
                 jsonObject.put("msg","统一下单失败");
+                logger.error("<-WXPAY_RESULT->："+jsonObject.get("object")+"\tResult：统一下单失败");
                 return jsonObject;
             }
             if (!WXPayUtil.isSignatureValid(result, WxConfig.SECRET)){
                 jsonObject.put("msg","验证签名失败");
+                logger.error("<-WXPAY_RESULT->："+"\tResult：验证签名失败");
                 return jsonObject;
             }
             jsonObject.put("result",0);
             if ("JSAPI".equals(tradeType)){
                 // 小程序，微信公众号
-                ConcurrentHashMap<String,String> tt = new ConcurrentHashMap<>();
+                ConcurrentHashMap<String,String> payInfo = new ConcurrentHashMap<>();
                 //tt.put("appId",result.get("appid"));
-                tt.put("appId", Config.APPID);
-                tt.put("nonceStr",result.get("nonce_str"));
-                tt.put("timeStamp",System.currentTimeMillis()/1000+"");
-                tt.put("package","prepay_id="+result.get("prepay_id"));
-                tt.put("signType","MD5");
-                String sign = WXPayUtil.generateSignature(tt, WxConfig.SECRET);
-                tt.put("paySign",sign);
-                jsonObject.put("object",tt);
-                logger.warn("WXPAY_RESULT："+ tt);
+                payInfo.put("appId", Config.APPID);
+                payInfo.put("nonceStr",result.get("nonce_str"));
+                payInfo.put("timeStamp",System.currentTimeMillis()/1000+"");
+                payInfo.put("package","prepay_id="+result.get("prepay_id"));
+                payInfo.put("signType","MD5");
+                String sign = WXPayUtil.generateSignature(payInfo, WxConfig.SECRET);
+                payInfo.put("paySign",sign);
+                jsonObject.put("object",payInfo);
+                logger.warn("<-JSAPI_WXPAY_RESULT->："+ payInfo);
             }
             if ("NATIVE".equals(tradeType)){//扫码
                 jsonObject.put("url",result.get("code_url"));
@@ -78,9 +80,7 @@ public class WxPayServiceImpl implements WxPayService {
     @Override
     public Object payNotify(String string) {
 
-        System.out.println("================================================");
-        System.out.println("notify");
-        System.out.println(string);
+
         try {
             Map map = WXPayUtil.xmlToMap(string);
             JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map));
@@ -95,8 +95,6 @@ public class WxPayServiceImpl implements WxPayService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(string);
-        System.out.println("================================================");
         return 1;
     }
 

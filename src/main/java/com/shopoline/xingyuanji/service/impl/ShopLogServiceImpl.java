@@ -146,8 +146,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             shopLog.setUserId(userInfo.getUserId());
             shopLog.setOpenId(openId);
             shopLog.setGoodsId(productInfo.getId());
-            shopLog.setBoxId("box");
-            shopLog.setEditBy("admin");
+            shopLog.setBoxId(Constants.BOX);
+            shopLog.setEditBy(Constants.ADMIN);
             shopLog.setEditTime(new Date());
             shopLog.setDeleteFlag(Constants.QIYONG);
             shopLog.setExpress(Constants.KUAIDI_FROM_ZANDING);
@@ -163,7 +163,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         userAsset.setAmount(XingBi);
         userAsset.setAmountTye(Constants.XINGBI);
         userAsset.setEditTime(new Date());
-        userAsset.setEditBy("admin");
+        userAsset.setEditBy(Constants.ADMIN);
         userAsset.setDeltFlag(Constants.QIYONG);
         userAsset.setOpenId(openId);
         userAssetService.insert(userAsset);
@@ -347,7 +347,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         if(userCoinVO.getAmount() < Integer.parseInt(productInfo.getSocer())){
             throw new Exception(ExceptionEnum.EXCEPTION_5.getDesc());
         }
-        if(productInfo.getProductCount().equals(0)){
+        if(productInfo.getProductCount().equals(Constants.NULL)){
             throw new Exception(ExceptionEnum.EXCEPTION_4.getDesc());
         }
         //扣除用户猩币
@@ -358,8 +358,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         shopLog.setUserId(userInfo.getUserId());
         shopLog.setOpenId(userInfo.getOpenId());
         shopLog.setGoodsId(Integer.valueOf(productInfo.getId()));
-        shopLog.setBoxId("shop");
-        shopLog.setEditBy("admin");
+        shopLog.setBoxId(Constants.SHOP);
+        shopLog.setEditBy(Constants.ADMIN);
         shopLog.setEditTime(new Date());
         shopLog.setDeleteFlag(Constants.QIYONG);
         shopLog.setExpress(3);

@@ -74,4 +74,21 @@ public class Constants {
     public final static Integer DEF_ADDRESS=1;
 
     public final static Integer NO_DEF_ADDRESS=0;
+
+    public final static String ADMIN="admin";
+
+    public final static Integer GOUHE_DIKOU = -50;
+
+    public final static Integer NULL = 0;
+
+    public final static String SHOP="SHOP";
+
+    public final static String BOX="BOX";
+
+    public final static Integer MAN = 1;
+
+    public final static Integer WOMAN = 2;
+
+    public final static Integer NO_SEX = 0;
+
 }

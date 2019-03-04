@@ -114,7 +114,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         List<UserAddress> userAddressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("deleteFlag",Constants.QIYONG));
         for(UserAddress userAddress:userAddressList){
-            if(userAddress.getDef() == 1){
+            if(userAddress.getDef() == Constants.DEF_ADDRESS){
                 UserAddress address = new UserAddress();
                 address.setId(userAddress.getId());
                 address.setUserId(userAddress.getUserId());
@@ -124,15 +124,15 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
                 address.setCity(userAddress.getCity());
                 address.setAddress(userAddress.getAddress());
                 address.setArea(userAddress.getArea());
-                address.setDef(0);
+                address.setDef(Constants.NO_DEF_ADDRESS);
                 address.setEditTime(new Date());
                 address.setEditBy("admin");
-                address.setDeleteFlag(1);
+                address.setDeleteFlag(Constants.QIYONG);
                 this.updateById(address);
             }
         }
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).eq("userId",userInfo.getUserId()));
-        userAddress.setDef(1);
+        userAddress.setDef(Constants.DEF_ADDRESS);
         this.updateById(userAddress);
     }
 
