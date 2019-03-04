@@ -24,7 +24,7 @@ public interface IShopLogService extends IService<ShopLog> {
      * @param
      * @return
      */
-    Object setOrder(String ticketId, PayModel payModel);
+    Object setOrder(String ticketId, PayModel payModel) throws Exception;
 
 
     /**

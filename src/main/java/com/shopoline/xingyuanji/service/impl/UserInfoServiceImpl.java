@@ -85,7 +85,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         //登陆将openId写入REDIS
         LoginVO loginVO = checkTicketIdUtil.checkTicketId(openId);
 
-        logger.info("USER_LOGIN-\t"+"UserName："+userInfo.getNickName()+"\tUserOpenId："+userInfo.getOpenId()+"\tDate："+new Date());
+        logger.info("<-USER_LOGIN->\t"+"UserName："+userInfo.getNickName()+"\tUserOpenId："+userInfo.getOpenId()+"\tDate："+new Date());
 
         return loginVO;
     }

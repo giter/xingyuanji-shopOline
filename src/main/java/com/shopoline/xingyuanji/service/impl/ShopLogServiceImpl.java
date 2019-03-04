@@ -9,13 +9,13 @@ import com.shopoline.xingyuanji.WxConfig;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.entity.*;
 import com.shopoline.xingyuanji.mapper.ShopLogMapper;
-import com.shopoline.xingyuanji.model.*;
+import com.shopoline.xingyuanji.model.PayModel;
+import com.shopoline.xingyuanji.model.RespResultModel;
+import com.shopoline.xingyuanji.model.SendHomeModel;
+import com.shopoline.xingyuanji.model.ShopLogModel;
 import com.shopoline.xingyuanji.service.*;
 import com.shopoline.xingyuanji.utils.*;
-import com.shopoline.xingyuanji.vo.BuyShopProductVO;
-import com.shopoline.xingyuanji.vo.LogisticInformationVO;
-import com.shopoline.xingyuanji.vo.ShopLogInfoVO;
-import com.shopoline.xingyuanji.vo.UserCoinVO;
+import com.shopoline.xingyuanji.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +62,11 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
-    public Object setOrder(String ticketId,PayModel payModel){
+    public Object setOrder(String ticketId,PayModel payModel) throws Exception {
 
         String openId = GetOpenId.getOpenId(ticketId);
+        // 获取用户信息
+            UserInfoVO userInfo = userInfoService.getUserInfo(ticketId);
         // 写入微信支付数据
         ConcurrentHashMap<String,String> data = new ConcurrentHashMap<>();
         // 商品的简单描述
@@ -110,7 +112,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         jsonObject.put("randomToken",randomToken);
         jsonObject.put("UUID",UUID);
 
-        logger.info("PAY_HISTORY-\t"+"TradeNum："+tradeNum+"\tTotalFee："+payModel.getTotalFee()+"\tUserOpenId："+openId+
+        logger.info("<-PAY_HISTORY->\t"+"NickName："+userInfo.getNickName()+"\tTradeNum："+tradeNum+"\tTotalFee："+payModel.getTotalFee()+"\tUserOpenId："+openId+
                 "\tTime："+data.get("time_expire"));
 
         return jsonObject;

@@ -123,7 +123,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
 //        List<ProductInfo> productInfoList = productInfoService.selectList(new EntityWrapper<ProductInfo>().
 //                eq("style",Constants.JIFEN_PRODUCT).eq("kind",Constants.JIFEN_PRODUCT).eq("deleteFlag",Constants.QIYONG));
 
-        logger.info("EXCHANGE_COIN-\t"+"UserName："+userInfo.getNickName()+"\tSelledProductName："+productInfo.getGoodsname()+
+        logger.info("<-EXCHANGE_COIN->\t"+"UserName："+userInfo.getNickName()+"\tSelledProductName："+productInfo.getGoodsname()+
                 "\tSelledProductId："+productInfo.getId()+"\tAmount："+userAsset.getAmount()+"\tDate："+new Date());
 
         return productInfo.getSocer();
@@ -149,7 +149,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         userAsset.setOpenId(userInfo.getOpenId());
         this.insert(userAsset);
 
-        logger.info("DELETE_USER_AMOUNT-\t"+"UserName："+userInfo.getNickName()+"\tSelledProductName："+productInfo.getGoodsname()+
+        logger.info("<-DELETE_USER_AMOUNT->\t"+"UserName："+userInfo.getNickName()+"\tSelledProductName："+productInfo.getGoodsname()+
                 "\tSelledProductId："+productInfo.getId()+"\tAmount："+userAsset.getAmount()+"\tDate："+new Date());
 
     }
