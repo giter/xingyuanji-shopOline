@@ -43,6 +43,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      */
     @Override
     public void insertAddress(String ticketId,UserAddressModel userAddressModel) throws Exception {
+
         Assert.isTrue(userAddressModel.getPhone().length()==11,ExceptionEnum.EXCEPTION_21.getDesc());
         if (userAddressModel.getAddress() == null || userAddressModel.getAddress().equals("")){
             throw new Exception(ExceptionEnum.EXCEPTION_8.getDesc());
@@ -59,7 +60,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         }
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).eq("deleteFlag", Constants.QIYONG));
-
 
         // 判断用户是否存在默认地址
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
@@ -92,11 +92,13 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      */
     @Override
     public List<UserAddress> getAdress(String ticketId) {
+
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
         List<UserAddress> addressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("deleteFlag",Constants.QIYONG));
         Assert.isTrue(!addressList.isEmpty(),ExceptionEnum.EXCEPTION_16.getDesc());
+
         return addressList;
     }
 
@@ -113,6 +115,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
         List<UserAddress> userAddressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("deleteFlag",Constants.QIYONG));
+
         for(UserAddress userAddress:userAddressList){
             if(userAddress.getDef() == Constants.DEF_ADDRESS){
                 UserAddress address = new UserAddress();
@@ -138,6 +141,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
 
     @Override
     public void deleteAddress(String ticketId, String id){
+
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).eq("userId",userInfo.getUserId()));
@@ -156,6 +160,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      */
     @Override
     public void updateAddress(String ticketId, String id, UserAddressModel userAddressModel) {
+
         Assert.isTrue(userAddressModel.getPhone().length()==11,ExceptionEnum.EXCEPTION_21.getDesc());
         String openId = GetOpenId.getOpenId(ticketId);
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));

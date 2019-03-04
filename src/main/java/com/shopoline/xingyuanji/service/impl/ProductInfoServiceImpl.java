@@ -83,6 +83,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
      */
     @Override
     public ProductInfo getRedomProduct(String ticketId,Integer productStyle,Integer productKind,String randomToken,String UUID) throws Exception {
+
         // 判断token
         String token = RedisUtil.getValue("RandomToken"+ticketId+UUID);
         if(!token.equals(randomToken)){
@@ -140,6 +141,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             }
         productInfo.setProductCount(productInfo.getProductCount() - 1);
         this.updateById(productInfo);
+
         return productInfo;
     }
 
@@ -148,6 +150,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
         List<ProductInfo> productInfo = this.selectList(new EntityWrapper<ProductInfo>().eq("style", Constants.JIFEN_PRODUCT).
                 eq("kind",Constants.JIFEN_PRODUCT).eq("deleteFlag",Constants.QIYONG).orderBy("price",false));
+
         return productInfo;
     }
 
@@ -159,6 +162,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             throw new Exception(ExceptionEnum.EXCEPTION_19.getDesc());
         }
         productInfo.setImg(productInfo.getGoodsname() + ".png");
+
         return productInfo;
     }
 
@@ -166,6 +170,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public Object getBoxImg(String boxId) {
 
         String boxImgInfo = "\\boxImg\\" + boxId +".png";
+
         return boxImgInfo;
     }
 

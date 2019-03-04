@@ -43,10 +43,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     @Autowired
     private IUserAssetService userAssetService;
 
-
-    /*
-    * 登陆
-    * */
+    /**
+     * 登陆
+     * @param code
+     * @return
+     * @throws Exception
+     */
     @Override
     public Object WXLogin(String code) throws Exception {
 
@@ -88,6 +90,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         return loginVO;
     }
 
+    /**
+     * 获取用户信息
+     * @param ticketId
+     * @return
+     * @throws Exception
+     */
     @Override
     public UserInfoVO getUserInfo(String ticketId) throws Exception {
 
@@ -110,9 +118,14 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userInfoVO.setSex(sex);
         userInfoVO.setHeadImgUrl(userInfo.getHeadImgUrl());
         userInfoVO.setXingBiAmount(String.valueOf(userCoinVO.getAmount()));
+
         return userInfoVO;
     }
 
+    /**
+     * 获取微信签名
+     * @return
+     */
     @Override
     public SignModel getSign() {
         String url = "https://www.xingyuanji.com/dist";

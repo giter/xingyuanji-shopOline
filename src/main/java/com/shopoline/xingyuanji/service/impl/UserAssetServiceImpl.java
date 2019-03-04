@@ -63,6 +63,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
             userCoinVO.setAmount(asset.getAmount());
         }
         userCoinVO.setAmountType(Constants.XINGBI);
+
         return userCoinVO;
     }
 
@@ -73,6 +74,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
     @Override
     @Transactional
     public void setUseXingBi(UserInfo userInfo) {
+
         UserAsset userAsset = baseMapper.selectUserXingBi(Constants.XINGBI,userInfo.getOpenId());
         if (userAsset != null){
             UserAsset userAsset1 = new UserAsset();
@@ -155,7 +157,6 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
                 "\tSelledProductName："+productInfo.getGoodsname()+"\tSelledProductId："+productInfo.getId()+"\tDELETE_TYPE：猩币"+"\tAmount："+
                 userAsset.getAmount()+"\tDate："+userAsset.getEditTime());
         this.insert(userAsset);
-
     }
 
 }

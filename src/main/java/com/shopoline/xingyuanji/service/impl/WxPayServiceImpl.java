@@ -69,6 +69,7 @@ public class WxPayServiceImpl implements WxPayService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return jsonObject;
     }
 
@@ -79,7 +80,6 @@ public class WxPayServiceImpl implements WxPayService {
      */
     @Override
     public Object payNotify(String string) {
-
 
         try {
             Map map = WXPayUtil.xmlToMap(string);

@@ -193,12 +193,15 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
 
     @Override
     public void updateExchangeCoinInfo(ShopLog shopLog) {
+
         this.updateById(shopLog);
     }
 
     @Override
     public List<ShopLogModel> getShopLog(String ticketId) {
+
         String openId = GetOpenId.getOpenId(ticketId);
+        // 根据OpenId获取用户购物记录
         List<ShopLogModel> shopLogModelList = baseMapper.getShopList(openId);
         for(ShopLogModel shopLogModel : shopLogModelList){
             if(shopLogModel.getExpress().equals("0")){
@@ -231,6 +234,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
                 shopLogModel.setImg("/productPic/"+shopLogModel.getGoodsName()+".jpg");
             }
         }
+
         return shopLogModelList;
     }
 
@@ -242,6 +246,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      */
     @Override
     public ShopLogInfoVO getShopLogInfo(String ticketId) {
+
         String openId = GetOpenId.getOpenId(ticketId);
         ShopLogInfoVO shopLogInfoVO = new ShopLogInfoVO();
         // 获取购买记录
@@ -268,6 +273,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         }else{
             shopLogInfoVO.setIsPay("已支付");
         }
+
         return shopLogInfoVO;
     }
 
@@ -325,18 +331,19 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 删除缓存中的TOKEN
         RedisUtil.delete(ticketId+"tradeNum");
         RedisUtil.delete(ticketId+"totalFee");
-
     }
 
     @Override
     public Object deleteOrder(String ticketId,String orderId) {
 
         String deleteOrderResult = SFUtils.exitOrder(orderId);
+
         return deleteOrderResult;
     }
 
     @Override
     public Object getZIPAmount(String ticketId) {
+
         String openId = RedisUtil.getValue(ticketId);
         // 获取用户信息
         UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
@@ -348,6 +355,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         sendHomeModel.setCity(userAddress.getCity());
         // 计算邮费
         Integer ZIPAmount = CheckZIPAmount.checkAmount(sendHomeModel);
+
         return ZIPAmount;
     }
 
@@ -389,6 +397,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
 
         logger.info("<-BUY_XINGBI_PRODUCT->\t"+"NickName："+userInfo.getNickName()+"\tOpenId："+userInfo.getOpenId()+"\tProductId："+productInfo.getId()+
                 "\tProductName："+productInfo.getGoodsname()+"\tDelUserAmount："+"-"+productInfo.getSocer()+"\tDate："+new Date());
+
         return buyShopProductVO;
     }
 
@@ -413,6 +422,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      */
     @Override
     public Integer selectTodaySellCount() {
+
         return baseMapper.selectTodaySellCount(Constants.BOX_ID_BOX,Constants.ISPAY);
     }
 
