@@ -84,8 +84,11 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
             userAsset1.setEditTime(new Date());
             userAsset1.setEditBy("admin");
             userAsset1.setOpenId(userInfo.getOpenId());
+            logger.info("<-DELETE_USER_XINGBI->\t"+"NickName："+userInfo.getNickName()+"\tOpenId："+userInfo.getOpenId()+
+                    "\tDELETE_XINGBI_AMOUNT："+userAsset1.getAmount()+"\tAMOUNT_TYPE：猩币"+"DATE："+userAsset1.getEditTime());
             this.insert(userAsset1);
         }
+
     }
 
     /**
@@ -147,10 +150,11 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         userAsset.setEditBy("admin");
         userAsset.setDeltFlag(Constants.QIYONG);
         userAsset.setOpenId(userInfo.getOpenId());
+        // log
+        logger.info("<-DELETE_USER_AMOUNT->\t"+"UserName："+userInfo.getNickName()+"\tOpenId："+userInfo.getOpenId()+
+                "\tSelledProductName："+productInfo.getGoodsname()+"\tSelledProductId："+productInfo.getId()+"\tDELETE_TYPE：猩币"+"\tAmount："+
+                userAsset.getAmount()+"\tDate："+userAsset.getEditTime());
         this.insert(userAsset);
-
-        logger.info("<-DELETE_USER_AMOUNT->\t"+"UserName："+userInfo.getNickName()+"\tSelledProductName："+productInfo.getGoodsname()+
-                "\tSelledProductId："+productInfo.getId()+"\tAmount："+userAsset.getAmount()+"\tDate："+new Date());
 
     }
 

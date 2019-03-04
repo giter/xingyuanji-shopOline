@@ -157,9 +157,10 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             shopLogService.insert(shopLog);
         // 写入购盒奖励
         UserAsset userAsset = new UserAsset();
+        Integer XingBi = XingBiPriceUtils.getBuyBoxPrice(1);
         userAsset.setId(IdWorker.get32UUID());
         userAsset.setUserId(userInfo.getUserId());
-        userAsset.setAmount(XingBiPriceUtils.getBuyBoxPrice(1));
+        userAsset.setAmount(XingBi);
         userAsset.setAmountTye(Constants.XINGBI);
         userAsset.setEditTime(new Date());
         userAsset.setEditBy("admin");
@@ -170,8 +171,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         RedisUtil.delete(ticketId+"tradeNum");
         RedisUtil.delete(ticketId+"totalFee");
         //记录Log
-        logger.info("AFTER_PAY-\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
-                productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tDate："+userAsset.getEditTime());
+        logger.info("<-AFTER_PAY->\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
+                productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tAssert："+XingBi+"\tDate："+userAsset.getEditTime());
         return productInfo;
     }
 
@@ -304,7 +305,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         shopLog.setUpdateTime(new Date());
         this.updateById(shopLog);
 
-        logger.info("SEND_HOME-\t"+"UserName："+userInfo.getNickName()+"\tRealName："+userAddress.getName()+"\tTradeNo："+shopLog.getTradeNo()+
+        logger.info("<-SEND_HOME->\t"+"NickName："+userInfo.getNickName()+"\tRealName："+userAddress.getName()+"\tTradeNo："+shopLog.getTradeNo()+
                 "\tZIPAmount："+shopLog.getZIPAmount()+"\tZIPOutTradeNo:"+ZIPTradeNum+"\tDate："+new Date());
         // 删除缓存中的TOKEN
         RedisUtil.delete(ticketId+"tradeNum");
@@ -371,7 +372,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         buyShopProductVO.setZIPAmount("1");
         buyShopProductVO.setProductId(productId);
 
-        logger.info("BUY_XINGBI_PRODUCT-\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+
+        logger.info("<-BUY_XINGBI_PRODUCT->\t"+"NickName："+userInfo.getNickName()+"\tOpenId："+userInfo.getOpenId()+"\tProductId："+productInfo.getId()+
                 "\tProductName："+productInfo.getGoodsname()+"\tDelUserAmount："+"-"+productInfo.getSocer()+"\tDate："+new Date());
         return buyShopProductVO;
     }
