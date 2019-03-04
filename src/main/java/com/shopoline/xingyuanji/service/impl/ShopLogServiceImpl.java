@@ -82,13 +82,20 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         data.put("total_fee", ""+payModel.getTotalFee() * 100);
         // 订单总金额，单位为分测试
         //data.put("total_fee", ""+payModel.getTotalFee());
-        data.put("fee_type", "CNY");//币种
-        data.put("spbill_create_ip", "192.168.1.101");//终端ip,
-        data.put("notify_url", WxConfig.NOTIFYURL);//异步接收微信支付结果的回调通知
-        data.put("trade_type", "JSAPI");//交易类型，JSAPI--公众号支付，NATIVE--原生扫码支付，APP--app支付，MWEB--H5支付
-        data.put("sign_type", "MD5");//签名加密方式，默认是MD5
-        data.put("openid", openId);//交易类型位公众号支付时必须
-        data.put("limit_pay", "no_credit");//no_credit--限制用户不能使用信用卡支付
+        // 币种
+        data.put("fee_type", "CNY");
+        // 终端ip
+        data.put("spbill_create_ip", "192.168.1.101");
+        // 异步接收微信支付结果的回调通知
+        data.put("notify_url", WxConfig.NOTIFYURL);
+        // 交易类型，JSAPI--公众号支付，NATIVE--原生扫码支付，APP--app支付，MWEB--H5支付
+        data.put("trade_type", "JSAPI");
+        // 签名加密方式，默认是MD5
+        data.put("sign_type", "MD5");
+        // 交易类型位公众号支付时必须
+        data.put("openid", openId);
+        // no_credit--限制用户不能使用信用卡支付
+        data.put("limit_pay", "no_credit");
         // 交易有效时间
         Date now = new Date();
         // 交易起始时间，格式为yyyyMMddHHmmss,或者基于北京时间的时间戳
