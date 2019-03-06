@@ -10,8 +10,9 @@ import com.shopoline.xingyuanji.service.WxPayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -51,7 +52,7 @@ public class WxPayServiceImpl implements WxPayService {
             if ("JSAPI".equals(tradeType)){
                 int capacity = (int)(5/0.75)+1;
                 // 小程序，微信公众号
-                ConcurrentHashMap<String,String> payInfo = new ConcurrentHashMap<>(capacity);
+                HashMap<String,String> payInfo = new HashMap<>(capacity);
                 //tt.put("appId",result.get("appid"));
                 payInfo.put("appId", Config.APPID);
                 payInfo.put("nonceStr",result.get("nonce_str"));

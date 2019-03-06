@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -69,7 +69,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 初始HASHMAP容量防止RESIZE
         int capacity = (int)(15/0.75)+1;
         // 写入微信支付数据
-        ConcurrentHashMap<String,String> data = new ConcurrentHashMap<>(capacity);
+        HashMap<String,String> data = new HashMap<>(capacity);
         // 商品的简单描述
         data.put("body","猩愿盒");
         // 订单号，32个字符以内，只能是数字，字母
