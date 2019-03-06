@@ -67,7 +67,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 获取用户信息
         UserInfoVO userInfo = userInfoService.getUserInfo(ticketId);
         // 初始HASHMAP容量防止RESIZE
-        int capacity = (int)(15/0.75)+2;
+        int capacity = (int)(15/0.75)+1;
         // 写入微信支付数据
         ConcurrentHashMap<String,String> data = new ConcurrentHashMap<>(capacity);
         // 商品的简单描述
