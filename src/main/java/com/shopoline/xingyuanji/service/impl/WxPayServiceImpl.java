@@ -49,8 +49,9 @@ public class WxPayServiceImpl implements WxPayService {
             }
             jsonObject.put("result",0);
             if ("JSAPI".equals(tradeType)){
+                int capacity = (int)(5/0.75+1);
                 // 小程序，微信公众号
-                ConcurrentHashMap<String,String> payInfo = new ConcurrentHashMap<>();
+                ConcurrentHashMap<String,String> payInfo = new ConcurrentHashMap<>(capacity);
                 //tt.put("appId",result.get("appid"));
                 payInfo.put("appId", Config.APPID);
                 payInfo.put("nonceStr",result.get("nonce_str"));

@@ -66,8 +66,10 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         String openId = GetOpenId.getOpenId(ticketId);
         // 获取用户信息
         UserInfoVO userInfo = userInfoService.getUserInfo(ticketId);
+        // 初始HASHMAP容量防止RESIZE
+        int capacity = (int)(15/0.75)+1;
         // 写入微信支付数据
-        ConcurrentHashMap<String,String> data = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String,String> data = new ConcurrentHashMap<>(capacity);
         // 商品的简单描述
         data.put("body","猩愿盒");
         // 订单号，32个字符以内，只能是数字，字母

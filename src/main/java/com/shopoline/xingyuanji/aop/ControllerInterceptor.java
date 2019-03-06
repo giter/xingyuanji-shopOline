@@ -16,11 +16,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.Date;
 
 /**
  * 拦截器：记录用户操作日志，检查用户是否登录……
- * @author Wuty
+ * @author XuJijun
  */
 @Aspect
 @Component
@@ -29,7 +28,7 @@ public class ControllerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(ControllerInterceptor.class);
 
     /**
-     * 定义拦截规则：拦截controller包下面的所有类中，有@RequestMapping注解的方法。
+     * 定义拦截规则：拦截com.xjj.web.controller包下面的所有类中，有@RequestMapping注解的方法。
      */
     @Pointcut("execution(* com.shopoline.xingyuanji.controller..*(..)) && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
     public void controllerMethodPointcut(){}
@@ -39,37 +38,25 @@ public class ControllerInterceptor {
      * @param pjp
      * @return JsonResult（被拦截方法的执行结果，或需要登录的错误提示。）
      */
-    // 指定拦截器规则；也可以直接把“execution(* com.xjj.........)”写进这里
-    @Around("controllerMethodPointcut()")
+    @Around("controllerMethodPointcut()") //指定拦截器规则；也可以直接把“execution(* com.xjj.........)”写进这里
     public Object Interceptor(ProceedingJoinPoint pjp) throws Throwable {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
-        // 获取被拦截的方法
-        Method method = signature.getMethod();
-        // 获取被拦截的方法名
-        String methodName = method.getName();
+        Method method = signature.getMethod(); //获取被拦截的方法
+        String methodName = method.getName(); //获取被拦截的方法名
         Object[] args = pjp.getArgs();
         Object result = null;
-
-        if (!Constants.IGNORE_METHOD.contains(methodName)){
-            if (args == null || StringUtils.isEmpty(args[Constants.LIST_SIZE_ZERO].toString())){
-
-                JsonResult<String> json = new JsonResult<>();
-                json.setState(ExceptionEnum.getKeyByValue(ExceptionEnum.EXCEPTION_2.getDesc()));
-                json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
-                logger.warn("<-AOP->："+json.getMessage()+"\tSTATE："+json.getState()+"\tTICKET：NULL"+
-                        "\tDATE："+new Date());
-                result = json;
-            }else{
-                String token = RedisUtil.getValue(args[Constants.LIST_SIZE_ZERO].toString());
-                if(token == null || token.equals("")){
-
-                    JsonResult<String> json = new JsonResult<>();
-                    json.setState(ExceptionEnum.getKeyByValue(ExceptionEnum.EXCEPTION_2.getDesc()));
-                    json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
-                    logger.warn("<-AOP->："+json.getMessage()+"\tSTATE："+json.getState()+"\tTICKET："+args[Constants.LIST_SIZE_ZERO].toString()+
-                            "\tDATE："+new Date());
-                    result = json;
-                }
+//        HttpServletResponse response = null;
+//        for (Object param : pjp.getArgs()) {
+//            if (param instanceof HttpServletResponse) {
+//                response = (HttpServletResponse) param;
+//            }
+//        }
+        if (!Constants.IGNORE_METHOD.contains("all") && !Constants.IGNORE_METHOD.contains(methodName)){
+            if (args == null || StringUtils.isEmpty(args[0].toString()) || StringUtils.isEmpty(RedisUtil.getValue(args[0].toString()))){
+                Exception e = new Exception(ExceptionEnum.EXCEPTION_2.getDesc());
+                JsonResult json = new JsonResult(new Exception(ExceptionEnum.EXCEPTION_2.getDesc()));
+                json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+                result=json;
             }
         }
 
