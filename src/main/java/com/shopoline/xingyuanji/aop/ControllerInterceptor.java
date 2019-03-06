@@ -1,9 +1,9 @@
 package com.shopoline.xingyuanji.aop;
 
 
+import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.common.JsonResult;
-import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.utils.RedisUtil;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Date;
+
 /**
  * 拦截器：记录用户操作日志，检查用户是否登录……
  * @author Wuty
@@ -48,14 +50,26 @@ public class ControllerInterceptor {
         Object[] args = pjp.getArgs();
         Object result = null;
 
-        if (!Constants.IGNORE_METHOD.contains("all") && !Constants.IGNORE_METHOD.contains(methodName)){
-            if (args == null || StringUtils.isEmpty(args[Constants.LIST_SIZE_ZERO].toString()) ||
-                StringUtils.isEmpty(RedisUtil.getValue(args[Constants.LIST_SIZE_ZERO].toString()))){
+        if (!Constants.IGNORE_METHOD.contains(methodName)){
+            if (args == null || StringUtils.isEmpty(args[Constants.LIST_SIZE_ZERO].toString())){
 
                 JsonResult<String> json = new JsonResult<>();
                 json.setState(ExceptionEnum.getKeyByValue(ExceptionEnum.EXCEPTION_2.getDesc()));
                 json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+                logger.warn("<-AOP->："+json.getMessage()+"\tSTATE："+json.getState()+"\tTICKET：NULL"+
+                        "\tDATE："+new Date());
                 result = json;
+            }else{
+                String token = RedisUtil.getValue(args[Constants.LIST_SIZE_ZERO].toString());
+                if(token == null || token.equals("")){
+
+                    JsonResult<String> json = new JsonResult<>();
+                    json.setState(ExceptionEnum.getKeyByValue(ExceptionEnum.EXCEPTION_2.getDesc()));
+                    json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+                    logger.warn("<-AOP->："+json.getMessage()+"\tSTATE："+json.getState()+"\tTICKET："+args[Constants.LIST_SIZE_ZERO].toString()+
+                            "\tDATE："+new Date());
+                    result = json;
+                }
             }
         }
 
@@ -63,7 +77,6 @@ public class ControllerInterceptor {
             // 一切正常的情况下，继续执行被拦截的方法
             result = pjp.proceed();
         }
-        logger.warn("\t<-AOP_METHOD_NAME->："+methodName+"\t<-AOP_METHOD->："+method+"\t<-AOP_RESULT->："+result);
         return result;
     }
 }

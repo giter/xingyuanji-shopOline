@@ -153,6 +153,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             String tradeNum = RedisUtil.getValue(ticketId+"tradeNum");
             // 获取支付金额
             String totalFee = RedisUtil.getValue(ticketId+"totalFee");
+
             // 将商品写入ShopLog表
             ShopLog shopLog = new ShopLog();
             shopLog.setId(IdWorker.get32UUID());
@@ -167,7 +168,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             shopLog.setOutTradeNo(tradeNum);
             shopLog.setIsPay(isPay);
             shopLog.setTotalFee(totalFee);
-            shopLogService.insert(shopLog);
+        shopLogService.insert(shopLog);
         // 写入购盒奖励
         UserAsset userAsset = new UserAsset();
         Integer XingBi = XingBiPriceUtils.getBuyBoxPrice(1);
