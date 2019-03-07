@@ -16,6 +16,8 @@
         <result column="update_time" property="updateTime" />
         <result column="update_id" property="updateId" />
     </resultMap>
+
+    <!-- 获取奖品记录 -->
     <select id="getPrizeList" resultType="com.shopoline.xingyuanji.model.PrizeModel">
       SELECT a.id,a.prize_id as prizeId,b.name,a.status,a.useflag FROM prize_log a JOIN prize b ON b.id=a.prize_id WHERE
       a.buyer_id = #{id} ORDER BY a.useflag DESC;
