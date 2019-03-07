@@ -1,4 +1,4 @@
-package com.shopoline.xingyuanji.service.impl;
+package com.shopoline.xingyuanji.service.db1.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -10,10 +10,10 @@ import com.shopoline.xingyuanji.entity.ShopLog;
 import com.shopoline.xingyuanji.entity.UserAsset;
 import com.shopoline.xingyuanji.entity.UserInfo;
 import com.shopoline.xingyuanji.mapper.UserAssetMapper;
-import com.shopoline.xingyuanji.service.IProductInfoService;
-import com.shopoline.xingyuanji.service.IShopLogService;
-import com.shopoline.xingyuanji.service.IUserAssetService;
-import com.shopoline.xingyuanji.service.IUserInfoService;
+import com.shopoline.xingyuanji.service.db1.IProductInfoService;
+import com.shopoline.xingyuanji.service.db1.IShopLogService;
+import com.shopoline.xingyuanji.service.db1.IUserAssetService;
+import com.shopoline.xingyuanji.service.db1.IUserInfoService;
 import com.shopoline.xingyuanji.utils.GetOpenId;
 import com.shopoline.xingyuanji.vo.UserCoinVO;
 import org.slf4j.Logger;

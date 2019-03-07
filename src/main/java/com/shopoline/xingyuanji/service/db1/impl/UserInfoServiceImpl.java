@@ -1,4 +1,4 @@
-package com.shopoline.xingyuanji.service.impl;
+package com.shopoline.xingyuanji.service.db1.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -10,8 +10,8 @@ import com.shopoline.xingyuanji.WxConfig;
 import com.shopoline.xingyuanji.entity.UserInfo;
 import com.shopoline.xingyuanji.mapper.UserInfoMapper;
 import com.shopoline.xingyuanji.model.SignModel;
-import com.shopoline.xingyuanji.service.IUserAssetService;
-import com.shopoline.xingyuanji.service.IUserInfoService;
+import com.shopoline.xingyuanji.service.db1.IUserAssetService;
+import com.shopoline.xingyuanji.service.db1.IUserInfoService;
 import com.shopoline.xingyuanji.utils.CheckTicketIdUtil;
 import com.shopoline.xingyuanji.utils.EmojiConvertUtil;
 import com.shopoline.xingyuanji.utils.GetOpenId;

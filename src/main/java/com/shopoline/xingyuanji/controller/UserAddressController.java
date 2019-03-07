@@ -6,7 +6,7 @@ import com.shopoline.xingyuanji.common.JsonResult;
 import com.shopoline.xingyuanji.controller.baseController.BaseController;
 import com.shopoline.xingyuanji.entity.UserAddress;
 import com.shopoline.xingyuanji.model.UserAddressModel;
-import com.shopoline.xingyuanji.service.IUserAddressService;
+import com.shopoline.xingyuanji.service.db1.IUserAddressService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;

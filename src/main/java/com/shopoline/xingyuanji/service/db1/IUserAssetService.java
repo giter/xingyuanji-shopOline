@@ -1,4 +1,4 @@
-package com.shopoline.xingyuanji.service;
+package com.shopoline.xingyuanji.service.db1;
 
 import com.shopoline.xingyuanji.entity.ProductInfo;
 import com.shopoline.xingyuanji.entity.UserAsset;

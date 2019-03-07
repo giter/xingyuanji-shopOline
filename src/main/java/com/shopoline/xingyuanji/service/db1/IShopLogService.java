@@ -1,4 +1,4 @@
-package com.shopoline.xingyuanji.service;
+package com.shopoline.xingyuanji.service.db1;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.ShopLog;

@@ -1,8 +1,8 @@
-package com.shopoline.xingyuanji.service.impl;
+package com.shopoline.xingyuanji.service.db1.impl;
 
 import com.shopoline.xingyuanji.entity.StoreArea;
 import com.shopoline.xingyuanji.mapper.StoreAreaMapper;
-import com.shopoline.xingyuanji.service.IStoreAreaService;
+import com.shopoline.xingyuanji.service.db1.IStoreAreaService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

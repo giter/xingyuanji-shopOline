@@ -4,7 +4,7 @@ package com.shopoline.xingyuanji.controller;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.common.JsonResult;
 import com.shopoline.xingyuanji.controller.baseController.BaseController;
-import com.shopoline.xingyuanji.service.IUserAssetService;
+import com.shopoline.xingyuanji.service.db1.IUserAssetService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.UserCoinVO;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.shopoline.xingyuanji.service.impl;
+package com.shopoline.xingyuanji.service.db1.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -9,8 +9,8 @@ import com.shopoline.xingyuanji.entity.UserAddress;
 import com.shopoline.xingyuanji.entity.UserInfo;
 import com.shopoline.xingyuanji.mapper.UserAddressMapper;
 import com.shopoline.xingyuanji.model.UserAddressModel;
-import com.shopoline.xingyuanji.service.IUserAddressService;
-import com.shopoline.xingyuanji.service.IUserInfoService;
+import com.shopoline.xingyuanji.service.db1.IUserAddressService;
+import com.shopoline.xingyuanji.service.db1.IUserInfoService;
 import com.shopoline.xingyuanji.utils.GetOpenId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

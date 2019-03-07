@@ -1,4 +1,4 @@
-package com.shopoline.xingyuanji.service.impl;
+package com.shopoline.xingyuanji.service.db1.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -6,7 +6,7 @@ import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.shopoline.xingyuanji.Config;
 import com.shopoline.xingyuanji.WxConfig;
-import com.shopoline.xingyuanji.service.WxPayService;
+import com.shopoline.xingyuanji.service.db1.WxPayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

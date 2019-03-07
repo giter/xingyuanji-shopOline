@@ -5,7 +5,7 @@ import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.common.JsonResult;
 import com.shopoline.xingyuanji.controller.baseController.BaseController;
 import com.shopoline.xingyuanji.entity.ProductInfo;
-import com.shopoline.xingyuanji.service.IProductInfoService;
+import com.shopoline.xingyuanji.service.db1.IProductInfoService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.ProductInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;

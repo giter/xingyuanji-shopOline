@@ -1,9 +1,9 @@
-package com.shopoline.xingyuanji.service.impl;
+package com.shopoline.xingyuanji.service.db1.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.shopoline.xingyuanji.entity.PayOrder;
 import com.shopoline.xingyuanji.mapper.PayOrderMapper;
-import com.shopoline.xingyuanji.service.IPayOrderService;
+import com.shopoline.xingyuanji.service.db1.IPayOrderService;
 import org.springframework.stereotype.Service;
 
 /**

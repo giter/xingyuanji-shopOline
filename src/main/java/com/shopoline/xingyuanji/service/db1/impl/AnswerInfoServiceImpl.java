@@ -1,8 +1,8 @@
-package com.shopoline.xingyuanji.service.impl;
+package com.shopoline.xingyuanji.service.db1.impl;
 
 import com.shopoline.xingyuanji.entity.AnswerInfo;
 import com.shopoline.xingyuanji.mapper.AnswerInfoMapper;
-import com.shopoline.xingyuanji.service.IAnswerInfoService;
+import com.shopoline.xingyuanji.service.db1.IAnswerInfoService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

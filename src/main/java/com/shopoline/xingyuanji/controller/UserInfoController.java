@@ -5,7 +5,7 @@ import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.common.JsonResult;
 import com.shopoline.xingyuanji.controller.baseController.BaseController;
 import com.shopoline.xingyuanji.model.SignModel;
-import com.shopoline.xingyuanji.service.IUserInfoService;
+import com.shopoline.xingyuanji.service.db1.IUserInfoService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.UserInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;

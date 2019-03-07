@@ -1,4 +1,4 @@
-package com.shopoline.xingyuanji.service.impl;
+package com.shopoline.xingyuanji.service.db1.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -6,9 +6,9 @@ import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.entity.ProductInfo;
 import com.shopoline.xingyuanji.mapper.ProductInfoMapper;
-import com.shopoline.xingyuanji.service.IProductInfoService;
-import com.shopoline.xingyuanji.service.IShopLogService;
-import com.shopoline.xingyuanji.service.IUserAssetService;
+import com.shopoline.xingyuanji.service.db1.IProductInfoService;
+import com.shopoline.xingyuanji.service.db1.IShopLogService;
+import com.shopoline.xingyuanji.service.db1.IUserAssetService;
 import com.shopoline.xingyuanji.utils.RedisUtil;
 import com.shopoline.xingyuanji.vo.ProductInfoVO;
 import com.shopoline.xingyuanji.vo.UserCoinVO;
