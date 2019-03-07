@@ -7,6 +7,16 @@ public class PrizeModel {
     private String img;
     private String name;
     private Integer status;
+    private Integer useFlag;
+
+
+    public Integer getUseFlag() {
+        return useFlag;
+    }
+
+    public void setUseFlag(Integer useFlag) {
+        this.useFlag = useFlag;
+    }
 
     public Integer getId() {
         return id;

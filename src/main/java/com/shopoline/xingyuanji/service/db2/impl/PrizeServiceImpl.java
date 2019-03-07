@@ -9,7 +9,6 @@ import com.shopoline.xingyuanji.model.PrizeModel;
 import com.shopoline.xingyuanji.service.db2.IBuyerService;
 import com.shopoline.xingyuanji.service.db2.IPrizeService;
 import com.shopoline.xingyuanji.utils.GetOpenId;
-import com.shopoline.xingyuanji.vo.PrizeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,21 +36,18 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
      * @return
      */
     @Override
-    public PrizeVO getPrizeList(String ticketId) {
+    public List<PrizeModel> getPrizeList(String ticketId) {
 
         String openId = GetOpenId.getOpenId(ticketId);
         // 获取用户信息
         Buyer buyer = buyerService.selectOne(new EntityWrapper<Buyer>().eq("open_id",openId));
         //获取抽奖列表
-        List<PrizeModel> prizeModelList = baseMapper.getPrizeList(buyer.getId());
+        List<PrizeModel> prizeList = baseMapper.getPrizeList(buyer.getId());
         // 遍历List写入图片信息
-        for(ListIterator<PrizeModel> iterator = prizeModelList.listIterator();iterator.hasNext();){
+        for(ListIterator<PrizeModel> iterator = prizeList.listIterator();iterator.hasNext();){
             PrizeModel prizeModel = iterator.next();
             prizeModel.setImg(prizeModel.getPrizeId()+".jpg");
         }
-        // 写入VO
-        PrizeVO prizeVO = new PrizeVO();
-        prizeVO.setPrizeList(prizeModelList);
-        return prizeVO;
+        return prizeList;
     }
 }

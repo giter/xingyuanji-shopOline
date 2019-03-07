@@ -1,8 +1,10 @@
 package com.shopoline.xingyuanji.service.db2;
 
-import com.shopoline.xingyuanji.entity.Prize;
 import com.baomidou.mybatisplus.service.IService;
-import com.shopoline.xingyuanji.vo.PrizeVO;
+import com.shopoline.xingyuanji.entity.Prize;
+import com.shopoline.xingyuanji.model.PrizeModel;
+
+import java.util.List;
 
 /**
  * <p>
@@ -19,7 +21,7 @@ public interface IPrizeService extends IService<Prize> {
      * @param ticketId
      * @return
      */
-    PrizeVO getPrizeList(String ticketId);
+    List<PrizeModel> getPrizeList(String ticketId);
 
 
 }
