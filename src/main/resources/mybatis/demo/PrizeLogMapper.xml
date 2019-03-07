@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopoline.xingyuanji.mapper.PrizeLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.PrizeLog">
+        <id column="id" property="id" />
+        <result column="src_id" property="srcId" />
+        <result column="prize_id" property="prizeId" />
+        <result column="price" property="price" />
+        <result column="buyer_id" property="buyerId" />
+        <result column="address" property="address" />
+        <result column="adname" property="adname" />
+        <result column="adphone" property="adphone" />
+        <result column="status" property="status" />
+        <result column="useflag" property="useflag" />
+        <result column="insert_time" property="insertTime" />
+        <result column="insert_id" property="insertId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+        <result column="city" property="city" />
+        <result column="post_code" property="postCode" />
+        <result column="province" property="province" />
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopoline.xingyuanji.mapper.PermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.Permission">
+        <id column="id" property="id" />
+        <result column="permission" property="permission" />
+        <result column="description" property="description" />
+        <result column="front_url" property="frontUrl" />
+        <result column="sup_id" property="supId" />
+        <result column="level" property="level" />
+        <result column="useflag" property="useflag" />
+        <result column="insert_time" property="insertTime" />
+        <result column="insert_id" property="insertId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+    </resultMap>
+
+</mapper>
