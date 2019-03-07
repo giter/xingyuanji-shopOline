@@ -48,7 +48,7 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         }
         // 写入VO
         PrizeVO prizeVO = new PrizeVO();
-        prizeVO.setPrizeModelList(prizeModelList);
+        prizeVO.setPrizeList(prizeModelList);
         return prizeVO;
     }
 }

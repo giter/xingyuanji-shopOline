@@ -7,13 +7,13 @@ import java.util.List;
 
 public class PrizeVO {
 
-    List<PrizeModel> prizeModelList = new LinkedList<>();
+    private List<PrizeModel> prizeList = new LinkedList<>();
 
-    public List<PrizeModel> getPrizeModelList() {
-        return prizeModelList;
+    public List<PrizeModel> getPrizeList() {
+        return prizeList;
     }
 
-    public void setPrizeModelList(List<PrizeModel> prizeModelList) {
-        this.prizeModelList = prizeModelList;
+    public void setPrizeList(List<PrizeModel> prizeList) {
+        this.prizeList = prizeList;
     }
 }
