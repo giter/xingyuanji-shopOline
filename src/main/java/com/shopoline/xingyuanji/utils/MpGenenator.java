@@ -67,15 +67,15 @@ public class MpGenenator {
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("123456");
-        dsc.setUrl("jdbc:mysql://47.98.44.227:3306/shop_box_oline?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&tinyInt1isBit=false&useSSL=true");
+        dsc.setUrl("jdbc:mysql://47.98.44.227:3306/wxp?serverTimezone=Hongkong&useUnicode=true&characterEncoding=UTF-8&tinyInt1isBit=false&useSSL=true");
         mpg.setDataSource(dsc);
 
         // ��������
         StrategyConfig strategy = new StrategyConfig();
         // strategy.setCapitalMode(true);// ȫ�ִ�д���� ORACLE ע��
-        strategy.setTablePrefix(new String[] { "t_" });// �˴������޸�Ϊ���ı�ǰ׺
+        //strategy.setTablePrefix(new String[] { "t_" });// �˴������޸�Ϊ���ı�ǰ׺
         strategy.setNaming(NamingStrategy.underline_to_camel);// �������ɲ���
-        strategy.setInclude(new String[] { "t_shop_log"});
+        strategy.setInclude(new String[] { "address","buyer","permission","prize","prize_code","prize_log","role","role_permission","user","user_role"});
         // ��Ҫ���ɵı�
         // strategy.setExclude(new String[]{"test"}); // �ų����ɵı�
         // �Զ���ʵ�常��
@@ -106,7 +106,7 @@ public class MpGenenator {
         pc.setController("controller");
         pc.setEntity("entity");
         pc.setMapper("mapper");
-        pc.setService("service");
+        pc.setService("service.db2");
         mpg.setPackageInfo(pc);
 
         // ע���Զ������ã������� VM ��ʹ�� cfg.abc �����ޡ�
