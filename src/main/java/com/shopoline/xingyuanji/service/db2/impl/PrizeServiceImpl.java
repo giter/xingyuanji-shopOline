@@ -49,7 +49,6 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
             PrizeModel prizeModel = iterator.next();
             prizeModel.setImg(prizeModel.getPrizeId()+".jpg");
         }
-
         // 写入VO
         PrizeVO prizeVO = new PrizeVO();
         prizeVO.setPrizeList(prizeModelList);
