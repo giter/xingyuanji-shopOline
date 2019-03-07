@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * <p>
@@ -43,9 +44,12 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         Buyer buyer = buyerService.selectOne(new EntityWrapper<Buyer>().eq("open_id",openId));
         //获取抽奖列表
         List<PrizeModel> prizeModelList = baseMapper.getPrizeList(buyer.getId());
-        for(PrizeModel prizeModel:prizeModelList){
+        // 遍历List写入图片信息
+        for(ListIterator<PrizeModel> iterator = prizeModelList.listIterator();iterator.hasNext();){
+            PrizeModel prizeModel = iterator.next();
             prizeModel.setImg(prizeModel.getPrizeId()+".jpg");
         }
+
         // 写入VO
         PrizeVO prizeVO = new PrizeVO();
         prizeVO.setPrizeList(prizeModelList);

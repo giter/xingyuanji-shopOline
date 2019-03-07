@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * <p>
@@ -205,7 +206,9 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         String openId = GetOpenId.getOpenId(ticketId);
         // 根据OpenId获取用户购物记录
         List<ShopLogModel> shopLogModelList = baseMapper.getShopList(openId);
-        for(ShopLogModel shopLogModel : shopLogModelList){
+
+        for(ListIterator<ShopLogModel> iterator = shopLogModelList.listIterator();iterator.hasNext();){
+            ShopLogModel shopLogModel = iterator.next();
             if(shopLogModel.getExpress().equals("0")){
                 shopLogModel.setExpress("盒子正在飞奔而来");
                 shopLogModel.setExpressCode("0");
