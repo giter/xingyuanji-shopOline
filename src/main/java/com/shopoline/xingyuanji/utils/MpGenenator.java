@@ -107,6 +107,7 @@ public class MpGenenator {
         pc.setEntity("entity");
         pc.setMapper("mapper");
         pc.setService("service.db2");
+        pc.setServiceImpl("service.db2.impl");
         mpg.setPackageInfo(pc);
 
         // ע���Զ������ã������� VM ��ʹ�� cfg.abc �����ޡ�

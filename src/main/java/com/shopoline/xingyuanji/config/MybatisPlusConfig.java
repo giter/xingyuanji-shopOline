@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -70,7 +71,8 @@ public class MybatisPlusConfig {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(multipleDataSource(db1(),db2()));
-        //sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*/*Mapper.xml"));
+        sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/*/*.xml"));
+        sqlSessionFactory.setTypeAliasesPackage("com.shopoline.xingyuanji.entity");
 
         MybatisConfiguration configuration = new MybatisConfiguration();
         //configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
@@ -79,25 +81,27 @@ public class MybatisPlusConfig {
         configuration.setCacheEnabled(false);
         sqlSessionFactory.setConfiguration(configuration);
         sqlSessionFactory.setPlugins(new Interceptor[]{
-                performanceInterceptor()
-                // ,OptimisticLockerInterceptor()
+                performanceInterceptor(),
+                //optimisticLockerInterceptor()
 //                paginationInterceptor() //添加分页功能
         });
-//        sqlSessionFactory.setGlobalConfig(globalConfiguration());
+        //sqlSessionFactory.setGlobalConfig(globalConfiguration());
         return sqlSessionFactory.getObject();
     }
 
 //    @Bean
 //    public GlobalConfiguration globalConfiguration() {
 //        GlobalConfiguration conf = new GlobalConfiguration(new LogicSqlInjector());
-//        conf.setLogicDeleteValue("-1");
-//        conf.setLogicNotDeleteValue("1");
-//        conf.setIdType(0);
-//        conf.setMetaObjectHandler(new MyMetaObjectHandler());
-//        conf.setDbColumnUnderline(true);
+//        conf.setLogicDeleteValue("1");
+//        conf.setLogicNotDeleteValue("0");
+//        conf.setIdType(3);
+//        conf.setFieldStrategy(2);
+////        conf.setMetaObjectHandler(new MyMetaObjectHandler());
+//        conf.setDbColumnUnderline(false);
 //        conf.setRefresh(true);
 //        return conf;
 //    }
+
 
 
 //    /**
