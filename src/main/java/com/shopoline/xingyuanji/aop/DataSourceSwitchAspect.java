@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-@Order(-100) //这是为了保证AOP在事务注解之前生效,Order的值越小,优先级越高
+// 这是为了保证AOP在事务注解之前生效,Order的值越小,优先级越高
+@Order(-100)
 public class DataSourceSwitchAspect {
     private static final Logger logger = LoggerFactory.getLogger(DataSourceSwitchAspect.class);
 
