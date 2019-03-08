@@ -1,6 +1,7 @@
 package com.shopoline.xingyuanji.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -19,47 +20,59 @@ public class UserAddress extends Model<UserAddress> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableField(value = "id")
     private String id;
+    @TableField(value = "userId")
     private String userId;
     /**
      * 姓名
      */
+    @TableField(value = "name")
     private String name;
     /**
      * 电话
      */
+    @TableField(value = "phone")
     private String phone;
     /**
      * 省
      */
+    @TableField(value = "province")
     private String province;
     /**
      * 市区
      */
+    @TableField(value = "city")
     private String city;
     /**
      * 地址
      */
+    @TableField(value = "address")
     private String address;
     /**
      * 是否默认 0：否 1：是
      */
+    @TableField(value = "def")
     private Integer def;
     /**
      * 操作时间
      */
+    @TableField(value = "editTime")
     private Date editTime;
     /**
      * 操作人
      */
+    @TableField(value = "editBy")
     private String editBy;
     /**
      * 是否启用 0：否 1：是
      */
+    @TableField(value = "deleteFlag")
     private Integer deleteFlag;
     /**
      * 区
      */
+    @TableField(value = "area")
     private String area;
 
 

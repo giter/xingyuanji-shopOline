@@ -64,9 +64,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     @Override
     public Object setOrder(String ticketId,PayModel payModel) throws Exception {
 
-        String openId = GetOpenId.getOpenId(ticketId);
         // 获取用户信息
-        UserInfoVO userInfo = userInfoService.getUserInfo(ticketId);
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 初始HASHMAP容量防止RESIZE
         int capacity = (int)(15/0.75)+1;
         // 写入微信支付数据
@@ -95,6 +94,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 签名加密方式，默认是MD5
         data.put("sign_type", "MD5");
         // 交易类型位公众号支付时必须
+        String openId = GetOpenId.getOpenId(ticketId);
         data.put("openid", openId);
         // no_credit--限制用户不能使用信用卡支付
         data.put("limit_pay", "no_credit");
@@ -141,8 +141,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     public Object afterPaySuccess(String ticketId,String useXingBi,String isPay,String randomToken,String UUID) throws Exception {
 
         // 获取用户信息
-        String openId = GetOpenId.getOpenId(ticketId);
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 获取随机商品
         ProductInfo productInfo = productInfoService.getRedomProduct(ticketId,Integer.parseInt(Constants.HEZI_PRODUCT),
                     Integer.parseInt(Constants.HEZI_PRODUCT),randomToken,UUID);
@@ -161,6 +160,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             ShopLog shopLog = new ShopLog();
             shopLog.setId(IdWorker.get32UUID());
             shopLog.setUserId(userInfo.getUserId());
+            String openId = GetOpenId.getOpenId(ticketId);
             shopLog.setOpenId(openId);
             shopLog.setGoodsId(productInfo.getId());
             shopLog.setBoxId(Constants.BOX);
@@ -252,13 +252,14 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     @Override
     public ShopLogInfoVO getShopLogInfo(String ticketId) {
 
-        String openId = GetOpenId.getOpenId(ticketId);
+
         ShopLogInfoVO shopLogInfoVO = new ShopLogInfoVO();
         // 获取购买记录
-        ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("openId",openId).eq("deleteFlag",Constants.QIYONG));
+        String openId = GetOpenId.getOpenId(ticketId);
+        ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("openId",openId).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
         // 获取商品信息
         ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",shopLog.getGoodsId()).
-                eq("deleteFlag",Constants.QIYONG));
+                eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
         shopLogInfoVO.setGoodsname(productInfo.getGoodsname());
         shopLogInfoVO.setPrice(productInfo.getPrice());
         shopLogInfoVO.setImg(productInfo.getImg() + ".png");
@@ -290,13 +291,12 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     @Override
     public void sendHome(String ticketId,String productId) throws Exception{
 
-        // 获取用户openId
-        String openId = GetOpenId.getOpenId(ticketId);
+
         // 获取用户信息
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 获取用户默认地址
         UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
-                eq("def","1").eq("deleteFlag",Constants.QIYONG));
+                eq("def","1").eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
 
         SendHomeModel sendHomeModel = new SendHomeModel();
         sendHomeModel.setName(userAddress.getName());
@@ -322,8 +322,9 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         String ZIPTradeNum = RedisUtil.getValue(ticketId+"tradeNum");
         String totalFee = RedisUtil.getValue(ticketId+"totalFee");
         //写入相关记录
+        String openId = GetOpenId.getOpenId(ticketId);
         ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("openId",openId).eq("goodsId",productInfo.getId()).
-                eq("express",Constants.KUAIDI_FROM_ZANDING));
+                eq("express",Constants.KUAIDI_FROM_ZANDING).last("Limit 1"));
         shopLog.setExpress(Constants.YOU_HUI_JIA);
         shopLog.setZIPAmount(totalFee);
         shopLog.setZIPOutTradeNo(ZIPTradeNum);
@@ -349,12 +350,11 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     @Override
     public Object getZIPAmount(String ticketId) {
 
-        String openId = RedisUtil.getValue(ticketId);
         // 获取用户信息
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 获取地址信息
         UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
-                eq("deleteFlag",Constants.QIYONG));
+                eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
         SendHomeModel sendHomeModel = new SendHomeModel();
         sendHomeModel.setProvince(userAddress.getProvince());
         sendHomeModel.setCity(userAddress.getCity());
@@ -369,8 +369,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
 
         UserCoinVO userCoinVO = userAssetService.quertUserCoin(ticketId);
         ProductInfo productInfo = productInfoService.getShopProductInfo(productId);
-        String openId = RedisUtil.getValue(ticketId);
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
 
         if(userCoinVO.getAmount() < Integer.parseInt(productInfo.getSocer())){
             throw new Exception(ExceptionEnum.EXCEPTION_5.getDesc());
@@ -415,8 +414,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      */
     @Override
     public void deductXingBi(String ticketId) {
-        String openId = GetOpenId.getOpenId(ticketId);
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 扣除猩币
         userAssetService.setUseXingBi(userInfo);
     }
@@ -440,10 +438,9 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     @Override
     public LogisticInformationVO getLogisticInformation(String ticketId, String productId, String tradeNo) throws Exception {
         //获取商品信息
-        ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId));
+        ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId).last("Limit 1"));
         // 获取物流信息
         List<RespResultModel> respResultModelList= SFUtils.getOrderStatus(tradeNo);
-
         LogisticInformationVO logisticInformationVO = new LogisticInformationVO();
         logisticInformationVO.setLogisticInformation(respResultModelList);
         logisticInformationVO.setProductName(productInfo.getGoodsname());

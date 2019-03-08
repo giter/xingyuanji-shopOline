@@ -1,6 +1,7 @@
 package com.shopoline.xingyuanji.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -19,46 +20,57 @@ public class ProductInfo extends Model<ProductInfo> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableField(value = "id")
     private Integer id;
     /**
      * 商品名称
      */
+    @TableField(value = "goodsname")
     private String goodsname;
     /**
      * 价格
      */
+    @TableField(value = "price")
     private Float price;
     /**
      * 商品图片链接
      */
+    @TableField(value = "img")
     private String img;
     /**
      * 商品数量
      */
+    @TableField(value = "productCount")
     private Integer productCount;
     /**
      * 商品类型 0：盒子商品  1：积分商品 
      */
+    @TableField(value = "style")
     private String style;
     /**
      * 商品分类：
      */
+    @TableField(value = "kind")
     private String kind;
     /**
      * 所需积分数量
      */
+    @TableField(value = "socer")
     private String socer;
     /**
      * 操作时间
      */
+    @TableField(value = "editTime")
     private Date editTime;
     /**
      * 操作人
      */
+    @TableField(value = "editBy")
     private String editBy;
     /**
      * 是否启用 0：否 1：是
      */
+    @TableField(value = "deleteFlag")
     private String deleteFlag;
 
 

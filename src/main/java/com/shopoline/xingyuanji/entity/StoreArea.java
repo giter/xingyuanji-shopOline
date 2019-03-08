@@ -1,6 +1,7 @@
 package com.shopoline.xingyuanji.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 
@@ -17,10 +18,15 @@ public class StoreArea extends Model<StoreArea> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableField(value = "code")
     private String code;
+    @TableField(value = "province")
     private String province;
+    @TableField(value = "city")
     private String city;
+    @TableField(value = "area")
     private String area;
+    @TableField(value = "town")
     private String town;
 
 

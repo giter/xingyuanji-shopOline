@@ -1,6 +1,7 @@
 package com.shopoline.xingyuanji.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -20,31 +21,39 @@ public class UserAsset extends Model<UserAsset> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableField(value = "id")
     private String id;
+    @TableField(value = "userId")
     private String userId;
     /**
      * 资产数量
      */
+    @TableField(value = "amount")
     private Integer amount;
     /**
      * 资产类型 0:猩币 1：签到
      */
+    @TableField(value = "amountType")
     private Integer amountType;
     /**
      * 操作时间 
      */
+    @TableField(value = "editTime")
     private Date editTime;
     /**
      * 操作人
      */
+    @TableField(value = "editBy")
     private String editBy;
     /**
      * 状态 0：未启用 1：启用
      */
+    @TableField(value = "deltFlag")
     private Integer deltFlag;
     /**
      * 用户OpenId
      */
+    @TableField(value = "openId")
     private String openId;
 
 

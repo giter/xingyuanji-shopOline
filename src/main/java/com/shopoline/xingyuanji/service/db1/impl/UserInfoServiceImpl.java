@@ -59,7 +59,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         String accessToken = jsonObject.getString("access_token");
         String openId = jsonObject.getString("openid");
 
-        UserInfo userInfo = this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        UserInfo userInfo = this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
         if (userInfo==null) {
             //拉取用户信息
             url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN";
@@ -98,8 +98,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     @Override
     public UserInfoVO getUserInfo(String ticketId) throws Exception {
 
-        String openId = GetOpenId.getOpenId(ticketId);
-        UserInfo userInfo = this.selectOne(new EntityWrapper<UserInfo>().eq("openid",openId).eq("deleteFlag",Constants.QIYONG));
+        UserInfo userInfo = this.getDB1UserInfo(ticketId);
         UserCoinVO userCoinVO = userAssetService.quertUserCoin(ticketId);
         String sex;
         if(userInfo.getSex() == Constants.MAN){
@@ -113,6 +112,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userInfoVO.setUserId(userInfo.getUserId());
         String nickName = EmojiConvertUtil.emojiRecoveryTo(userInfo.getNickName());
         userInfoVO.setNickName(nickName);
+        String openId = GetOpenId.getOpenId(ticketId);
         userInfoVO.setOpenId(openId);
         userInfoVO.setSex(sex);
         userInfoVO.setHeadImgUrl(userInfo.getHeadImgUrl());
@@ -130,6 +130,19 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         String url = "https://www.xingyuanji.com/dist";
         SignModel signModel = WxConfig.getSign(url);
         return signModel;
+    }
+
+    /**
+     * 获取DB1用户信息
+     * @param ticketId
+     * @return
+     */
+    @Override
+    public UserInfo getDB1UserInfo(String ticketId) {
+        String openId = GetOpenId.getOpenId(ticketId);
+        // 获取用户信息
+        UserInfo userInfo = this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
+        return userInfo;
     }
 
 

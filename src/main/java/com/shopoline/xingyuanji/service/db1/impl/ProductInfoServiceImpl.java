@@ -43,7 +43,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public ProductInfoVO getBoxInfo(String type, String kind) {
 
         ProductInfo productInfo = this.selectOne(new EntityWrapper<ProductInfo>().eq("style",type).eq("kind",kind).
-                eq("deleteFlag", Constants.QIYONG));
+                eq("deleteFlag", Constants.QIYONG).last("Limit 1"));
         Assert.isTrue(productInfo != null, ExceptionEnum.EXCEPTION_4.getDesc());
         ProductInfoVO productInfoVO = new ProductInfoVO();
         productInfoVO.setGoodsname(productInfo.getGoodsname());
@@ -131,7 +131,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
                     }
                         // 根据随机数获取商品
                         ProductInfo productInfo1 = this.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId).
-                            eq("style",productStyle).eq("kind",productKind).eq("deleteFlag",Constants.QIYONG));
+                            eq("style",productStyle).eq("kind",productKind).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
                         productInfo1.setProductCount(productInfo.getProductCount() - 1);
                         this.updateById(productInfo);
                         RedisUtil.setValue("SELLCOUNT","1");
@@ -157,7 +157,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     @Override
     public ProductInfo getShopProductInfo(String productId) throws Exception {
 
-        ProductInfo productInfo = this.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId));
+        ProductInfo productInfo = this.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId).last("Limit 1"));
         if(productInfo.getProductCount().equals(Constants.NULL)){
             throw new Exception(ExceptionEnum.EXCEPTION_19.getDesc());
         }

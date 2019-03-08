@@ -101,11 +101,12 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
     @Override
     public Object exchangeCoin(String ticketId, String goodsId) {
 
-        String openId = GetOpenId.getOpenId(ticketId);
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).eq("deleteFlag",Constants.QIYONG));
+
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         //查询商品信息
-        ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",goodsId).eq("style",Constants.XINGBI).
-                eq("kind",Constants.XINGBI).eq("deleteFlag",Constants.QIYONG));
+        ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",goodsId).
+                eq("style",Constants.XINGBI).eq("kind",Constants.XINGBI).
+                eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
         //将商品积分写入用户财富表
         UserAsset userAsset = new UserAsset();
         userAsset.setId(IdWorker.get32UUID());
@@ -115,17 +116,16 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         userAsset.setEditTime(new Date());
         userAsset.setEditBy(Constants.ADMIN);
         userAsset.setDeltFlag(Constants.QIYONG);
+        // openId
+        String openId = GetOpenId.getOpenId(ticketId);
         userAsset.setOpenId(openId);
         this.insert(userAsset);
         //更改用户购买商品信息
         ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("goodsId",goodsId).
-                eq("openId",openId).eq("deleteFlag",Constants.QIYONG));
+                eq("openId",openId).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
         shopLog.setExpress(Constants.MALEHUANBI);
         shopLog.setUpdateTime(new Date());
         shopLogService.updateExchangeCoinInfo(shopLog);
-//        //返回积分商品列表
-//        List<ProductInfo> productInfoList = productInfoService.selectList(new EntityWrapper<ProductInfo>().
-//                eq("style",Constants.JIFEN_PRODUCT).eq("kind",Constants.JIFEN_PRODUCT).eq("deleteFlag",Constants.QIYONG));
 
         logger.info("<-EXCHANGE_COIN->\t"+"UserName："+userInfo.getNickName()+"\tSelledProductName："+productInfo.getGoodsname()+
                 "\tSelledProductId："+productInfo.getId()+"\tAmount："+userAsset.getAmount()+"\tDate："+new Date());

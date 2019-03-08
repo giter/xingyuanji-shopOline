@@ -1,6 +1,7 @@
 package com.shopoline.xingyuanji.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -19,70 +20,87 @@ public class ShopLog extends Model<ShopLog> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableField(value = "id")
     private String id;
     /**
      * 用户Id
      */
+    @TableField(value = "userId")
     private String userId;
     /**
      * 用户微信OpenId
      */
+    @TableField(value = "openId")
     private String openId;
     /**
      * 商品Id
      */
+    @TableField(value = "goodsId")
     private Integer goodsId;
     /**
      * 盒子Id
      */
+    @TableField(value = "boxId")
     private String boxId;
     /**
      * 操作人
      */
+    @TableField(value = "editBy")
     private String editBy;
     /**
      * 操作时间
      */
+    @TableField(value = "editTime")
     private Date editTime;
     /**
      * 删除状态 0：未启用 1：启用
      */
+    @TableField(value = "deleteFlag")
     private Integer deleteFlag;
     /**
      * 快递去向 0：邮回家 1：送好友 2：卖了换币3：暂定
      */
+    @TableField(value = "express")
     private Integer express;
     /**
      * 微信付款单号
      */
+    @TableField(value = "outTradeNo")
     private String outTradeNo;
     /**
      * 运单号
      */
+    @TableField(value = "tradeNo")
     private String tradeNo;
     /**
      * 是否支付成功0，否1，是
      */
+    @TableField(value = "isPay")
     private String isPay;
     /**
      * 支付金额
      */
+    @TableField(value = "totalFee")
     private String totalFee;
     /**
      * 邮费
      */
+    @TableField(value = "ZIPAmount")
     private String ZIPAmount;
     /**
      * 邮费微信付款单号
      */
+    @TableField(value = "ZIPOutTradeNo")
     private String ZIPOutTradeNo;
     /**
      * 地址Id
      */
+    @TableField(value = "addressId")
     private String addressId;
     /**
      * 操作更新时间
      */
+    @TableField(value = "updateTime")
     private Date updateTime;
 
 

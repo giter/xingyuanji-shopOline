@@ -1,6 +1,7 @@
 package com.shopoline.xingyuanji.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -20,14 +21,17 @@ public class UserInfo extends Model<UserInfo> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableField(value = "userId")
     private String userId;
     /**
      * 昵称
      */
+    @TableField(value = "nickName")
     private String nickName;
     /**
      * 微信openId
      */
+    @TableField(value = "openId")
     private String openId;
     /**
      * 性别，1男2女
@@ -36,22 +40,27 @@ public class UserInfo extends Model<UserInfo> {
     /**
      * 头像链接
      */
+    @TableField(value = "headImgUrl")
     private String headImgUrl;
     /**
      * 插入时间
      */
+    @TableField(value = "editTime")
     private Date editTime;
     /**
      * 更新时间
      */
+    @TableField(value = "updateTime")
     private Date updateTime;
     /**
      * 操作人
      */
+    @TableField(value = "editBy")
     private String editBy;
     /**
      * 0：禁用 1：启用
      */
+    @TableField(value = "deleteFlag")
     private Integer deleteFlag;
 
 

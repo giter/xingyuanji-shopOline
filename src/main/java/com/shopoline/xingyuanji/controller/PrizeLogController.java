@@ -45,4 +45,28 @@ public class PrizeLogController extends BaseController {
         }
         return JSONUtil.toJSONString(json);
     }
+
+    /**
+     * 用户兑奖
+     * @param ticketId
+     * @param prizeId
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/cashPrize")
+    public Object cashPrize(String ticketId, String prizeId,HttpServletRequest request, HttpServletResponse response){
+        JsonResult<String> json = new JsonResult<>();
+        try {
+            json.setData(prizeService.cashPrize(ticketId,prizeId,request));
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+
 }

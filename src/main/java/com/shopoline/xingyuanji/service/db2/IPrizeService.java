@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.Prize;
 import com.shopoline.xingyuanji.model.PrizeModel;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -24,4 +25,11 @@ public interface IPrizeService extends IService<Prize> {
     List<PrizeModel> getPrizeList(String ticketId);
 
 
+    /**
+     * 用户兑奖
+     * @param ticketId
+     * @param prizeId
+     * @return
+     */
+    String cashPrize(String ticketId, String prizeId, HttpServletRequest request) throws Exception;
 }

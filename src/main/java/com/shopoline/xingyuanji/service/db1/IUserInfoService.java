@@ -31,4 +31,11 @@ public interface IUserInfoService extends IService<UserInfo> {
      * @return
      */
     SignModel getSign();
+
+    /**
+     * 获取DB1用户信息
+     * @param ticketId
+     * @return
+     */
+    UserInfo getDB1UserInfo(String ticketId);
 }

@@ -11,7 +11,6 @@ import com.shopoline.xingyuanji.mapper.UserAddressMapper;
 import com.shopoline.xingyuanji.model.UserAddressModel;
 import com.shopoline.xingyuanji.service.db1.IUserAddressService;
 import com.shopoline.xingyuanji.service.db1.IUserInfoService;
-import com.shopoline.xingyuanji.utils.GetOpenId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -57,12 +56,12 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         }else if(userAddressModel.getPhone() == null || userAddressModel.getPhone().equals("")){
             throw new Exception(ExceptionEnum.EXCEPTION_13.getDesc());
         }
-        String openId = GetOpenId.getOpenId(ticketId);
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).eq("deleteFlag", Constants.QIYONG));
+
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
 
         // 判断用户是否存在默认地址
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
-                eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG));
+                eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
         // 写入地址信息
         UserAddress insertUserAddress = new UserAddress();
         insertUserAddress.setId(IdWorker.get32UUID());
@@ -92,8 +91,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     @Override
     public List<UserAddress> getAdress(String ticketId) {
 
-        String openId = GetOpenId.getOpenId(ticketId);
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         List<UserAddress> addressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("deleteFlag",Constants.QIYONG));
         Assert.isTrue(!addressList.isEmpty(),ExceptionEnum.EXCEPTION_16.getDesc());
@@ -110,8 +108,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     @Override
     public void setAddressDef(String ticketId, String id) {
 
-        String openId = GetOpenId.getOpenId(ticketId);
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         List<UserAddress> userAddressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("deleteFlag",Constants.QIYONG));
 
@@ -133,7 +130,8 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
                 this.updateById(address);
             }
         }
-        UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).eq("userId",userInfo.getUserId()));
+        UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).
+                eq("userId",userInfo.getUserId()).last("Limit 1"));
         userAddress.setDef(Constants.DEF_ADDRESS);
         this.updateById(userAddress);
     }
@@ -141,9 +139,9 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     @Override
     public void deleteAddress(String ticketId, String id){
 
-        String openId = GetOpenId.getOpenId(ticketId);
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
-        UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).eq("userId",userInfo.getUserId()));
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
+        UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).
+                eq("userId",userInfo.getUserId()).last("Limit 1"));
         // 判断是否为默认地址，如果是则断言
         Assert.isTrue( userAddress.getDef() != Constants.DEF_ADDRESS , ExceptionEnum.EXCEPTION_20.desc);
         userAddress.setDeleteFlag(Constants.WEIQIYONG);
@@ -161,9 +159,9 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     public void updateAddress(String ticketId, String id, UserAddressModel userAddressModel) {
 
         Assert.isTrue(userAddressModel.getPhone().length()==11,ExceptionEnum.EXCEPTION_21.getDesc());
-        String openId = GetOpenId.getOpenId(ticketId);
-        UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId));
-        UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).eq("userId",userInfo.getUserId()));
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
+        UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).
+                eq("userId",userInfo.getUserId()).last("Limit 1"));
         userAddress.setId(id);
         userAddress.setUserId(userInfo.getUserId());
         userAddress.setName(userAddressModel.getName());
@@ -174,6 +172,26 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         userAddress.setArea(userAddressModel.getArea());
         userAddress.setEditTime(new Date());
         this.updateById(userAddress);
+    }
+
+    /**
+     * 判断用户是否有默认地址
+     * @param ticketId
+     * @return
+     */
+    @Override
+    public String isUserAddress(String ticketId) {
+
+        //获取用户信息
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
+        //获取用户默认地址
+        UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
+                eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+        // 如果没有默认地址返回0
+        if(userAddress == null){
+            return "0";
+        }
+        return "1";
     }
 
 }

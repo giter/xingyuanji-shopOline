@@ -73,7 +73,7 @@ public class MpGenenator {
         // ��������
         StrategyConfig strategy = new StrategyConfig();
         // strategy.setCapitalMode(true);// ȫ�ִ�д���� ORACLE ע��
-        //strategy.setTablePrefix(new String[] { "t_" });// �˴������޸�Ϊ���ı�ǰ׺
+        strategy.setTablePrefix(new String[] { "t_" });// �˴������޸�Ϊ���ı�ǰ׺
         strategy.setNaming(NamingStrategy.underline_to_camel);// �������ɲ���
         strategy.setInclude(new String[] { "address","buyer","permission","prize","prize_code","prize_log","role","role_permission","user","user_role"});
         // ��Ҫ���ɵı�

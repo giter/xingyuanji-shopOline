@@ -53,4 +53,11 @@ public interface IUserAddressService extends IService<UserAddress> {
      * @param userAddressModel
      */
     void updateAddress(String ticketId, String id, UserAddressModel userAddressModel);
+
+    /**
+     * 判断用户是否有默认地址
+     * @param ticketId
+     * @return
+     */
+    String isUserAddress(String ticketId);
 }

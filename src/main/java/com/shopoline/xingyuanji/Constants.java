@@ -91,4 +91,6 @@ public class Constants {
 
     public final static Integer NO_SEX = 0;
 
+    public final static Integer DB2_YIDUIJAING = 2;
+
 }

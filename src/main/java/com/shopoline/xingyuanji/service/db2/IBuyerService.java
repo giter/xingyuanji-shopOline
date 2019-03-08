@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IBuyerService extends IService<Buyer> {
 
+    /**
+     * 获取DB2用户信息
+     * @param ticketId
+     * @return
+     */
+    Buyer getDB2UserInfo(String ticketId);
 }

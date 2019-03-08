@@ -144,5 +144,26 @@ public class UserAddressController extends BaseController {
         return JSONUtil.toJSONString(json);
     }
 
+    /**
+     * 判断用户是否有默认地址
+     * @param ticketId
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/isUserAddress")
+    public Object isUserAddress(String ticketId,HttpServletRequest request, HttpServletResponse response){
+        JsonResult<String> json = new JsonResult<>();
+        try {
+            json.setData(userAddressService.isUserAddress(ticketId));
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
 }
 
