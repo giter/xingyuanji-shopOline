@@ -13,6 +13,7 @@ import com.shopoline.xingyuanji.vo.ShopLogInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,7 +48,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/pay")
+    @PostMapping("/pay")
     public Object WXPay(String ticketId,@RequestBody PayModel payModel, HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult();
         try {
@@ -68,7 +69,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/deductXingBi")
+    @PostMapping("/deductXingBi")
     public Object deductXingBi(String ticketId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -88,7 +89,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/notify")
+    @PostMapping("/notify")
     public Object payNotify(String string){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -107,7 +108,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getOpenRandomGoods")
+    @PostMapping("/getOpenRandomGoods")
     public Object getOpenRandomGoods(String ticketId,String useXingBi,String isPay,String randomToken,String UUID,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -126,7 +127,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getShopLog")
+    @PostMapping("/getShopLog")
     public Object getShopLog(String ticketId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<List<ShopLogModel>> json = new JsonResult<>();
         try {
@@ -145,7 +146,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getShopLogInfo")
+    @PostMapping("/getShopLogInfo")
     public Object getShopLogInfo(String ticketId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<ShopLogInfoVO> json = new JsonResult<>();
         try {
@@ -162,7 +163,7 @@ public class ShopLogController extends BaseController {
      * 获取运费
      */
     @ResponseBody
-    @RequestMapping("/getZIPAmount")
+    @PostMapping("/getZIPAmount")
     public Object getZIPAmount(String ticketId, HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -179,7 +180,7 @@ public class ShopLogController extends BaseController {
      * 邮回家
      */
     @ResponseBody
-    @RequestMapping("/sendHome")
+    @PostMapping("/sendHome")
     public Object sendHome(String ticketId,String productId,HttpServletRequest request, HttpServletResponse response){
         JsonResult json = new JsonResult();
         try {
@@ -196,7 +197,7 @@ public class ShopLogController extends BaseController {
      * 取消订单
      */
     @ResponseBody
-    @RequestMapping("/deleteOrder")
+    @PostMapping("/deleteOrder")
     public Object deleteOrder(String ticketId,String orderId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -214,7 +215,7 @@ public class ShopLogController extends BaseController {
      * 购买积分商品
      */
     @ResponseBody
-    @RequestMapping("/buyXingBiProduct")
+    @PostMapping("/buyXingBiProduct")
     public Object buyXingBiProduct(String ticketId,String productId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -237,7 +238,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getLogisticInformation")
+    @PostMapping("/getLogisticInformation")
     public Object getLogisticInformation(String ticketId,String productId,String tradeNo,HttpServletRequest request, HttpServletResponse response){
         JsonResult<LogisticInformationVO> json = new JsonResult<>();
         try {

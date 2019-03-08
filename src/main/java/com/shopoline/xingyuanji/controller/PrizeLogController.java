@@ -9,6 +9,7 @@ import com.shopoline.xingyuanji.utils.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -33,7 +34,7 @@ public class PrizeLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getPrizeList")
+    @PostMapping(value = "/getPrizeList")
     public Object getPrizeList(String ticketId, HttpServletRequest request, HttpServletResponse response){
         JsonResult<List<PrizeModel>> json = new JsonResult<>();
         try {
@@ -55,7 +56,7 @@ public class PrizeLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/cashPrize")
+    @PostMapping(value = "/cashPrize")
     public Object cashPrize(String ticketId, String prizeId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<String> json = new JsonResult<>();
         try {

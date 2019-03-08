@@ -11,6 +11,7 @@ import com.shopoline.xingyuanji.utils.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,7 +45,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/setAdderss")
+    @PostMapping("/setAdderss")
     public Object setAdderss(String ticketId, @RequestBody UserAddressModel userAddressModel, HttpServletRequest request, HttpServletResponse response) {
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -65,7 +66,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getAdderss")
+    @PostMapping("/getAdderss")
     public Object getAdderss(String ticketId,HttpServletRequest request, HttpServletResponse response) {
         JsonResult<List<UserAddress>> json = new JsonResult<>();
         try {
@@ -87,7 +88,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/setAddressDef")
+    @PostMapping("/setAddressDef")
     public Object setAddressDef(String ticketId,String id,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -109,7 +110,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/deleteAddress")
+    @PostMapping("/deleteAddress")
     public Object deleteAddress(String ticketId,String id,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -131,7 +132,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/updateAddress")
+    @PostMapping("/updateAddress")
     public Object updateAddress(String ticketId,String id,@RequestBody UserAddressModel userAddressModel,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -152,7 +153,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/isUserAddress")
+    @PostMapping("/isUserAddress")
     public Object isUserAddress(String ticketId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<String> json = new JsonResult<>();
         try {

@@ -10,6 +10,7 @@ import com.shopoline.xingyuanji.vo.UserCoinVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,7 +37,7 @@ public class UserAssetController extends BaseController {
      * 查询用户资产表猩币数量
      */
     @ResponseBody
-    @RequestMapping("/quertUserCoin")
+    @PostMapping("/quertUserCoin")
     public Object quertUserCoin(String ticketId, HttpServletRequest request, HttpServletResponse response){
         JsonResult<UserCoinVO> json = new JsonResult<>();
         try {
@@ -59,7 +60,7 @@ public class UserAssetController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/exchangeCoin")
+    @PostMapping("/exchangeCoin")
     public Object exchangeCoin(String ticketId,String goodsId, HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
