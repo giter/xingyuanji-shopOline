@@ -62,6 +62,7 @@ public class PayOrder extends Model<PayOrder> {
     /**
      * 描述
      */
+    @TableField("detail")
     private String detail;
     /**
      * 插入时间

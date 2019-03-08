@@ -36,6 +36,7 @@ public class UserInfo extends Model<UserInfo> {
     /**
      * 性别，1男2女
      */
+    @TableField(value = "sex")
     private Integer sex;
     /**
      * 头像链接
