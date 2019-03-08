@@ -55,7 +55,7 @@ public class SendRedPackageUtil {
                 resultCode = entity.getValue();
             }
         }
-        logger.warn("<-红包返回结果->："+result+"\tDATE："+new Date());
+        logger.info("<-红包返回结果->："+result+"\tDATE："+new Date());
         return resultCode;
     }
 

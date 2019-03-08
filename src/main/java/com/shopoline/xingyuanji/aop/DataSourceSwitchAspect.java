@@ -27,13 +27,11 @@ public class DataSourceSwitchAspect {
 
     @Before( "db1Aspect()" )
     public void db1() {
-        logger.warn("切换到db1 数据源...");
         DbContextHolder.setDbType(DBTypeEnum.db1);
     }
 
     @Before("db2Aspect()" )
     public void db2 () {
-        logger.warn("切换到db2 数据源...");
         DbContextHolder.setDbType(DBTypeEnum.db2);
     }
 
