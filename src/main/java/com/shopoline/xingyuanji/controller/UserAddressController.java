@@ -11,10 +11,7 @@ import com.shopoline.xingyuanji.utils.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,7 +63,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/getAdderss")
+    @GetMapping("/getAdderss")
     public Object getAdderss(String ticketId,HttpServletRequest request, HttpServletResponse response) {
         JsonResult<List<UserAddress>> json = new JsonResult<>();
         try {
