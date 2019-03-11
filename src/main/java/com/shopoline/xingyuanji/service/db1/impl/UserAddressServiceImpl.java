@@ -89,7 +89,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      * @return
      */
     @Override
-    public List<UserAddress> getAdress(String ticketId) {
+    public List<UserAddress> getAddress(String ticketId) {
 
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         List<UserAddress> addressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).

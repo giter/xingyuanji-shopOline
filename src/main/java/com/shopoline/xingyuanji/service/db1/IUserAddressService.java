@@ -29,7 +29,7 @@ public interface IUserAddressService extends IService<UserAddress> {
      * @param ticketId
      * @return
      */
-    List<UserAddress> getAdress(String ticketId);
+    List<UserAddress> getAddress(String ticketId);
 
     /**
      * 设置默认地址

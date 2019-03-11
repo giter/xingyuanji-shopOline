@@ -70,7 +70,7 @@ public class UserAddressController extends BaseController {
     public Object getAdderss(String ticketId,HttpServletRequest request, HttpServletResponse response) {
         JsonResult<List<UserAddress>> json = new JsonResult<>();
         try {
-            json.setData(userAddressService.getAdress(ticketId));
+            json.setData(userAddressService.getAddress(ticketId));
         } catch (Exception e) {
             logger.info(e.getMessage());
             json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
