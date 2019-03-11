@@ -58,7 +58,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         }
 
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
-
         // 判断用户是否存在默认地址
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
