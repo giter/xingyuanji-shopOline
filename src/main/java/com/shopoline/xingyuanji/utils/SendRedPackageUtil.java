@@ -29,7 +29,7 @@ public class SendRedPackageUtil {
         String companyName = "猩愿机";
         data.put("nonce_str", WXPayUtil.generateNonceStr());
         // 商户订单号
-        data.put("mch_billno",sendRedPackageModel.getPrizeId());
+        data.put("mch_billno",sendRedPackageModel.getPrizeId()+ TicketUtil.get5_RandomNum());
         data.put("mch_id",WxConfig.MCHID);
         data.put("wxappid", Config.APPID);
         data.put("send_name",companyName);

@@ -22,7 +22,8 @@ public enum ExceptionEnum {
     EXCEPTION_18(18,"暂未查询到物流信息"),
     EXCEPTION_19(19,"商品已售罄"),
     EXCEPTION_20(20,"请勿删除最后默认地址"),
-    EXCEPTION_21(21,"请输入11位手机号");
+    EXCEPTION_21(21,"请输入11位手机号"),
+    EXCEPTION_22(22,"兑换失败");
 
     public Integer key;
     public String desc;

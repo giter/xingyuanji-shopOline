@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.shopoline.RedPacketConfig;
 import com.shopoline.xingyuanji.Constants;
+import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.entity.*;
 import com.shopoline.xingyuanji.mapper.PrizeMapper;
 import com.shopoline.xingyuanji.model.PrizeModel;
@@ -107,9 +108,11 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
                 //如果成功从priceLog更新相应信息（逻辑删除将status设为未启用）
                prizeLog.setUseflag(0);
                prizeLogService.updateById(prizeLog);
+                // Log
+                logger.info("<-红包兑换->"+"\t用户昵称："+buyer.getNickName()+"\t红包信息："+prizeLog.getPrizeId()+"\tDate："+ new Date()+result);
                 return "兑换成功";
             }else {
-                return "兑换失败";
+                throw new Exception(ExceptionEnum.EXCEPTION_22.getDesc());
             }
         }
         // 获取用户默认地址
@@ -127,7 +130,7 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         prizeLog.setUpdateTime(new Date());
         prizeLogService.updateById(prizeLog);
         // log
-        logger.warn("<-奖品兑换->："+prizeLog);
+        logger.info("<-奖品兑换->："+prizeLog);
 
         return "兑换成功";
     }
