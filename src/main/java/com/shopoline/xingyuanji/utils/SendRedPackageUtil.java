@@ -25,34 +25,34 @@ public class SendRedPackageUtil {
 
     public String sendRedPackage(SendRedPackageModel sendRedPackageModel) throws Exception{
         int capacity = (int)(14/0.75+1);
-        Map<String, String> data = new HashMap<>(capacity);
+        HashMap<String, String> map = new HashMap<>(capacity);
         String companyName = "猩愿机";
-        data.put("nonce_str", WXPayUtil.generateNonceStr());
+        map.put("nonce_str", WXPayUtil.generateNonceStr());
         // 商户订单号
-        data.put("mch_billno",sendRedPackageModel.getPrizeId()+ TicketUtil.get5_RandomNum());
-        data.put("mch_id",WxConfig.MCHID);
-        data.put("wxappid", Config.APPID);
-        data.put("send_name",companyName);
-        data.put("re_openid",sendRedPackageModel.getOpenId());
+        map.put("mch_billno",sendRedPackageModel.getPrizeId()+ TicketUtil.get5_RandomNum());
+        map.put("mch_id",WxConfig.MCHID);
+        map.put("wxappid", Config.APPID);
+        map.put("send_name",companyName);
+        map.put("re_openid",sendRedPackageModel.getOpenId());
         // 付款金额单位分
-        data.put("total_amount",sendRedPackageModel.getPrice());
+        map.put("total_amount",sendRedPackageModel.getPrice());
         // 发放人数
-        data.put("total_num","1");
-        data.put("wishing","恭喜你获取红包奖励");
-        data.put("client_ip",getRemoteHost(sendRedPackageModel.getRequest()));
-        data.put("act_name","猩愿机抽奖活动");
+        map.put("total_num","1");
+        map.put("wishing","恭喜你获取红包奖励");
+        map.put("client_ip",getRemoteHost(sendRedPackageModel.getRequest()));
+        map.put("act_name","猩愿机抽奖活动");
         // 备注
-        data.put("remark","猜越多得越多，快来抢！");
-        data.put("scene_id","PRODUCT_2");
+        map.put("remark","猜越多得越多，快来抢！");
+        map.put("scene_id","PRODUCT_2");
         // 签名
-        data.put("sign",WXPayUtil.generateSignature(data, WxConfig.SECRET, WXPayConstants.SignType.MD5));
+        map.put("sign",WXPayUtil.generateSignature(map, WxConfig.SECRET, WXPayConstants.SignType.MD5));
         String url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
-        String respXml = wxPay.requestWithCert(url, data, 8000, 10000);
+        String respXml = wxPay.requestWithCert(url, map, 8000, 10000);
         Map<String, String> result = WXPayUtil.xmlToMap(respXml);
         String resultCode = "";
-        for(Map.Entry<String,String> entity : result.entrySet()){
-            if(entity.getKey().equals("result_code")){
-                resultCode = entity.getValue();
+        for(Map.Entry<String,String> entry : result.entrySet()){
+            if(entry.getKey().equals("result_code")){
+                resultCode = entry.getValue();
             }
         }
         logger.info("<-红包返回结果->："+result+"\tDATE："+new Date());
