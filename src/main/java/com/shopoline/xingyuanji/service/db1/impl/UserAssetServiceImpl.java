@@ -34,7 +34,6 @@ import java.util.Date;
  * @since 2019-01-09
  */
 @Service
-@Transactional
 public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset> implements IUserAssetService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
@@ -99,6 +98,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
      * @return
      */
     @Override
+    @Transactional
     public Object exchangeCoin(String ticketId, String goodsId) {
 
 

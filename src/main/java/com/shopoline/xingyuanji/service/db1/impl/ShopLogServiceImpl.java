@@ -15,7 +15,10 @@ import com.shopoline.xingyuanji.model.SendHomeModel;
 import com.shopoline.xingyuanji.model.ShopLogModel;
 import com.shopoline.xingyuanji.service.db1.*;
 import com.shopoline.xingyuanji.utils.*;
-import com.shopoline.xingyuanji.vo.*;
+import com.shopoline.xingyuanji.vo.BuyShopProductVO;
+import com.shopoline.xingyuanji.vo.LogisticInformationVO;
+import com.shopoline.xingyuanji.vo.ShopLogInfoVO;
+import com.shopoline.xingyuanji.vo.UserCoinVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +39,6 @@ import java.util.ListIterator;
  * @since 2019-01-10
  */
 @Service
-@Transactional
 public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> implements IShopLogService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
@@ -138,6 +140,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
+    @Transactional
     public Object afterPaySuccess(String ticketId,String useXingBi,String isPay,String randomToken,String UUID) throws Exception {
 
         // 获取用户信息
@@ -365,6 +368,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     }
 
     @Override
+    @Transactional
     public Object buyXingBiProduct(String ticketId, String productId) throws Exception{
 
         UserCoinVO userCoinVO = userAssetService.quertUserCoin(ticketId);
@@ -413,6 +417,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
+    @Transactional
     public void deductXingBi(String ticketId) {
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 扣除猩币
