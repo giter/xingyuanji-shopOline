@@ -22,7 +22,6 @@ import java.util.Map;
 public class WxPayServiceImpl implements WxPayService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-
     private WXPay wxPay = new WXPay(WxConfig.getPayInstance());
 
     /**
@@ -93,7 +92,6 @@ public class WxPayServiceImpl implements WxPayService {
             if (WXPayUtil.isSignatureValid(map, WxConfig.SECRET)) {
                 System.out.println("系统验证签名正确");
             }
-//            String tradeNo = jsonObject.getString("out_trade_no");
             System.out.println("商户订单号"+jsonObject.getString("out_trade_no"));
             System.out.println("支付完成时间"+jsonObject.getString("time_end"));
             System.out.println(jsonObject);
