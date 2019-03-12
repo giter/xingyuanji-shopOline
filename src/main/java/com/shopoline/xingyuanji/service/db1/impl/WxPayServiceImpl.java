@@ -62,7 +62,7 @@ public class WxPayServiceImpl implements WxPayService {
                 String sign = WXPayUtil.generateSignature(payInfo, WxConfig.SECRET);
                 payInfo.put("paySign",sign);
                 jsonObject.put("object",payInfo);
-                logger.warn("<-JSAPI_WXPAY_RESULT->："+ payInfo);
+                logger.info("<-JSAPI_WXPAY_RESULT->："+ payInfo);
             }
             if ("NATIVE".equals(tradeType)){//扫码
                 jsonObject.put("url",result.get("code_url"));
