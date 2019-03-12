@@ -115,16 +115,19 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
                 "\"area_code\": \"440305\",\n" +
                 "\"address\": \"心愿有限公司\" }}\n");
         JSONObject jsonObject = wxPayService.unifiedorder(payInfoMap);
-        // 向Redis中写入交易数据在后续接口中获取写入数据库
-        // 写入微信支付订单号
-        RedisUtil.setValue(ticketId+"tradeNum",tradeNum);
-        // 写入支付金额
-        RedisUtil.setValue(ticketId+"totalFee", String.valueOf(payModel.getTotalFee()));
-        // 向Redis中写入交易的TOKEN，防止盗刷
+        // token
         String randomToken = IdWorker.get32UUID();
         String UUID = IdWorker.get32UUID();
-        RedisUtil.setValueSeconds("RandomToken"+ticketId+UUID,randomToken);
 
+        synchronized (this){
+            // 向Redis中写入交易数据在后续接口中获取写入数据库
+            // 写入微信支付订单号
+            RedisUtil.setValue(ticketId+"tradeNum",tradeNum);
+            // 写入支付金额
+            RedisUtil.setValue(ticketId+"totalFee", String.valueOf(payModel.getTotalFee()));
+            // 向Redis中写入交易的TOKEN，防止盗刷
+            RedisUtil.setValueSeconds("RandomToken"+ticketId+UUID,randomToken);
+        }
         jsonObject.put("randomToken",randomToken);
         jsonObject.put("UUID",UUID);
 
@@ -153,12 +156,12 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         if(useXingBi.equals("1") || useXingBi == "1"){
             userAssetService.setUseXingBi(userInfo);
         }
-            // 从Redis中获取微信JSAPI付款后存入的交易数据
+        // 从Redis中获取微信JSAPI付款后存入的交易数据
+        synchronized (this) {
             // 获取支付订单号
-            String tradeNum = RedisUtil.getValue(ticketId+"tradeNum");
+            String tradeNum = RedisUtil.getValue(ticketId + "tradeNum");
             // 获取支付金额
-            String totalFee = RedisUtil.getValue(ticketId+"totalFee");
-
+            String totalFee = RedisUtil.getValue(ticketId + "totalFee");
             // 将商品写入ShopLog表
             ShopLog shopLog = new ShopLog();
             shopLog.setId(IdWorker.get32UUID());
@@ -174,26 +177,26 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             shopLog.setOutTradeNo(tradeNum);
             shopLog.setIsPay(isPay);
             shopLog.setTotalFee(totalFee);
-        shopLogService.insert(shopLog);
-        // 写入购盒奖励
-        UserAsset userAsset = new UserAsset();
-        Integer XingBi = XingBiPriceUtils.getBuyBoxPrice(1);
-        userAsset.setId(IdWorker.get32UUID());
-        userAsset.setUserId(userInfo.getUserId());
-        userAsset.setAmount(XingBi);
-        userAsset.setAmountTye(Constants.XINGBI);
-        userAsset.setEditTime(new Date());
-        userAsset.setEditBy(Constants.ADMIN);
-        userAsset.setDeltFlag(Constants.QIYONG);
-        userAsset.setOpenId(openId);
-        userAssetService.insert(userAsset);
-        // 流程结束删除Redis中存入的交易TOKEN
-        RedisUtil.delete(ticketId+"tradeNum");
-        RedisUtil.delete(ticketId+"totalFee");
-        //记录Log
-        logger.info("<-AFTER_PAY->\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
-                productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tAssert："+XingBi+"\tDate："+userAsset.getEditTime());
-
+            shopLogService.insert(shopLog);
+            // 写入购盒奖励
+            UserAsset userAsset = new UserAsset();
+            Integer XingBi = XingBiPriceUtils.getBuyBoxPrice(1);
+            userAsset.setId(IdWorker.get32UUID());
+            userAsset.setUserId(userInfo.getUserId());
+            userAsset.setAmount(XingBi);
+            userAsset.setAmountTye(Constants.XINGBI);
+            userAsset.setEditTime(new Date());
+            userAsset.setEditBy(Constants.ADMIN);
+            userAsset.setDeltFlag(Constants.QIYONG);
+            userAsset.setOpenId(openId);
+            userAssetService.insert(userAsset);
+            // 流程结束删除Redis中存入的交易TOKEN
+            RedisUtil.delete(ticketId + "tradeNum");
+            RedisUtil.delete(ticketId + "totalFee");
+            //记录Log
+            logger.info("<-AFTER_PAY->\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
+                    productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tAssert："+XingBi+"\tDate："+userAsset.getEditTime());
+        }
         return productInfo;
     }
 
@@ -320,33 +323,32 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
          // } catch (Exception e) {
             // e.printStackTrace();
          // }
-
-        // 从redis中获取邮费支付订单号
-        String ZIPTradeNum = RedisUtil.getValue(ticketId+"tradeNum");
-        String totalFee = RedisUtil.getValue(ticketId+"totalFee");
-        //写入相关记录
-        String openId = GetOpenId.getOpenId(ticketId);
-        ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("openId",openId).eq("goodsId",productInfo.getId()).
-                eq("express",Constants.KUAIDI_FROM_ZANDING).last("Limit 1"));
-        shopLog.setExpress(Constants.YOU_HUI_JIA);
-        shopLog.setZIPAmount(totalFee);
-        shopLog.setZIPOutTradeNo(ZIPTradeNum);
-        shopLog.setAddressId(userAddress.getId());
-        shopLog.setUpdateTime(new Date());
-        this.updateById(shopLog);
-
-        logger.info("<-SEND_HOME->\t"+"NickName："+userInfo.getNickName()+"\tRealName："+userAddress.getName()+"\tTradeNo："+shopLog.getTradeNo()+
-                "\tZIPAmount："+shopLog.getZIPAmount()+"\tZIPOutTradeNo:"+ZIPTradeNum+"\tDate："+new Date());
-        // 删除缓存中的TOKEN
-        RedisUtil.delete(ticketId+"tradeNum");
-        RedisUtil.delete(ticketId+"totalFee");
+        synchronized (this){
+            // 从redis中获取邮费支付订单号
+            String ZIPTradeNum = RedisUtil.getValue(ticketId+"tradeNum");
+            String totalFee = RedisUtil.getValue(ticketId+"totalFee");
+            //写入相关记录
+            String openId = GetOpenId.getOpenId(ticketId);
+            ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("openId",openId).eq("goodsId",productInfo.getId()).
+                    eq("express",Constants.KUAIDI_FROM_ZANDING).last("Limit 1"));
+            shopLog.setExpress(Constants.YOU_HUI_JIA);
+            shopLog.setZIPAmount(totalFee);
+            shopLog.setZIPOutTradeNo(ZIPTradeNum);
+            shopLog.setAddressId(userAddress.getId());
+            shopLog.setUpdateTime(new Date());
+            this.updateById(shopLog);
+            logger.info("<-SEND_HOME->\t"+"NickName："+userInfo.getNickName()+"\tRealName："+userAddress.getName()+"\tTradeNo："+shopLog.getTradeNo()+
+                    "\tZIPAmount："+shopLog.getZIPAmount()+"\tZIPOutTradeNo:"+ZIPTradeNum+"\tDate："+new Date());
+            // 删除缓存中的TOKEN
+            RedisUtil.delete(ticketId+"tradeNum");
+            RedisUtil.delete(ticketId+"totalFee");
+        }
     }
 
     @Override
     public Object deleteOrder(String ticketId,String orderId) {
 
         String deleteOrderResult = SFUtils.exitOrder(orderId);
-
         return deleteOrderResult;
     }
 
@@ -381,32 +383,34 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         if(productInfo.getProductCount().equals(Constants.NULL)){
             throw new Exception(ExceptionEnum.EXCEPTION_4.getDesc());
         }
-        //扣除用户猩币
-        userAssetService.dedUserXingbi(productInfo,userInfo);
-        //写入消费记录
-        ShopLog shopLog = new ShopLog();
-        shopLog.setId(IdWorker.get32UUID());
-        shopLog.setUserId(userInfo.getUserId());
-        shopLog.setOpenId(userInfo.getOpenId());
-        shopLog.setGoodsId(Integer.valueOf(productInfo.getId()));
-        shopLog.setBoxId(Constants.SHOP);
-        shopLog.setEditBy(Constants.ADMIN);
-        shopLog.setEditTime(new Date());
-        shopLog.setDeleteFlag(Constants.QIYONG);
-        shopLog.setExpress(3);
-        this.insert(shopLog);
-        // 减去商品数量
-        productInfo.setProductCount(productInfo.getProductCount() - 1);
-        productInfoService.updateById(productInfo);
+        synchronized (this){
+            //扣除用户猩币
+            userAssetService.dedUserXingbi(productInfo,userInfo);
+            //写入消费记录
+            ShopLog shopLog = new ShopLog();
+            shopLog.setId(IdWorker.get32UUID());
+            shopLog.setUserId(userInfo.getUserId());
+            shopLog.setOpenId(userInfo.getOpenId());
+            shopLog.setGoodsId(Integer.valueOf(productInfo.getId()));
+            shopLog.setBoxId(Constants.SHOP);
+            shopLog.setEditBy(Constants.ADMIN);
+            shopLog.setEditTime(new Date());
+            shopLog.setDeleteFlag(Constants.QIYONG);
+            shopLog.setExpress(3);
+            this.insert(shopLog);
+            // 减去商品数量
+            productInfo.setProductCount(productInfo.getProductCount() - 1);
+            productInfoService.updateById(productInfo);
 
-        BuyShopProductVO buyShopProductVO = new BuyShopProductVO();
-        buyShopProductVO.setZIPAmount("1");
-        buyShopProductVO.setProductId(productId);
+            BuyShopProductVO buyShopProductVO = new BuyShopProductVO();
+            buyShopProductVO.setZIPAmount("1");
+            buyShopProductVO.setProductId(productId);
 
-        logger.info("<-BUY_XINGBI_PRODUCT->\t"+"NickName："+userInfo.getNickName()+"\tOpenId："+userInfo.getOpenId()+"\tProductId："+productInfo.getId()+
-                "\tProductName："+productInfo.getGoodsname()+"\tDelUserAmount："+"-"+productInfo.getSocer()+"\tDate："+new Date());
+            logger.info("<-BUY_XINGBI_PRODUCT->\t"+"NickName："+userInfo.getNickName()+"\tOpenId："+userInfo.getOpenId()+"\tProductId："+productInfo.getId()+
+                    "\tProductName："+productInfo.getGoodsname()+"\tDelUserAmount："+"-"+productInfo.getSocer()+"\tDate："+new Date());
 
-        return buyShopProductVO;
+            return buyShopProductVO;
+        }
     }
 
 
