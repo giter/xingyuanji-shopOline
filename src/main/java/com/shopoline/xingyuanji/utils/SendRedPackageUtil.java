@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 发红包工具
@@ -24,9 +24,8 @@ public class SendRedPackageUtil {
 
     public String sendRedPackage(SendRedPackageModel sendRedPackageModel) throws Exception{
 
-        synchronized (this){
             int capacity = (int)(14/0.75+1);
-            ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>(capacity);
+            HashMap<String, String> map = new HashMap<>(capacity);
             map.put("nonce_str", WXPayUtil.generateNonceStr());
             // 商户订单号
             map.put("mch_billno",sendRedPackageModel.getPrizeId()+ TicketUtil.get5_RandomNum());
@@ -57,7 +56,6 @@ public class SendRedPackageUtil {
             }
             logger.info("<-红包返回结果->："+result+"\tDATE："+new Date());
             return resultCode;
-        }
     }
 
 

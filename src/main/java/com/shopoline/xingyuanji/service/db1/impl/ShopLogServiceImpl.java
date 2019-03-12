@@ -26,10 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 /**
  * <p>
@@ -71,7 +68,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 初始HASHMAP容量防止RESIZE
         int capacity = (int)(15/0.75)+1;
         // 写入微信支付数据
-        ConcurrentHashMap<String,String> payInfoMap = new ConcurrentHashMap<>(capacity);
+        HashMap<String,String> payInfoMap = new HashMap<>(capacity);
         // 商品的简单描述
         payInfoMap.put("body","猩愿盒");
         // 订单号，32个字符以内，只能是数字，字母
@@ -119,7 +116,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         String randomToken = IdWorker.get32UUID();
         String UUID = IdWorker.get32UUID();
 
-        synchronized (this){
             // 向Redis中写入交易数据在后续接口中获取写入数据库
             // 写入微信支付订单号
             RedisUtil.setValue(ticketId+"tradeNum",tradeNum);
@@ -127,7 +123,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             RedisUtil.setValue(ticketId+"totalFee", String.valueOf(payModel.getTotalFee()));
             // 向Redis中写入交易的TOKEN，防止盗刷
             RedisUtil.setValueSeconds("RandomToken"+ticketId+UUID,randomToken);
-        }
+
         jsonObject.put("randomToken",randomToken);
         jsonObject.put("UUID",UUID);
 
@@ -157,7 +153,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             userAssetService.setUseXingBi(userInfo);
         }
         // 从Redis中获取微信JSAPI付款后存入的交易数据
-        synchronized (this) {
             // 获取支付订单号
             String tradeNum = RedisUtil.getValue(ticketId + "tradeNum");
             // 获取支付金额
@@ -196,7 +191,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             //记录Log
             logger.info("<-AFTER_PAY->\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
                     productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tAssert："+XingBi+"\tDate："+userAsset.getEditTime());
-        }
+
         return productInfo;
     }
 
@@ -323,7 +318,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
          // } catch (Exception e) {
             // e.printStackTrace();
          // }
-        synchronized (this){
             // 从redis中获取邮费支付订单号
             String ZIPTradeNum = RedisUtil.getValue(ticketId+"tradeNum");
             String totalFee = RedisUtil.getValue(ticketId+"totalFee");
@@ -342,7 +336,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             // 删除缓存中的TOKEN
             RedisUtil.delete(ticketId+"tradeNum");
             RedisUtil.delete(ticketId+"totalFee");
-        }
     }
 
     @Override
@@ -383,7 +376,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         if(productInfo.getProductCount().equals(Constants.NULL)){
             throw new Exception(ExceptionEnum.EXCEPTION_4.getDesc());
         }
-        synchronized (this){
             //扣除用户猩币
             userAssetService.dedUserXingbi(productInfo,userInfo);
             //写入消费记录
@@ -410,7 +402,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
                     "\tProductName："+productInfo.getGoodsname()+"\tDelUserAmount："+"-"+productInfo.getSocer()+"\tDate："+new Date());
 
             return buyShopProductVO;
-        }
     }
 
 

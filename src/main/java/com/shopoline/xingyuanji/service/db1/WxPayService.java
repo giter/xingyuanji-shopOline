@@ -2,7 +2,7 @@ package com.shopoline.xingyuanji.service.db1;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 /**
  * 微信支付接口
@@ -14,7 +14,7 @@ public interface WxPayService {
      * @param map
      * @return
      */
-    JSONObject unifiedorder(ConcurrentHashMap<String,String> map);
+    JSONObject unifiedorder(HashMap<String,String> map);
 
     /**
      * 支付异步通知

@@ -27,11 +27,10 @@ public class BuyerServiceImpl extends ServiceImpl<BuyerMapper, Buyer> implements
     @Override
     public Buyer getDB2UserInfo(String ticketId) {
 
-        synchronized (this){
             String openId = GetOpenId.getOpenId(ticketId);
             // 获取用户信息
             Buyer buyer = this.selectOne(new EntityWrapper<Buyer>().eq("open_id",openId).last("Limit 1"));
+
             return buyer;
-        }
     }
 }
