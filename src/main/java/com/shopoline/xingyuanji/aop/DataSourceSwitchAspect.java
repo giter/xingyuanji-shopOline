@@ -25,6 +25,8 @@ public class DataSourceSwitchAspect {
     private void db2Aspect() {
     }
 
+
+
     @Before( "db1Aspect()" )
     public void db1() {
         DbContextHolder.setDbType(DBTypeEnum.db1);

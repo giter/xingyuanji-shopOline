@@ -67,7 +67,7 @@ public class MpGenenator {
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("123456");
-        dsc.setUrl("jdbc:mysql://47.98.44.227:3306/wxp?serverTimezone=Hongkong&useUnicode=true&characterEncoding=UTF-8&tinyInt1isBit=false&useSSL=true");
+        dsc.setUrl("jdbc:mysql://47.98.44.227:3306/wxprice?serverTimezone=Hongkong&useUnicode=true&characterEncoding=UTF-8&tinyInt1isBit=false&useSSL=true");
         mpg.setDataSource(dsc);
 
         // ��������
@@ -103,11 +103,11 @@ public class MpGenenator {
         pc.setParent("com");
         pc.setParent("com.shopoline");
         pc.setModuleName("xingyuanji");
-        pc.setController("controller");
-        pc.setEntity("entity");
-        pc.setMapper("mapper");
-        pc.setService("service.db2");
-        pc.setServiceImpl("service.db2.impl");
+        // pc.setController("controller");
+        pc.setEntity("entity.db3");
+        pc.setMapper("mapper.db3");
+        pc.setService("service.db3");
+        pc.setServiceImpl("service.db3.impl");
         mpg.setPackageInfo(pc);
 
         // ע���Զ������ã������� VM ��ʹ�� cfg.abc �����ޡ�

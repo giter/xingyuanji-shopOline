@@ -50,6 +50,7 @@ public class MybatisPlusConfig {
         return DruidDataSourceBuilder.create().build();
     }
 
+
     /**
      * 动态数据源配置
      * @return
@@ -57,7 +58,7 @@ public class MybatisPlusConfig {
     @Bean
     @Primary
     public DataSource multipleDataSource (@Qualifier("db1") DataSource db1,
-                                          @Qualifier("db2") DataSource db2 ) {
+                                          @Qualifier("db2") DataSource db2) {
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
         Map< Object, Object > targetDataSources = new HashMap<>();
         targetDataSources.put(DBTypeEnum.db1.getValue(), db1 );
@@ -73,7 +74,6 @@ public class MybatisPlusConfig {
         sqlSessionFactory.setDataSource(multipleDataSource(db1(),db2()));
         sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/*/*.xml"));
         sqlSessionFactory.setTypeAliasesPackage("com.shopoline.xingyuanji.entity");
-
         MybatisConfiguration configuration = new MybatisConfiguration();
         //configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
         configuration.setJdbcTypeForNull(JdbcType.NULL);
