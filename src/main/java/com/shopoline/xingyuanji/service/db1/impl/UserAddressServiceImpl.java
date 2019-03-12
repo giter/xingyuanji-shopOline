@@ -181,16 +181,19 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     @Override
     public String isUserAddress(String ticketId) {
 
-        //获取用户信息
-        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
-        //获取用户默认地址
-        UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
-                eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
-        // 如果没有默认地址返回0
-        if(userAddress == null){
-            return "0";
+        synchronized (this){
+            //获取用户信息
+            UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
+            //获取用户默认地址
+            UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
+                    eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+            // 如果没有默认地址返回0
+            if(userAddress == null){
+                return "0";
+            }
+            return "1";
         }
-        return "1";
     }
+
 
 }

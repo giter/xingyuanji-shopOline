@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -28,54 +29,56 @@ public class WxPayServiceImpl implements WxPayService {
      * 微信统一下单
      * @return
      */
-    public JSONObject unifiedorder(Map<String,String> data){
+    public JSONObject unifiedorder(ConcurrentHashMap<String, String> map){
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("result",0);
-        try {
-            String tradeType = data.get("trade_type");
-            // 微信sdk，统一下单接口
-            Map<String, String> result = wxPay.unifiedOrder(data);
-            if (!"SUCCESS".equals(result.get("result_code"))){
-                jsonObject.put("object",result);
-                jsonObject.put("msg","统一下单失败");
-                logger.error("<-WXPAY_RESULT->："+jsonObject.get("object")+"\tResult：统一下单失败");
-                return jsonObject;
-            }
-            if (!WXPayUtil.isSignatureValid(result, WxConfig.SECRET)){
-                jsonObject.put("msg","验证签名失败");
-                logger.error("<-WXPAY_RESULT->："+"\tResult：验证签名失败");
-                return jsonObject;
-            }
+        synchronized (this){
+            JSONObject jsonObject = new JSONObject();
             jsonObject.put("result",0);
-            if ("JSAPI".equals(tradeType)){
-                int capacity = (int)(5/0.75)+1;
-                // 小程序，微信公众号
-                HashMap<String,String> payInfo = new HashMap<>(capacity);
-                payInfo.put("appId", Config.APPID);
-                payInfo.put("nonceStr",result.get("nonce_str"));
-                payInfo.put("timeStamp",System.currentTimeMillis()/1000+"");
-                payInfo.put("package","prepay_id="+result.get("prepay_id"));
-                payInfo.put("signType","MD5");
-                String sign = WXPayUtil.generateSignature(payInfo, WxConfig.SECRET);
-                payInfo.put("paySign",sign);
-                jsonObject.put("object",payInfo);
-                logger.info("<-JSAPI_WXPAY_RESULT->："+ payInfo);
+            try {
+                String tradeType = map.get("trade_type");
+                // 微信sdk，统一下单接口
+                Map<String, String> resultMap = wxPay.unifiedOrder(map);
+                if (!"SUCCESS".equals(resultMap.get("result_code"))){
+                    jsonObject.put("object",resultMap);
+                    jsonObject.put("msg","统一下单失败");
+                    logger.error("<-WXPAY_RESULT->："+jsonObject.get("object")+"\tResult：统一下单失败");
+                    return jsonObject;
+                }
+                if (!WXPayUtil.isSignatureValid(resultMap, WxConfig.SECRET)){
+                    jsonObject.put("msg","验证签名失败");
+                    logger.error("<-WXPAY_RESULT->："+"\tResult：验证签名失败");
+                    return jsonObject;
+                }
+                jsonObject.put("result",0);
+                if ("JSAPI".equals(tradeType)){
+                    int capacity = (int)(5/0.75)+1;
+                    // 小程序，微信公众号
+                    HashMap<String,String> payInfoMap = new HashMap<>(capacity);
+                    payInfoMap.put("appId", Config.APPID);
+                    payInfoMap.put("nonceStr",resultMap.get("nonce_str"));
+                    payInfoMap.put("timeStamp",System.currentTimeMillis()/1000+"");
+                    payInfoMap.put("package","prepay_id="+resultMap.get("prepay_id"));
+                    payInfoMap.put("signType","MD5");
+                    String sign = WXPayUtil.generateSignature(payInfoMap, WxConfig.SECRET);
+                    payInfoMap.put("paySign",sign);
+                    jsonObject.put("object",payInfoMap);
+                    logger.info("<-JSAPI_WXPAY_RESULT->："+ payInfoMap);
+                }
+                if ("NATIVE".equals(tradeType)){//扫码
+                    jsonObject.put("url",resultMap.get("code_url"));
+                }
+                if ("APP".equals(tradeType)){//app
+                    jsonObject.put("object",resultMap);
+                }
+                if ("MWEB".equals(tradeType)){//H5
+                    jsonObject.put("url",resultMap.get("mweb_url"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if ("NATIVE".equals(tradeType)){//扫码
-                jsonObject.put("url",result.get("code_url"));
-            }
-            if ("APP".equals(tradeType)){//app
-                jsonObject.put("object",result);
-            }
-            if ("MWEB".equals(tradeType)){//H5
-                jsonObject.put("url",result.get("mweb_url"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return jsonObject;
+            return jsonObject;
+        }
     }
 
     /**
@@ -87,7 +90,7 @@ public class WxPayServiceImpl implements WxPayService {
     public Object payNotify(String string) {
 
         try {
-            Map map = WXPayUtil.xmlToMap(string);
+            Map<String,String> map = WXPayUtil.xmlToMap(string);
             JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map));
             if (WXPayUtil.isSignatureValid(map, WxConfig.SECRET)) {
                 System.out.println("系统验证签名正确");

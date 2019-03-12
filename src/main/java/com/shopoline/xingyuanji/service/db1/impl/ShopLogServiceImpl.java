@@ -27,9 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -64,57 +64,57 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
-    public Object setOrder(String ticketId,PayModel payModel) throws Exception {
+    public Object setOrder(String ticketId,PayModel payModel){
 
         // 获取用户信息
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 初始HASHMAP容量防止RESIZE
         int capacity = (int)(15/0.75)+1;
         // 写入微信支付数据
-        HashMap<String,String> data = new HashMap<>(capacity);
+        ConcurrentHashMap<String,String> payInfoMap = new ConcurrentHashMap<>(capacity);
         // 商品的简单描述
-        data.put("body","猩愿盒");
+        payInfoMap.put("body","猩愿盒");
         // 订单号，32个字符以内，只能是数字，字母
         String tradeNum = IdWorker.get32UUID();
-        data.put("out_trade_no",tradeNum);
+        payInfoMap.put("out_trade_no",tradeNum);
         // 商品详细描述，对于使用单品优惠的商户，改字段必须按照规范上传
-        data.put("detail", "猩愿盒");
+        payInfoMap.put("detail", "猩愿盒");
         // 商品id，扫码支付必传。
-        data.put("product_id", ""+ 0);
+        payInfoMap.put("product_id", ""+ 0);
         // 订单总金额，单位为分
-        data.put("total_fee", ""+payModel.getTotalFee() * 100);
+        payInfoMap.put("total_fee", ""+payModel.getTotalFee() * 100);
         // 订单总金额，单位为分测试
         //data.put("total_fee", ""+payModel.getTotalFee());
         // 币种
-        data.put("fee_type", "CNY");
+        payInfoMap.put("fee_type", "CNY");
         // 终端ip
-        data.put("spbill_create_ip", "192.168.1.101");
+        payInfoMap.put("spbill_create_ip", "192.168.1.101");
         // 异步接收微信支付结果的回调通知
-        data.put("notify_url", WxConfig.NOTIFYURL);
+        payInfoMap.put("notify_url", WxConfig.NOTIFYURL);
         // 交易类型，JSAPI--公众号支付，NATIVE--原生扫码支付，APP--app支付，MWEB--H5支付
-        data.put("trade_type", "JSAPI");
+        payInfoMap.put("trade_type", "JSAPI");
         // 签名加密方式，默认是MD5
-        data.put("sign_type", "MD5");
+        payInfoMap.put("sign_type", "MD5");
         // 交易类型位公众号支付时必须
         String openId = GetOpenId.getOpenId(ticketId);
-        data.put("openid", openId);
+        payInfoMap.put("openid", openId);
         // no_credit--限制用户不能使用信用卡支付
-        data.put("limit_pay", "no_credit");
+        payInfoMap.put("limit_pay", "no_credit");
         // 交易有效时间
         Date now = new Date();
         // 交易起始时间，格式为yyyyMMddHHmmss,或者基于北京时间的时间戳
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        data.put("time_start", simpleDateFormat.format(now));
+        payInfoMap.put("time_start", simpleDateFormat.format(now));
         // 交易结束时间，即订单有效时间
         Date wil = new Date(now.getTime() + expire);
-        data.put("time_expire", simpleDateFormat.format(wil));
+        payInfoMap.put("time_expire", simpleDateFormat.format(wil));
         // 上报实际门店信息
-        data.put("scene_info", "{\"store_info\" : {\n" +
+        payInfoMap.put("scene_info", "{\"store_info\" : {\n" +
                 "\"id\": \"1\",\n" +
                 "\"name\": \"心愿机\",\n" +
                 "\"area_code\": \"440305\",\n" +
                 "\"address\": \"心愿有限公司\" }}\n");
-        JSONObject jsonObject = wxPayService.unifiedorder(data);
+        JSONObject jsonObject = wxPayService.unifiedorder(payInfoMap);
         // 向Redis中写入交易数据在后续接口中获取写入数据库
         // 写入微信支付订单号
         RedisUtil.setValue(ticketId+"tradeNum",tradeNum);
@@ -129,7 +129,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         jsonObject.put("UUID",UUID);
 
         logger.info("<-PAY_HISTORY->\t"+"NickName："+userInfo.getNickName()+"\tTradeNum："+tradeNum+"\tTotalFee："+payModel.getTotalFee()+"\tUserOpenId："+openId+
-                "\tTime："+data.get("time_expire"));
+                "\tTime："+payInfoMap.get("time_expire"));
 
         return jsonObject;
     }

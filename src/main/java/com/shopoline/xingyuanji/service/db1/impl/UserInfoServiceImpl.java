@@ -139,10 +139,15 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
      */
     @Override
     public UserInfo getDB1UserInfo(String ticketId) {
-        String openId = GetOpenId.getOpenId(ticketId);
+
+        synchronized (this){
+            String openId = GetOpenId.getOpenId(ticketId);
         // 获取用户信息
         UserInfo userInfo = this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
-        return userInfo;
+            return userInfo;
+        }
+
+
     }
 
 
