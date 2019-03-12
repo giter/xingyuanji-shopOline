@@ -53,7 +53,6 @@ public class WxPayServiceImpl implements WxPayService {
                 int capacity = (int)(5/0.75)+1;
                 // 小程序，微信公众号
                 HashMap<String,String> payInfo = new HashMap<>(capacity);
-                //tt.put("appId",result.get("appid"));
                 payInfo.put("appId", Config.APPID);
                 payInfo.put("nonceStr",result.get("nonce_str"));
                 payInfo.put("timeStamp",System.currentTimeMillis()/1000+"");
