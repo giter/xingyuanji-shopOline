@@ -67,7 +67,7 @@ public class MpGenenator {
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("123456");
-        dsc.setUrl("jdbc:mysql://47.98.44.227:3306/wxprice?serverTimezone=Hongkong&useUnicode=true&characterEncoding=UTF-8&tinyInt1isBit=false&useSSL=true");
+        dsc.setUrl("jdbc:mysql://47.98.44.227:3306/wxp?serverTimezone=Hongkong&useUnicode=true&characterEncoding=UTF-8&tinyInt1isBit=false&useSSL=true");
         mpg.setDataSource(dsc);
 
         // ��������
