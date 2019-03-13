@@ -9,6 +9,7 @@ import com.shopoline.xingyuanji.mapper.AdminInfoMapper;
 import com.shopoline.xingyuanji.model.AdminLoginModel;
 import com.shopoline.xingyuanji.service.db1.IAdminInfoService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 /**
  * <p>
@@ -33,14 +34,10 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         // 获取用户信息
         AdminInfo adminInfo = this.selectOne(new EntityWrapper<AdminInfo>().eq("userName",adminLoginModel.getUserName()).
                 eq("passWord",adminLoginModel.getPassWord()).eq("deleteFlag", Constants.QIYONG).last("Limit 1"));
-        if(adminInfo == null){
-            throw new Exception(ExceptionEnum.EXCEPTION_23.getDesc());
-        }
+        Assert.isTrue(adminInfo != null,ExceptionEnum.EXCEPTION_23.getDesc());
         // 运用Model内重写的equals方法和hashCode方法比较用户信息是否一致
         AdminLoginModel adminLogin = new AdminLoginModel(adminInfo.getUserName(),adminInfo.getPassWord());
-        if(!adminLogin.equals(adminLoginModel)){
-            throw new Exception(ExceptionEnum.EXCEPTION_23.getDesc());
-        }
+        Assert.isTrue(adminLogin.equals(adminLoginModel),ExceptionEnum.EXCEPTION_23.getDesc());
         return "loginSuccess";
     }
 

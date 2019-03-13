@@ -9,6 +9,7 @@ import com.shopoline.xingyuanji.utils.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,7 +33,7 @@ public class ManageController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/adminLogin")
+    @PostMapping("/adminLogin")
     public Object adminLogin(AdminLoginModel adminLoginModel, HttpServletRequest request, HttpServletResponse response){
         JsonResult<String> json = new JsonResult<>();
         try{
