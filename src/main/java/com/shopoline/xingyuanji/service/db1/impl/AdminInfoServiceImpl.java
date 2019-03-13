@@ -38,6 +38,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         // 运用Model内重写的equals方法和hashCode方法比较用户信息是否一致
         AdminLoginModel adminLogin = new AdminLoginModel(adminInfo.getUserName(),adminInfo.getPassWord());
         Assert.isTrue(adminLogin.equals(adminLoginModel),ExceptionEnum.EXCEPTION_23.getDesc());
+
         return "loginSuccess";
     }
 
