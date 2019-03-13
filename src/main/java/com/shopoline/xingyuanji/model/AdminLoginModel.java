@@ -52,18 +52,18 @@ public class AdminLoginModel {
     // 重写equals比较两个Object内元素是否相等
     @Override
     public boolean equals(Object object) {
-        if (this == object) {
+        if(this == object){
             // 地址相等
             return true;
         }
-        if (object == null) {
+        if(object == null){
             // 非空性：对于任意非空引用x，x.equals(null)应该返回false。
             return false;
         }
-        if (object instanceof AdminLoginModel) {
+        if(object instanceof AdminLoginModel){
             AdminLoginModel other = (AdminLoginModel) object;
             // 需要比较的字段相等，则这两个对象相等
-            if (equalsStr(this.userName, other.userName) && equalsStr(this.passWord, other.passWord)) {
+            if(equalsStr(this.userName, other.userName) && equalsStr(this.passWord, other.passWord)){
                 return true;
             }
         }
@@ -72,7 +72,7 @@ public class AdminLoginModel {
 
         // 重写HashCode
         @Override
-        public int hashCode () {
+        public int hashCode(){
             int result = 17;
             result = 31 * result + (userName == null ? 0 : userName.hashCode());
             result = 31 * result + (passWord == null ? 0 : passWord.hashCode());

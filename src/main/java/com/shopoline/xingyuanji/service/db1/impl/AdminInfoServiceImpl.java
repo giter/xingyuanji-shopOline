@@ -29,7 +29,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      * @return
      */
     @Override
-    public String adminLogin(AdminLoginModel adminLoginModel) throws Exception{
+    public String adminLogin(AdminLoginModel adminLoginModel){
 
         // 获取用户信息
         AdminInfo adminInfo = this.selectOne(new EntityWrapper<AdminInfo>().eq("userName",adminLoginModel.getUserName()).

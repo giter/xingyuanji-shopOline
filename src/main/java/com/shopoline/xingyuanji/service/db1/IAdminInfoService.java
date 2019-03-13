@@ -19,6 +19,6 @@ public interface IAdminInfoService extends IService<AdminInfo> {
      * @param adminLoginModel
      * @return
      */
-    String adminLogin(AdminLoginModel adminLoginModel) throws Exception;
+    String adminLogin(AdminLoginModel adminLoginModel);
 
 }
