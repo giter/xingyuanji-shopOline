@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shopoline.xingyuanji.mapper.db1.AdminInfoMapper">
+<mapper namespace="com.shopoline.xingyuanji.mapper.AdminInfoMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.db1.AdminInfo">
+    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.AdminInfo">
         <result column="id" property="id" />
         <result column="name" property="name" />
         <result column="userName" property="userName" />
@@ -11,6 +11,7 @@
         <result column="editBy" property="editBy" />
         <result column="editTime" property="editTime" />
         <result column="deleteFlag" property="deleteFlag" />
+        <result column="position" property="position" />
     </resultMap>
 
 </mapper>

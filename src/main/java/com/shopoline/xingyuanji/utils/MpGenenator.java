@@ -104,8 +104,8 @@ public class MpGenenator {
         pc.setParent("com.shopoline");
         pc.setModuleName("xingyuanji");
         // pc.setController("controller");
-        pc.setEntity("entity.db1");
-        pc.setMapper("mapper.db1");
+        pc.setEntity("entity");
+        pc.setMapper("mapper");
         pc.setService("service.db1");
         pc.setServiceImpl("service.db1.impl");
         mpg.setPackageInfo(pc);

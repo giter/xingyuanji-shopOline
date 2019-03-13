@@ -1,6 +1,7 @@
 package com.shopoline.xingyuanji.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -19,31 +20,43 @@ public class AdminInfo extends Model<AdminInfo> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableField(value = "id")
     private String id;
     /**
      * 姓名
      */
+    @TableField(value = "name")
     private String name;
     /**
      * 账号
      */
+    @TableField(value = "userName")
     private String userName;
     /**
      * 密码
      */
+    @TableField(value = "passWord")
     private String passWord;
     /**
      * 操作人
      */
+    @TableField(value = "editBy")
     private String editBy;
     /**
      * 操作时间
      */
+    @TableField(value = "editTime")
     private Date editTime;
     /**
      * 状态 0：禁用 1；启用
      */
+    @TableField(value = "deleteFlag")
     private String deleteFlag;
+    /**
+     * 职位
+     */
+    @TableField(value = "position")
+    private String position;
 
 
     public String getId() {
@@ -109,6 +122,15 @@ public class AdminInfo extends Model<AdminInfo> {
         return this;
     }
 
+    public String getPosition() {
+        return position;
+    }
+
+    public AdminInfo setPosition(String position) {
+        this.position = position;
+        return this;
+    }
+
     @Override
     protected Serializable pkVal() {
         return null;
@@ -124,6 +146,7 @@ public class AdminInfo extends Model<AdminInfo> {
         ", editBy=" + editBy +
         ", editTime=" + editTime +
         ", deleteFlag=" + deleteFlag +
+        ", position=" + position +
         "}";
     }
 }
