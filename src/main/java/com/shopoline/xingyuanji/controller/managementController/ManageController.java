@@ -11,10 +11,7 @@ import com.shopoline.xingyuanji.vo.AdminInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -79,7 +76,7 @@ public class ManageController extends BaseController {
      */
     @ResponseBody
     @PostMapping("/privilegeManage")
-    public Object privilegeManage(PrivilegeManageModel privilegeManageModel, HttpServletRequest request, HttpServletResponse response){
+    public Object privilegeManage(@RequestBody PrivilegeManageModel privilegeManageModel, HttpServletRequest request, HttpServletResponse response){
         JsonResult<String> json = new JsonResult<>();
         try{
             adminInfoService.privilegeManage(privilegeManageModel);
