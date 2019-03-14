@@ -3,6 +3,10 @@ package com.shopoline.xingyuanji.service.db1;
 import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.AdminInfo;
 import com.shopoline.xingyuanji.model.AdminLoginModel;
+import com.shopoline.xingyuanji.model.PrivilegeManageModel;
+import com.shopoline.xingyuanji.vo.AdminInfoVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -21,4 +25,16 @@ public interface IAdminInfoService extends IService<AdminInfo> {
      */
     String adminLogin(AdminLoginModel adminLoginModel);
 
+    /**
+     * 增加或修改管理员信息
+     * @param privilegeManageModel
+     * @return
+     */
+    void privilegeManage(PrivilegeManageModel privilegeManageModel);
+
+    /**
+     * 获取管理员信息
+     * @return
+     */
+    List<AdminInfoVO> getAdminInfoList();
 }
