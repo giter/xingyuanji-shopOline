@@ -59,7 +59,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     @Override
     public void privilegeManage(PrivilegeManageModel privilegeManageModel) {
 
-// 查询数据库中管理员记录
+        // 查询数据库中管理员记录
         AdminInfo adminInfo = this.selectOne(new EntityWrapper<AdminInfo>().eq("id",privilegeManageModel.getId()).
                 eq("deleteFlag",Constants.QIYONG));
         // 没有记录插入数据,有就更新
