@@ -8,6 +8,7 @@ import com.shopoline.xingyuanji.model.PrivilegeManageModel;
 import com.shopoline.xingyuanji.service.db1.IAdminInfoService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.AdminInfoVO;
+import com.shopoline.xingyuanji.vo.UserInfoListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -77,7 +78,7 @@ public class ManageController extends BaseController {
     @ResponseBody
     @PostMapping("/privilegeManage")
     public Object privilegeManage(@RequestBody PrivilegeManageModel privilegeManageModel, HttpServletRequest request, HttpServletResponse response){
-        JsonResult<String> json = new JsonResult<>();
+        JsonResult<Object> json = new JsonResult<>();
         try{
             adminInfoService.privilegeManage(privilegeManageModel);
         }catch (Exception e){
@@ -88,6 +89,26 @@ public class ManageController extends BaseController {
         return JSONUtil.toJSONString(json);
     }
 
+
+    /**
+     * 获取用户信息列表(包含条件查询)
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getUserInfoList")
+    public Object getUserInfoList(String nickName,String openId,String pageNum,HttpServletRequest request, HttpServletResponse response){
+        JsonResult<UserInfoListVO> json = new JsonResult<>();
+        try{
+            json.setData(adminInfoService.getUserInfoList(nickName,openId,pageNum));
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
 
 
 }

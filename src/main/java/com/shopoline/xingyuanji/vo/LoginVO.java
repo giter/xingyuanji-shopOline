@@ -29,4 +29,5 @@ public class LoginVO {
     public void setChannelCode(String channelCode) {
         this.channelCode = channelCode;
     }
+
 }

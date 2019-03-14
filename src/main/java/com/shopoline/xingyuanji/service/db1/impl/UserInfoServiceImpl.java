@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -145,6 +146,31 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         UserInfo userInfo = this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
 
         return userInfo;
+    }
+
+    /**
+     * 条件查询用户信息
+     * @param nickName
+     * @param openId
+     * @return
+     */
+    @Override
+    public List<UserInfo> selectUserInfoByCondition(String nickName, String openId,Integer pageStart,Integer pageSize) {
+
+        List<UserInfo> userInfoList = baseMapper.selectUserInfoByCondition(nickName,openId,pageStart,pageSize);
+        return userInfoList;
+    }
+
+    /**
+     * 按条件搜索
+     * @param nickName
+     * @param openId
+     * @return
+     */
+    @Override
+    public List<UserInfo> selectUserInfoByInformation(String nickName, String openId) {
+        List<UserInfo> userInfoList = baseMapper.selectUserInfoByInformation(nickName,openId);
+        return userInfoList;
     }
 
 

@@ -5,6 +5,8 @@ import com.shopoline.xingyuanji.entity.UserInfo;
 import com.shopoline.xingyuanji.model.SignModel;
 import com.shopoline.xingyuanji.vo.UserInfoVO;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户信息相关接口
@@ -38,4 +40,20 @@ public interface IUserInfoService extends IService<UserInfo> {
      * @return
      */
     UserInfo getDB1UserInfo(String ticketId);
+
+    /**
+     * 条件查询用户信息
+     * @param nickName
+     * @param openId
+     * @return
+     */
+    List<UserInfo> selectUserInfoByCondition(String nickName, String openId,Integer pageStart,Integer pageSize);
+
+    /**
+     * 按条件搜索
+     * @param nickName
+     * @param openId
+     * @return
+     */
+    List<UserInfo> selectUserInfoByInformation(String nickName, String openId);
 }

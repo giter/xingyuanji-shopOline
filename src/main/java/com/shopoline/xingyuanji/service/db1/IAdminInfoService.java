@@ -5,6 +5,7 @@ import com.shopoline.xingyuanji.entity.AdminInfo;
 import com.shopoline.xingyuanji.model.AdminLoginModel;
 import com.shopoline.xingyuanji.model.PrivilegeManageModel;
 import com.shopoline.xingyuanji.vo.AdminInfoVO;
+import com.shopoline.xingyuanji.vo.UserInfoListVO;
 
 import java.util.List;
 
@@ -37,4 +38,12 @@ public interface IAdminInfoService extends IService<AdminInfo> {
      * @return
      */
     List<AdminInfoVO> getAdminInfoList();
+
+    /**
+     * 获取用户信息列表(包含条件查询)
+     * @param nickName
+     * @param openId
+     * @return
+     */
+    UserInfoListVO getUserInfoList(String nickName, String openId,String pageNum);
 }
