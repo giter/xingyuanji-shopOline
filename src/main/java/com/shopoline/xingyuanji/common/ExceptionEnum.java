@@ -21,11 +21,12 @@ public enum ExceptionEnum {
     EXCEPTION_17(17,"请勿重复操作"),
     EXCEPTION_18(18,"暂未查询到物流信息"),
     EXCEPTION_19(19,"商品已售罄"),
-    EXCEPTION_20(20,"请勿删除最后默认地址"),
+    EXCEPTION_20(20,"请勿删除默认地址"),
     EXCEPTION_21(21,"请输入11位手机号"),
     EXCEPTION_22(22,"兑换失败"),
     EXCEPTION_23(23,"登陆失败"),
-    EXCEPTION_24(24,"小猩正在忙，不要着急呦……");
+    EXCEPTION_24(24,"小猩正在忙，请稍等十秒再操作呦……"),
+    EXCEPTION_25(25,"已是默认地址");
 
     public Integer key;
     public String desc;

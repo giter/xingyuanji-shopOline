@@ -2,6 +2,7 @@ package com.shopoline.xingyuanji.model;
 
 public class UserAddressInfoModel {
 
+    private String addressId;
     private String openId;
     private String nickName;
     private String name;
@@ -11,9 +12,24 @@ public class UserAddressInfoModel {
     private String area;
     private String address;
     private String def;
-    private String editTime;
-    private String editBy;
     private String deleteFlag;
+    private String userId;
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getOpenId() {
         return openId;
@@ -85,22 +101,6 @@ public class UserAddressInfoModel {
 
     public void setDef(String def) {
         this.def = def;
-    }
-
-    public String getEditTime() {
-        return editTime;
-    }
-
-    public void setEditTime(String editTime) {
-        this.editTime = editTime;
-    }
-
-    public String getEditBy() {
-        return editBy;
-    }
-
-    public void setEditBy(String editBy) {
-        this.editBy = editBy;
     }
 
     public String getDeleteFlag() {

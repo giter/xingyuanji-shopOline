@@ -183,5 +183,44 @@ public class ManageController extends BaseController {
         return JSONUtil.toJSONString(json);
     }
 
+    /**
+     * 删除用户地址
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @DeleteMapping("/deleteUserAddress")
+    public Object deleteUserAddress(String addressId,HttpServletRequest request, HttpServletResponse response){
+        JsonResult<Object> json = new JsonResult<>();
+        try{
+            adminInfoService.deleteUserAddress(addressId);
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
 
+    /**
+     * 变更默认地址
+     * @param addressId
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @PutMapping("/changeUserDefAddress")
+    public Object changeUserDefAddress(String addressId,String userId,HttpServletRequest request, HttpServletResponse response){
+        JsonResult<Object> json = new JsonResult<>();
+        try{
+            adminInfoService.changeUserDefAddress(addressId,userId);
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.entity.AdminInfo;
+import com.shopoline.xingyuanji.entity.UserAddress;
 import com.shopoline.xingyuanji.entity.UserAsset;
 import com.shopoline.xingyuanji.entity.UserInfo;
 import com.shopoline.xingyuanji.mapper.AdminInfoMapper;
@@ -236,6 +237,47 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
         List<UserAddressInfoModel> userAddressInfoModel = userAddressService.getUserAddressInfoList(userId);
         return userAddressInfoModel;
+    }
+
+    /**
+     * 删除用户地址
+     */
+    @Override
+    public void deleteUserAddress(String addressId) throws Exception {
+
+        UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("id",addressId).last("Limit 1"));
+        if(userAddress.getDef() == Constants.DEF_ADDRESS && userAddress.getDeleteFlag() == Constants.QIYONG){
+            throw new Exception(ExceptionEnum.EXCEPTION_20.getDesc());
+        }
+        userAddressService.delete(new EntityWrapper<UserAddress>().eq("id",addressId));
+    }
+
+    /**
+     * 变更用户默认地址
+     * @param addressId
+     * @param userId
+     */
+    @Override
+    public void changeUserDefAddress(String addressId, String userId) throws Exception{
+
+        UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userId).
+                eq("id",addressId).last("Limit 1"));
+        if(userAddress.getDef() == Constants.DEF_ADDRESS && userAddress.getDeleteFlag() == Constants.QIYONG){
+            throw new Exception(ExceptionEnum.EXCEPTION_25.getDesc());
+        }
+        // 将所有记录变为非默认
+        List<UserAddress> userAddressList = userAddressService.selectList(new EntityWrapper<UserAddress>().eq("userId",userId));
+        for(ListIterator<UserAddress> iterator = userAddressList.listIterator();iterator.hasNext();){
+            UserAddress updateAddress = iterator.next();
+            updateAddress.setDef(Constants.NO_DEF_ADDRESS);
+            userAddressService.updateById(updateAddress);
+        }
+        UserAddress changeAddressDef = new UserAddress();
+        changeAddressDef.setId(addressId);
+        changeAddressDef.setDef(Constants.DEF_ADDRESS);
+        changeAddressDef.setDeleteFlag(Constants.QIYONG);
+        userAddressService.updateById(changeAddressDef);
+
     }
 
 

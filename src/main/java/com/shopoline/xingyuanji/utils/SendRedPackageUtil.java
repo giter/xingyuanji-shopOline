@@ -37,8 +37,7 @@ public class SendRedPackageUtil {
             // 发放人数
             map.put("total_num","1");
             map.put("wishing","恭喜你获取红包奖励");
-            // map.put("client_ip",IPUtils.getRemoteHost(sendRedPackageModel.getRequest()));
-            map.put("client_ip","47.98.44.227");
+            map.put("client_ip",IPUtils.getRemoteHost(sendRedPackageModel.getRequest()));
             map.put("act_name","猩愿机抽奖活动");
             // 备注
             map.put("remark","猜越多得越多，快来抢！");

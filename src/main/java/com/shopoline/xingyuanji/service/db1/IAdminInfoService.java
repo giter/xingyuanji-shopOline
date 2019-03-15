@@ -71,4 +71,15 @@ public interface IAdminInfoService extends IService<AdminInfo> {
      */
     List<UserAddressInfoModel> getUserAddressInfoList(String userId);
 
+    /**
+     * 删除用户地址
+     */
+    void deleteUserAddress(String addressId) throws Exception;
+
+    /**
+     * 变更用户默认地址
+     * @param addressId
+     * @param userId
+     */
+    void changeUserDefAddress(String addressId, String userId) throws Exception;
 }
