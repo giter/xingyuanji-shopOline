@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 发红包工具
@@ -20,12 +20,11 @@ public class SendRedPackageUtil {
 
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-    private WXPay wxPay = new WXPay(WxConfig.getPayInstance());
 
     public String sendRedPackage(SendRedPackageModel sendRedPackageModel) throws Exception{
 
             int capacity = (int)(14/0.75+1);
-            HashMap<String, String> map = new HashMap<>(capacity);
+            ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>(capacity);
             map.put("nonce_str", WXPayUtil.generateNonceStr());
             // 商户订单号
             map.put("mch_billno",sendRedPackageModel.getPrizeId()+ TicketUtil.get5_RandomNum());
@@ -38,7 +37,8 @@ public class SendRedPackageUtil {
             // 发放人数
             map.put("total_num","1");
             map.put("wishing","恭喜你获取红包奖励");
-            map.put("client_ip",IPUtils.getRemoteHost(sendRedPackageModel.getRequest()));
+            // map.put("client_ip",IPUtils.getRemoteHost(sendRedPackageModel.getRequest()));
+            map.put("client_ip","47.98.44.227");
             map.put("act_name","猩愿机抽奖活动");
             // 备注
             map.put("remark","猜越多得越多，快来抢！");
@@ -46,16 +46,17 @@ public class SendRedPackageUtil {
             // 签名
             map.put("sign",WXPayUtil.generateSignature(map, WxConfig.SECRET, WXPayConstants.SignType.MD5));
             String url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
-            String respXml = wxPay.requestWithCert(url, map, 8000, 10000);
-            Map<String, String> result = WXPayUtil.xmlToMap(respXml);
-            String resultCode = "";
-            for(Map.Entry<String,String> entry : result.entrySet()){
-                if(entry.getKey().equals("result_code")){
-                    resultCode = entry.getValue();
+                WXPay wxPay = new WXPay(WxConfig.getPayInstance());
+                String respXml = wxPay.requestWithCert(url, map, 8000, 10000);
+                Map<String, String> result = WXPayUtil.xmlToMap(respXml);
+                String resultCode = "";
+                for(Map.Entry<String,String> entry : result.entrySet()){
+                    if(entry.getKey().equals("result_code")){
+                        resultCode = entry.getValue();
+                    }
                 }
-            }
-            logger.info("<-红包返回结果->："+result+"\tDATE："+new Date());
-            return resultCode;
+                logger.info("<-红包返回结果->："+result+"\tDATE："+new Date());
+                return resultCode;
     }
 
 

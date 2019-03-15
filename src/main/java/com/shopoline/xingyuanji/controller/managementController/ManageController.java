@@ -5,9 +5,13 @@ import com.shopoline.xingyuanji.common.JsonResult;
 import com.shopoline.xingyuanji.controller.baseController.BaseController;
 import com.shopoline.xingyuanji.model.AdminLoginModel;
 import com.shopoline.xingyuanji.model.PrivilegeManageModel;
+import com.shopoline.xingyuanji.model.UserAddressInfoModel;
 import com.shopoline.xingyuanji.service.db1.IAdminInfoService;
+import com.shopoline.xingyuanji.service.db1.IUserAddressService;
+import com.shopoline.xingyuanji.service.db1.IUserAssetService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.AdminInfoVO;
+import com.shopoline.xingyuanji.vo.UserAssetListVO;
 import com.shopoline.xingyuanji.vo.UserInfoListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -25,6 +29,10 @@ public class ManageController extends BaseController {
 
     @Autowired
     private IAdminInfoService adminInfoService;
+    @Autowired
+    private IUserAssetService userAssetService;
+    @Autowired
+    private IUserAddressService userAddressService;
 
 
     /**
@@ -102,6 +110,71 @@ public class ManageController extends BaseController {
         JsonResult<UserInfoListVO> json = new JsonResult<>();
         try{
             json.setData(adminInfoService.getUserInfoList(nickName,openId,pageNum));
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+
+    /**
+     * 查询用户资产列表
+     * @param userId
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getUserAssetLog")
+    public Object getUserAssetLog(String userId,String pageNum,HttpServletRequest request, HttpServletResponse response){
+        JsonResult<UserAssetListVO> json = new JsonResult<>();
+        try{
+            json.setData(adminInfoService.getUserAssetList(userId,pageNum));
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+
+    /**
+     * 更新用户资产状态
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @PutMapping("/replaceUserAsset")
+    public Object replaceUserAsset(String amountId,String deleteFlag,HttpServletRequest request, HttpServletResponse response){
+        JsonResult<Object> json = new JsonResult<>();
+        try{
+            adminInfoService.replaceUserAsset(amountId,deleteFlag);
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+
+    /**
+     * 获取用户地址信息
+     * @param userId
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getUserAddressList")
+    public Object getUserAddressList(String userId,HttpServletRequest request, HttpServletResponse response){
+        JsonResult<List<UserAddressInfoModel>> json = new JsonResult<>();
+        try{
+            json.setData(adminInfoService.getUserAddressInfoList(userId));
         }catch (Exception e){
             logger.info(e.getMessage());
             json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));

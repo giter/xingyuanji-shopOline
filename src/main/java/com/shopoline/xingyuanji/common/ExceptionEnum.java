@@ -24,7 +24,8 @@ public enum ExceptionEnum {
     EXCEPTION_20(20,"请勿删除最后默认地址"),
     EXCEPTION_21(21,"请输入11位手机号"),
     EXCEPTION_22(22,"兑换失败"),
-    EXCEPTION_23(23,"登陆失败");
+    EXCEPTION_23(23,"登陆失败"),
+    EXCEPTION_24(24,"小猩正在忙，不要着急呦……");
 
     public Integer key;
     public String desc;

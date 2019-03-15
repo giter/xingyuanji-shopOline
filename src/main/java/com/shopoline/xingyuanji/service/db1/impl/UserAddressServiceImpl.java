@@ -8,6 +8,7 @@ import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.entity.UserAddress;
 import com.shopoline.xingyuanji.entity.UserInfo;
 import com.shopoline.xingyuanji.mapper.UserAddressMapper;
+import com.shopoline.xingyuanji.model.UserAddressInfoModel;
 import com.shopoline.xingyuanji.model.UserAddressModel;
 import com.shopoline.xingyuanji.service.db1.IUserAddressService;
 import com.shopoline.xingyuanji.service.db1.IUserInfoService;
@@ -30,6 +31,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
 
     @Autowired
     private IUserInfoService userInfoService;
+
 
 
 
@@ -181,7 +183,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     @Override
     public String isUserAddress(String ticketId) {
 
-        synchronized (this){
+
             //获取用户信息
             UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
             //获取用户默认地址
@@ -192,7 +194,16 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
                 return "0";
             }
             return "1";
-        }
+    }
+
+    /**
+     * 获取用户地址信息(后台管理)
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<UserAddressInfoModel> getUserAddressInfoList(String userId) {
+        return baseMapper.getUserAddressInfoList(userId);
     }
 
 

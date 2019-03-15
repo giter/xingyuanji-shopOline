@@ -6,14 +6,16 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.entity.AdminInfo;
+import com.shopoline.xingyuanji.entity.UserAsset;
 import com.shopoline.xingyuanji.entity.UserInfo;
 import com.shopoline.xingyuanji.mapper.AdminInfoMapper;
-import com.shopoline.xingyuanji.model.AdminLoginModel;
-import com.shopoline.xingyuanji.model.PrivilegeManageModel;
-import com.shopoline.xingyuanji.model.UserInfoListModel;
+import com.shopoline.xingyuanji.model.*;
 import com.shopoline.xingyuanji.service.db1.IAdminInfoService;
+import com.shopoline.xingyuanji.service.db1.IUserAddressService;
+import com.shopoline.xingyuanji.service.db1.IUserAssetService;
 import com.shopoline.xingyuanji.service.db1.IUserInfoService;
 import com.shopoline.xingyuanji.vo.AdminInfoVO;
+import com.shopoline.xingyuanji.vo.UserAssetListVO;
 import com.shopoline.xingyuanji.vo.UserInfoListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,10 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
     @Autowired
     private IUserInfoService userInfoService;
+    @Autowired
+    private IUserAssetService userAssetService;
+    @Autowired
+    private IUserAddressService userAddressService;
 
 
     /**
@@ -162,6 +168,75 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         return userInfoListVO;
     }
 
+    /**
+     * 查询用户资产信息列表
+     * @param userId
+     * @return
+     */
+    @Override
+    public UserAssetListVO getUserAssetList(String userId,String pageNum) {
+        // 每页记录数量
+        Integer pageSize = 6;
+        // 根据页码计算查询条数
+        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
+        // 获取用户资产信息列表
+        List<UserAssetInfoModel> userAssetList = userAssetService.getUserAssetInfoList(userId,pageStart,pageSize);
+        List<UserAssetListModel> userAssetModelList = new LinkedList<>();
+        //遍历
+        for(ListIterator<UserAssetInfoModel> iterator = userAssetList.listIterator();iterator.hasNext();){
+            UserAssetListModel userAssetListModel = new UserAssetListModel();
+            UserAssetInfoModel userAssetInfoModel = iterator.next();
+            userAssetListModel.setAmount(userAssetInfoModel.getAmount());
+            userAssetListModel.setAmountId(userAssetInfoModel.getAmountId());
+            userAssetListModel.setAmountType(userAssetInfoModel.getAmountType());
+            userAssetListModel.setDeletFlag(userAssetInfoModel.getDeletFlag());
+            userAssetListModel.setEditTime(DateFormat.getDateInstance(DateFormat.FULL).format(userAssetInfoModel.getEditTime()));
+            userAssetListModel.setNickName(userAssetInfoModel.getNickName());
+            userAssetListModel.setOpenId(userAssetInfoModel.getOpenId());
+            userAssetListModel.setUserId(userAssetInfoModel.getUserId());
+            userAssetModelList.add(userAssetListModel);
+        }
+        // VO
+        UserAssetListVO userAssetListVO = new UserAssetListVO();
+        userAssetListVO.setUserAssetListModelList(userAssetModelList);
+        userAssetListVO.setCount(userAssetService.getUserAssetCount(userId));
+        userAssetListVO.setPageCount(userAssetService.selectCount(new EntityWrapper<UserAsset>().eq("userId",userId)));
+
+        return userAssetListVO;
+    }
+
+    /**
+     * 更新用户资产状态
+     * @param amountId
+     * @return
+     */
+    @Override
+    public void replaceUserAsset(String amountId,String deleteFlag) {
+
+        Integer status = null;
+        if(deleteFlag.equals("1")){
+            status = 0;
+        }else if(deleteFlag.equals("0")){
+            status = 1;
+        }
+        UserAsset userAsset = new UserAsset();
+        userAsset.setId(amountId);
+        userAsset.setDeltFlag(status);
+        userAssetService.updateById(userAsset);
+    }
+
+
+    /**
+     * 获取用户地址信息
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<UserAddressInfoModel> getUserAddressInfoList(String userId) {
+
+        List<UserAddressInfoModel> userAddressInfoModel = userAddressService.getUserAddressInfoList(userId);
+        return userAddressInfoModel;
+    }
 
 
 }

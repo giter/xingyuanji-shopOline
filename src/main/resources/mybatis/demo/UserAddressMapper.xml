@@ -17,4 +17,12 @@
         <result column="deleteFlag" property="deleteFlag" />
         <result column="area" property="area" />
     </resultMap>
+
+    <!--获取用户地址-->
+    <select id="getUserAddressInfoList" resultType="com.shopoline.xingyuanji.model.UserAddressInfoModel">
+        SELECT b.openId,b.nickName,a.name,a.phone,a.province,a.city,a.area,a.address,a.def,a.editTime,a.editBy,a.deleteFlag FROMt_user_address a
+	    LEFT JOIN t_user_info b ON b.userId = a.userId WHERE a.userId = #{userId};
+    </select>
+
+
 </mapper>

@@ -22,4 +22,15 @@
         SELECT SUM(amount) AS amount FROM  t_user_asset WHERE amountType = '0' AND openId = #{openId} AND deltFlag != '0';
     </select>
 
+    <!--获取用户资产信息列表-->
+    <select id="getUserAssetInfoList" resultType="com.shopoline.xingyuanji.model.UserAssetInfoModel">
+        SELECT a.id AS amountId,a.openId,a.amount,a.amountType,a.editTime,a.deltFlag AS deletFlag,b.nickName,b.userId FROM t_user_asset a LEFT JOIN
+            t_user_info b ON b.openId = a.openId WHERE a.userId = #{userId} ORDER BY a.editTime DESC LIMIT #{pageStart},#{pageSize};
+    </select>
+
+    <!--获取用户资产总数-->
+    <select id="getUserAssetCount" resultType="java.lang.Integer">
+        SELECT SUM(AMOUNT) FROM t_user_asset WHERE userId = #{userId} AND deltFlag = '1' AND amountType = '0';
+    </select>
+
 </mapper>

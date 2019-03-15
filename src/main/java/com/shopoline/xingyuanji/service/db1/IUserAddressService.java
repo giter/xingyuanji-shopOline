@@ -1,7 +1,8 @@
 package com.shopoline.xingyuanji.service.db1;
 
-import com.shopoline.xingyuanji.entity.UserAddress;
 import com.baomidou.mybatisplus.service.IService;
+import com.shopoline.xingyuanji.entity.UserAddress;
+import com.shopoline.xingyuanji.model.UserAddressInfoModel;
 import com.shopoline.xingyuanji.model.UserAddressModel;
 
 import java.util.List;
@@ -60,4 +61,11 @@ public interface IUserAddressService extends IService<UserAddress> {
      * @return
      */
     String isUserAddress(String ticketId);
+
+    /**
+     * 获取用户地址信息(后台管理)
+     * @param userId
+     * @return
+     */
+    List<UserAddressInfoModel> getUserAddressInfoList(String userId);
 }

@@ -1,10 +1,13 @@
 package com.shopoline.xingyuanji.service.db1;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.ProductInfo;
 import com.shopoline.xingyuanji.entity.UserAsset;
-import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.UserInfo;
+import com.shopoline.xingyuanji.model.UserAssetInfoModel;
 import com.shopoline.xingyuanji.vo.UserCoinVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -42,4 +45,17 @@ public interface IUserAssetService extends IService<UserAsset> {
      */
     void dedUserXingbi(ProductInfo productInfo, UserInfo userInfo);
 
+    /**
+     * 获取用户资产信息列表
+     * @param userId
+     * @return
+     */
+    List<UserAssetInfoModel> getUserAssetInfoList(String userId,Integer pageStart,Integer pageSize);
+
+    /**
+     * 获取用户资产总数
+     * @param userId
+     * @return
+     */
+    Integer getUserAssetCount(String userId);
 }

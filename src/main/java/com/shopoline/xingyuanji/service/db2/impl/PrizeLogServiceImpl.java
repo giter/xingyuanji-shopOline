@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PrizeLogServiceImpl extends ServiceImpl<PrizeLogMapper, PrizeLog> implements IPrizeLogService {
 
+    @Override
+    public void updateByInfo(PrizeLog prizeLog) {
+        this.updateById(prizeLog);
+    }
 }

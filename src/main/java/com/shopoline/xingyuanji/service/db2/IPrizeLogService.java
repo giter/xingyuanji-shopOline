@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IPrizeLogService extends IService<PrizeLog> {
 
+    void updateByInfo(PrizeLog prizeLog);
+
 }

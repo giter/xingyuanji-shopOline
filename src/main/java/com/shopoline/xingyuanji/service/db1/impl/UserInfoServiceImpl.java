@@ -173,5 +173,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         return userInfoList;
     }
 
+    @Override
+    public UserInfo getRedPacketUserInfo(String openId) {
+
+
+        return this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
+    }
+
 
 }

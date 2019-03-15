@@ -2,7 +2,10 @@ package com.shopoline.xingyuanji.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.shopoline.xingyuanji.entity.UserAsset;
+import com.shopoline.xingyuanji.model.UserAssetInfoModel;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -26,4 +29,17 @@ public interface UserAssetMapper extends BaseMapper<UserAsset> {
 
     UserAsset selectUserXingBi(@Param("xingbi") Integer xingbi,@Param("openId") String openId);
 
+    /**
+     * 获取用户资产信息列表
+     * @param userId
+     * @return
+     */
+    List<UserAssetInfoModel> getUserAssetInfoList(@Param("userId") String userId,@Param("pageStart") Integer pageStart,@Param("pageSize") Integer pageSize);
+
+    /**
+     * 获取用户资产总数
+     * @param userId
+     * @return
+     */
+    Integer getUserAssetCount(String userId);
 }

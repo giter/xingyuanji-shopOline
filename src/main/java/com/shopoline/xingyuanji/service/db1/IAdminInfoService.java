@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.AdminInfo;
 import com.shopoline.xingyuanji.model.AdminLoginModel;
 import com.shopoline.xingyuanji.model.PrivilegeManageModel;
+import com.shopoline.xingyuanji.model.UserAddressInfoModel;
 import com.shopoline.xingyuanji.vo.AdminInfoVO;
+import com.shopoline.xingyuanji.vo.UserAssetListVO;
 import com.shopoline.xingyuanji.vo.UserInfoListVO;
 
 import java.util.List;
@@ -46,4 +48,27 @@ public interface IAdminInfoService extends IService<AdminInfo> {
      * @return
      */
     UserInfoListVO getUserInfoList(String nickName, String openId,String pageNum);
+
+    /**
+     * 查询用户资产列表
+     * @param userId
+     * @return
+     */
+    UserAssetListVO getUserAssetList(String userId,String pageNum);
+
+    /**
+     * 更新用户资产状态
+     * @param amountId
+     * @return
+     */
+    void replaceUserAsset(String amountId,String deleteFlag);
+
+
+    /**
+     * 获取用户地址信息
+     * @param userId
+     * @return
+     */
+    List<UserAddressInfoModel> getUserAddressInfoList(String userId);
+
 }

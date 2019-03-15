@@ -10,6 +10,7 @@ import com.shopoline.xingyuanji.entity.ShopLog;
 import com.shopoline.xingyuanji.entity.UserAsset;
 import com.shopoline.xingyuanji.entity.UserInfo;
 import com.shopoline.xingyuanji.mapper.UserAssetMapper;
+import com.shopoline.xingyuanji.model.UserAssetInfoModel;
 import com.shopoline.xingyuanji.service.db1.IProductInfoService;
 import com.shopoline.xingyuanji.service.db1.IShopLogService;
 import com.shopoline.xingyuanji.service.db1.IUserAssetService;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -156,6 +158,26 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
                 "\tSelledProductName："+productInfo.getGoodsname()+"\tSelledProductId："+productInfo.getId()+"\tDELETE_TYPE：猩币"+"\tAmount："+
                 userAsset.getAmount()+"\tDate："+userAsset.getEditTime());
         this.insert(userAsset);
+    }
+
+    /**
+     * 获取用户资产信息列表
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<UserAssetInfoModel> getUserAssetInfoList(String userId,Integer pageStart,Integer pageSize) {
+        return baseMapper.getUserAssetInfoList(userId,pageStart,pageSize);
+    }
+
+    /**
+     * 获取用户资产总数
+     * @param userId
+     * @return
+     */
+    @Override
+    public Integer getUserAssetCount(String userId) {
+        return baseMapper.getUserAssetCount(userId);
     }
 
 }
