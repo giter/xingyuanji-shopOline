@@ -5,6 +5,7 @@ import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.shopoline.xingyuanji.Config;
 import com.shopoline.xingyuanji.WxConfig;
+import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.model.SendRedPackageModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public class SendRedPackageUtil {
 
     public String sendRedPackage(SendRedPackageModel sendRedPackageModel) throws Exception{
 
+        synchronized (this){
             int capacity = (int)(14/0.75+1);
             ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>(capacity);
             map.put("nonce_str", WXPayUtil.generateNonceStr());
@@ -45,17 +47,25 @@ public class SendRedPackageUtil {
             // 签名
             map.put("sign",WXPayUtil.generateSignature(map, WxConfig.SECRET, WXPayConstants.SignType.MD5));
             String url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
-                WXPay wxPay = new WXPay(WxConfig.getPayInstance());
-                String respXml = wxPay.requestWithCert(url, map, 8000, 10000);
-                Map<String, String> result = WXPayUtil.xmlToMap(respXml);
-                String resultCode = "";
-                for(Map.Entry<String,String> entry : result.entrySet()){
-                    if(entry.getKey().equals("result_code")){
-                        resultCode = entry.getValue();
-                    }
+            WXPay wxPay = new WXPay(WxConfig.getPayInstance());
+
+            boolean tokenResult = RedisUtil.hasKey("RED_PACKAGE"+sendRedPackageModel.getOpenId());
+
+            if( tokenResult == true ){
+                logger.info("<-RED_PACKAGE-TOKEN->:WXP_LOCK");
+                throw new Exception(ExceptionEnum.EXCEPTION_24.getDesc());
+            }
+            String respXml = wxPay.requestWithCert(url, map, 3000, 8000);
+            Map<String, String> result = WXPayUtil.xmlToMap(respXml);
+            String resultCode = "";
+            for(Map.Entry<String,String> entry : result.entrySet()){
+                if(entry.getKey().equals("result_code")){
+                    resultCode = entry.getValue();
                 }
-                logger.info("<-红包返回结果->："+result+"\tDATE："+new Date());
-                return resultCode;
+            }
+            logger.info("<-红包返回结果->："+result+"\tDATE："+new Date());
+            return resultCode;
+        }
     }
 
 

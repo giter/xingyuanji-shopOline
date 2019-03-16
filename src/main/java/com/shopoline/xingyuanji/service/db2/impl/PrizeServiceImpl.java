@@ -77,73 +77,71 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
     @Override
     public String cashPrize(String ticketId, String prizeId, HttpServletRequest request) throws Exception {
 
+    synchronized (this){
+        // 获取用户信息
+        Buyer buyer = buyerService.getDB2UserInfo(ticketId);
 
-            // 获取用户信息
-            Buyer buyer = buyerService.getDB2UserInfo(ticketId);
-
-            boolean tokenResult = RedisUtil.hasKey("RED_PACKAGE"+buyer.getOpenId());
-
-            if( tokenResult == true ){
-                logger.info("<-RED_PACKAGE->:"+buyer.getNickName()+"\tBUYER_TOKEN："+buyer.getOpenId());
-                throw new Exception(ExceptionEnum.EXCEPTION_24.getDesc());
+        boolean tokenResult = RedisUtil.hasKey("RED_PACKAGE"+buyer.getOpenId());
+        if( tokenResult == true ){
+            logger.info("<-RED_PACKAGE->:"+buyer.getNickName()+"\tBUYER_TOKEN："+buyer.getOpenId());
+            throw new Exception(ExceptionEnum.EXCEPTION_24.getDesc());
+        }
+        // 获取奖品信息
+        PrizeLog prizeLog = prizeLogService.selectOne(new EntityWrapper<PrizeLog>().eq("id", prizeId).
+                eq("useflag",Constants.QIYONG).last("Limit 1"));
+        // 判断是否是红包,如果是，则直接兑换红包
+        if (prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_88 ||
+                prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_36_6 ||
+                prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_18_8 ||
+                prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_16_6 ||
+                prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_8_8 ||
+                prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_6_6 ||
+                prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_1_88 ||
+                prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_1_66 ||
+                prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_0_88 ||
+                prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_0_66
+        ) {
+            // 写入红包兑换信息
+            SendRedPackageModel sendRedPackageModel = new SendRedPackageModel();
+            sendRedPackageModel.setOpenId(buyer.getOpenId());
+            sendRedPackageModel.setPrizeId(String.valueOf(prizeLog.getPrizeId()));
+            sendRedPackageModel.setPrice(String.valueOf(prizeLog.getPrice()));
+            sendRedPackageModel.setRequest(request);
+            // 兑换红包
+            SendRedPackageUtil sendRedPackage = new SendRedPackageUtil();
+            String result = sendRedPackage.sendRedPackage(sendRedPackageModel);
+            //判断微信接口返回值
+            if (result.equals("SUCCESS")) {
+                //如果成功从priceLog更新相应信息（逻辑删除将status设为未启用）
+                prizeLog.setUseflag(0);
+                prizeLogService.updateById(prizeLog);
+                logger.info("<-红包兑换写入TOKEN->" + "\t用户昵称：" + buyer.getNickName() + "\t红包信息：" + prizeLog.getPrizeId() +
+                        "\tREDIS_TOKEN:"+"RED_PACKAGE"+buyer.getOpenId()+"\tDate：" + new Date() + result);
+                RedisUtil.setValue2("RED_PACKAGE"+buyer.getOpenId(),buyer.getOpenId());
+                return "兑换成功";
+            } else {
+                throw new Exception(ExceptionEnum.EXCEPTION_22.getDesc());
             }
-            // 获取奖品信息
-            PrizeLog prizeLog = prizeLogService.selectOne(new EntityWrapper<PrizeLog>().eq("id", prizeId).
-                    eq("useflag",Constants.QIYONG).last("Limit 1"));
-            // 判断是否是红包,如果是，则直接兑换红包
-            if (prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_88 ||
-                    prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_36_6 ||
-                    prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_18_8 ||
-                    prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_16_6 ||
-                    prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_8_8 ||
-                    prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_6_6 ||
-                    prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_1_88 ||
-                    prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_1_66 ||
-                    prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_0_88 ||
-                    prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_0_66
-            ) {
-                // Log
-                logger.info("<-红包兑换->" + "\t用户昵称：" + buyer.getNickName() + "\t红包信息：" + prizeLog.getPrizeId() + "\tDate：" + new Date());
-                // 写入红包兑换信息
-                SendRedPackageModel sendRedPackageModel = new SendRedPackageModel();
-                sendRedPackageModel.setOpenId(buyer.getOpenId());
-                sendRedPackageModel.setPrizeId(String.valueOf(prizeLog.getPrizeId()));
-                sendRedPackageModel.setPrice(String.valueOf(prizeLog.getPrice()));
-                sendRedPackageModel.setRequest(request);
-                // 兑换红包
-                SendRedPackageUtil sendRedPackage = new SendRedPackageUtil();
-                String result = sendRedPackage.sendRedPackage(sendRedPackageModel);
-                //判断微信接口返回值
-                if (result.equals("SUCCESS")) {
-                    //如果成功从priceLog更新相应信息（逻辑删除将status设为未启用）
-                    prizeLog.setUseflag(0);
-                    prizeLogService.updateById(prizeLog);
-                    logger.info("<-红包兑换->" + "\t用户昵称：" + buyer.getNickName() + "\t红包信息：" + prizeLog.getPrizeId() +
-                            "\tREDIS_TOKEN:"+"RED_PACKAGE"+buyer.getOpenId()+"\tDate：" + new Date() + result);
-                    RedisUtil.setValue2("RED_PACKAGE"+buyer.getOpenId(),buyer.getOpenId());
-                    return "兑换成功";
-                } else {
-                    throw new Exception(ExceptionEnum.EXCEPTION_22.getDesc());
-                }
-            }
-            // 获取用户默认地址
-            UserInfo userInfo = userInfoService.getRedPacketUserInfo(buyer.getOpenId());
-            UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().
-                    eq("userId", userInfo.getUserId()).last("Limit 1"));
-            prizeLog.setPostCode("0");
-            prizeLog.setProvince(userAddress.getProvince());
-            prizeLog.setCity(userAddress.getCity());
-            prizeLog.setAddress(userAddress.getAddress());
-            prizeLog.setAdname(userAddress.getName());
-            prizeLog.setAdphone(userAddress.getPhone());
-            prizeLog.setStatus(Constants.DB2_YIDUIJAING);
-            prizeLog.setUpdateId(0);
-            prizeLog.setUpdateTime(new Date());
-            prizeLogService.updateByInfo(prizeLog);
-            // log
-            logger.info("<-奖品兑换->：" + prizeLog);
+        }
+        // 获取用户默认地址
+        UserInfo userInfo = userInfoService.getRedPacketUserInfo(buyer.getOpenId());
+        UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().
+                eq("userId", userInfo.getUserId()).last("Limit 1"));
+        prizeLog.setPostCode("0");
+        prizeLog.setProvince(userAddress.getProvince());
+        prizeLog.setCity(userAddress.getCity());
+        prizeLog.setAddress(userAddress.getAddress());
+        prizeLog.setAdname(userAddress.getName());
+        prizeLog.setAdphone(userAddress.getPhone());
+        prizeLog.setStatus(Constants.DB2_YIDUIJAING);
+        prizeLog.setUpdateId(0);
+        prizeLog.setUpdateTime(new Date());
+        prizeLogService.updateByInfo(prizeLog);
+        // log
+        logger.info("<-奖品兑换->：" + prizeLog);
 
-            return "兑换成功";
+        return "兑换成功";
+    }
 
     }
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -30,52 +31,54 @@ public class WxPayServiceImpl implements WxPayService {
      */
     public JSONObject unifiedorder(HashMap<String, String> map){
 
+        synchronized (this) {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("result",0);
+            jsonObject.put("result", 0);
             try {
                 String tradeType = map.get("trade_type");
                 // 微信sdk，统一下单接口
                 Map<String, String> resultMap = wxPay.unifiedOrder(map);
-                if (!"SUCCESS".equals(resultMap.get("result_code"))){
-                    jsonObject.put("object",resultMap);
-                    jsonObject.put("msg","统一下单失败");
-                    logger.error("<-WXPAY_RESULT->："+jsonObject.get("object")+"\tResult：统一下单失败");
+                if (!"SUCCESS".equals(resultMap.get("result_code"))) {
+                    jsonObject.put("object", resultMap);
+                    jsonObject.put("msg", "统一下单失败");
+                    logger.error("<-WXPAY_RESULT->：" + jsonObject.get("object") + "\tResult：统一下单失败");
                     return jsonObject;
                 }
-                if (!WXPayUtil.isSignatureValid(resultMap, WxConfig.SECRET)){
-                    jsonObject.put("msg","验证签名失败");
-                    logger.error("<-WXPAY_RESULT->："+"\tResult：验证签名失败");
+                if (!WXPayUtil.isSignatureValid(resultMap, WxConfig.SECRET)) {
+                    jsonObject.put("msg", "验证签名失败");
+                    logger.error("<-WXPAY_RESULT->：" + "\tResult：验证签名失败");
                     return jsonObject;
                 }
-                jsonObject.put("result",0);
-                if ("JSAPI".equals(tradeType)){
-                    int capacity = (int)(5/0.75)+1;
+                jsonObject.put("result", 0);
+                if ("JSAPI".equals(tradeType)) {
+                    int capacity = (int) (5 / 0.75) + 1;
                     // 小程序，微信公众号
-                    HashMap<String,String> payInfoMap = new HashMap<>(capacity);
+                    ConcurrentHashMap<String, String> payInfoMap = new ConcurrentHashMap<>(capacity);
                     payInfoMap.put("appId", Config.APPID);
-                    payInfoMap.put("nonceStr",resultMap.get("nonce_str"));
-                    payInfoMap.put("timeStamp",System.currentTimeMillis()/1000+"");
-                    payInfoMap.put("package","prepay_id="+resultMap.get("prepay_id"));
-                    payInfoMap.put("signType","MD5");
+                    payInfoMap.put("nonceStr", resultMap.get("nonce_str"));
+                    payInfoMap.put("timeStamp", System.currentTimeMillis() / 1000 + "");
+                    payInfoMap.put("package", "prepay_id=" + resultMap.get("prepay_id"));
+                    payInfoMap.put("signType", "MD5");
                     String sign = WXPayUtil.generateSignature(payInfoMap, WxConfig.SECRET);
-                    payInfoMap.put("paySign",sign);
-                    jsonObject.put("object",payInfoMap);
-                    logger.info("<-JSAPI_WXPAY_RESULT->："+ payInfoMap);
+                    payInfoMap.put("paySign", sign);
+                    jsonObject.put("object", payInfoMap);
+                    logger.info("<-JSAPI_WXPAY_RESULT->：" + payInfoMap);
                 }
-                if ("NATIVE".equals(tradeType)){//扫码
-                    jsonObject.put("url",resultMap.get("code_url"));
+                if ("NATIVE".equals(tradeType)) {//扫码
+                    jsonObject.put("url", resultMap.get("code_url"));
                 }
-                if ("APP".equals(tradeType)){//app
-                    jsonObject.put("object",resultMap);
+                if ("APP".equals(tradeType)) {//app
+                    jsonObject.put("object", resultMap);
                 }
-                if ("MWEB".equals(tradeType)){//H5
-                    jsonObject.put("url",resultMap.get("mweb_url"));
+                if ("MWEB".equals(tradeType)) {//H5
+                    jsonObject.put("url", resultMap.get("mweb_url"));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             return jsonObject;
+        }
     }
 
     /**
