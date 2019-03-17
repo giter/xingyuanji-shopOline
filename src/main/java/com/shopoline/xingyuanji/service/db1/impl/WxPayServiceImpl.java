@@ -29,9 +29,8 @@ public class WxPayServiceImpl implements WxPayService {
      * 微信统一下单
      * @return
      */
-    public JSONObject unifiedorder(HashMap<String, String> map){
+    public synchronized JSONObject unifiedorder(HashMap<String, String> map){
 
-        synchronized (this) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", 0);
             try {
@@ -78,7 +77,6 @@ public class WxPayServiceImpl implements WxPayService {
             }
 
             return jsonObject;
-        }
     }
 
     /**

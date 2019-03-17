@@ -75,9 +75,8 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
      * @return
      */
     @Override
-    public String cashPrize(String ticketId, String prizeId, HttpServletRequest request) throws Exception {
+    public synchronized String cashPrize(String ticketId, String prizeId, HttpServletRequest request) throws Exception {
 
-    synchronized (this){
         // 获取用户信息
         Buyer buyer = buyerService.getDB2UserInfo(ticketId);
 
@@ -141,8 +140,6 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         logger.info("<-奖品兑换->：" + prizeLog);
 
         return "兑换成功";
-    }
-
     }
 
 

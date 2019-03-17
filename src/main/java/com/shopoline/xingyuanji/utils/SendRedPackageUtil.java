@@ -22,9 +22,8 @@ public class SendRedPackageUtil {
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 
-    public String sendRedPackage(SendRedPackageModel sendRedPackageModel) throws Exception{
+    public synchronized String sendRedPackage(SendRedPackageModel sendRedPackageModel) throws Exception{
 
-        synchronized (this){
             int capacity = (int)(14/0.75+1);
             ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>(capacity);
             map.put("nonce_str", WXPayUtil.generateNonceStr());
@@ -65,7 +64,6 @@ public class SendRedPackageUtil {
             }
             logger.info("<-红包返回结果->："+result+"\tDATE："+new Date());
             return resultCode;
-        }
     }
 
 
