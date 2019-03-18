@@ -58,7 +58,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         }else if(userAddressModel.getPhone() == null || userAddressModel.getPhone().equals("")){
             throw new Exception(ExceptionEnum.EXCEPTION_13.getDesc());
         }
-
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 判断用户是否存在默认地址
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
@@ -182,7 +181,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      */
     @Override
     public String isUserAddress(String ticketId) {
-
 
             //获取用户信息
             UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);

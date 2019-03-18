@@ -102,7 +102,6 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
     @Transactional
     public Object exchangeCoin(String ticketId, String goodsId) {
 
-
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         //查询商品信息
         ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",goodsId).
