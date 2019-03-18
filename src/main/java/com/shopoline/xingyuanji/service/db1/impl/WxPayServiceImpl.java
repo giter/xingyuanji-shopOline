@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,7 +28,7 @@ public class WxPayServiceImpl implements WxPayService {
      * 微信统一下单
      * @return
      */
-    public synchronized JSONObject unifiedorder(HashMap<String, String> map){
+    public synchronized JSONObject unifiedorder(ConcurrentHashMap<String, String> map){
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", 0);
