@@ -307,17 +307,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         sendHomeModel.setCity(userAddress.getCity());
         sendHomeModel.setAddress(userAddress.getAddress());
         sendHomeModel.setProductId(productId);
-        // SFResult sfResult = new SFResult();
-          // 写入邮费
-          // sfResult.setZIPAmount(CheckZIPAmount.checkAmount(sendHomeModel));
         // 获取产品详情
        ProductInfo productInfo = productInfoService.getShopProductInfo(productId);
-          // try {
-           // 顺丰下单
-             // sfResult = SFUtils.addOrder(sendHomeModel,productInfo,sfResult);
-         // } catch (Exception e) {
-            // e.printStackTrace();
-         // }
             // 从redis中获取邮费支付订单号
             String ZIPTradeNum = RedisUtil.getValue(ticketId+"tradeNum");
             String totalFee = RedisUtil.getValue(ticketId+"totalFee");
