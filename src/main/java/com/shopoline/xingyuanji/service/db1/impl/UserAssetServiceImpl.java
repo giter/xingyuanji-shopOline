@@ -90,7 +90,6 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
                     "\tDELETE_XINGBI_AMOUNT："+userAsset1.getAmount()+"\tAMOUNT_TYPE：猩币"+"DATE："+userAsset1.getEditTime());
             this.insert(userAsset1);
         }
-
     }
 
     /**

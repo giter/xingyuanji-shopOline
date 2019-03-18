@@ -48,7 +48,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public String adminLogin(AdminLoginModel adminLoginModel){
-
         // 获取用户信息
         AdminInfo adminInfo = this.selectOne(new EntityWrapper<AdminInfo>().eq("userName",adminLoginModel.getUserName()).
                 eq("passWord",adminLoginModel.getPassWord()).eq("deleteFlag", Constants.QIYONG).last("Limit 1"));
@@ -67,7 +66,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public void privilegeManage(PrivilegeManageModel privilegeManageModel) {
-
         // 查询数据库中管理员记录
         AdminInfo adminInfo = this.selectOne(new EntityWrapper<AdminInfo>().eq("id",privilegeManageModel.getId()).
                 eq("deleteFlag",Constants.QIYONG));
@@ -102,7 +100,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public List<AdminInfoVO> getAdminInfoList() {
-
         List<AdminInfo> adminInfoList = this.selectList(new EntityWrapper<AdminInfo>().orderBy("editTime",false));
         // 选用LinkedList因为插入删除快
         List<AdminInfoVO> adminInfoVOList = new LinkedList<>();
@@ -131,7 +128,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public UserInfoListVO getUserInfoList(String nickName, String openId,String pageNum) {
-
         // 用户信息
         List<UserInfo> userInfoList;
         if(pageNum != null && !pageNum.equals("")){
@@ -207,7 +203,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public void replaceUserAsset(String amountId,String deleteFlag) {
-
         Integer status = null;
         if(deleteFlag.equals("1")){
             status = 0;
@@ -228,7 +223,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public List<UserAddressInfoModel> getUserAddressInfoList(String userId) {
-
         List<UserAddressInfoModel> userAddressInfoModel = userAddressService.getUserAddressInfoList(userId);
         return userAddressInfoModel;
     }
@@ -238,7 +232,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public void deleteUserAddress(String addressId) throws Exception {
-
         UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("id",addressId).last("Limit 1"));
         if(userAddress.getDef() == Constants.DEF_ADDRESS && userAddress.getDeleteFlag() == Constants.QIYONG){
             throw new Exception(ExceptionEnum.EXCEPTION_20.getDesc());
@@ -253,7 +246,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public void changeUserDefAddress(String addressId, String userId) throws Exception{
-
         UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userId).
                 eq("id",addressId).last("Limit 1"));
         if(userAddress.getDef() == Constants.DEF_ADDRESS && userAddress.getDeleteFlag() == Constants.QIYONG){
@@ -281,13 +273,11 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public void changeUserAddressInfo(ChangeUserAddressInfoModel changeUserAddressInfoModel) {
-
         // 新增
         if(changeUserAddressInfoModel.getAddressId().equals("") || changeUserAddressInfoModel.getAddressId().equals("")){
             // 获取用户地址信息
             UserAddress userDef = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",changeUserAddressInfoModel.getUserId()).
                     eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
-
             UserAddress userAddress = new UserAddress();
             userAddress.setId(IdWorker.get32UUID());
             userAddress.setUserId(changeUserAddressInfoModel.getUserId());
@@ -312,7 +302,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().
                     eq("userId",changeUserAddressInfoModel.getUserId()).
                     eq("id",changeUserAddressInfoModel.getAddressId()).last("Limit 1"));
-
             if(changeUserAddressInfoModel.getName() != null || !changeUserAddressInfoModel.getName().equals("")){
                 userAddress.setName(changeUserAddressInfoModel.getName());
             }
@@ -351,20 +340,16 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public UserShopLogInfoVO getUserShopLogInfo(String openId, String pageNum) {
-
         // 每页记录数量
         Integer pageSize = 6;
         // 根据页码计算查询条数
         Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
-
         List<UserShopLogInfoModel> userShopLogInfoModelList = baseMapper.getUserShopLogInfo(openId,pageStart,pageSize);
-
         for(ListIterator<UserShopLogInfoModel> iterator = userShopLogInfoModelList.listIterator();iterator.hasNext();){
             UserShopLogInfoModel userShopLogInfoModel = iterator.next();
             if(userShopLogInfoModel.getAddressId() == null || userShopLogInfoModel.getAddressId().equals("")){
                 UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userShopLogInfoModel.getUserId()).
                         eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
-
                 userShopLogInfoModel.setName(userAddress.getName());
                 userShopLogInfoModel.setPhone(userAddress.getPhone());
                 userShopLogInfoModel.setProvince(userAddress.getProvince());
@@ -373,7 +358,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 userShopLogInfoModel.setAddress(userAddress.getAddress());
             }
         }
-
         UserShopLogInfoVO userShopLogInfoVO = new UserShopLogInfoVO();
         userShopLogInfoVO.setUserShopLogInfolList(userShopLogInfoModelList);
         userShopLogInfoVO.setPageCount(shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("openId",openId)));
@@ -415,7 +399,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public AllShopLogVO getAllShopLog(String pageNum, String days, String nickName, String openId) {
-
         // 每页记录数量
         Integer pageSize = 6;
         // 根据页码计算查询条数
@@ -428,8 +411,9 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         for(ListIterator<UserShopLogInfoModel> iterator = allShopLogList.listIterator();iterator.hasNext();){
             UserShopLogInfoModel userShopLogInfoModel = iterator.next();
             if(userShopLogInfoModel.getAddressId() == null || userShopLogInfoModel.getAddressId().equals("")){
-                UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userShopLogInfoModel.getUserId()).
-                        eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+                UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().
+                        eq("userId",userShopLogInfoModel.getUserId()).eq("def",Constants.DEF_ADDRESS).
+                        eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
                 userShopLogInfoModel.setName(userAddress.getName());
                 userShopLogInfoModel.setPhone(userAddress.getPhone());
                 userShopLogInfoModel.setProvince(userAddress.getProvince());

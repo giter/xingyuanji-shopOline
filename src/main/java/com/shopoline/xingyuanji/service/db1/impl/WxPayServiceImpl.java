@@ -86,7 +86,6 @@ public class WxPayServiceImpl implements WxPayService {
      */
     @Override
     public Object payNotify(String string) {
-
         try {
             Map<String,String> map = WXPayUtil.xmlToMap(string);
             JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map));
