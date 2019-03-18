@@ -3,17 +3,12 @@ package com.shopoline.xingyuanji.controller.managementController;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.common.JsonResult;
 import com.shopoline.xingyuanji.controller.baseController.BaseController;
-import com.shopoline.xingyuanji.model.AdminLoginModel;
-import com.shopoline.xingyuanji.model.ChangeUserAddressInfoModel;
-import com.shopoline.xingyuanji.model.PrivilegeManageModel;
-import com.shopoline.xingyuanji.model.UserAddressInfoModel;
+import com.shopoline.xingyuanji.model.*;
 import com.shopoline.xingyuanji.service.db1.IAdminInfoService;
 import com.shopoline.xingyuanji.service.db1.IUserAddressService;
 import com.shopoline.xingyuanji.service.db1.IUserAssetService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
-import com.shopoline.xingyuanji.vo.AdminInfoVO;
-import com.shopoline.xingyuanji.vo.UserAssetListVO;
-import com.shopoline.xingyuanji.vo.UserInfoListVO;
+import com.shopoline.xingyuanji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -244,5 +239,80 @@ public class ManageController extends BaseController {
         return JSONUtil.toJSONString(json);
     }
 
+    /**
+     *  获取用户购买记录
+     * @param openId
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getUserShopLogInfo")
+    public Object getUserShopLogInfo(String openId,String pageNum){
+        JsonResult<UserShopLogInfoVO> json = new JsonResult<>();
+        try{
+            json.setData(adminInfoService.getUserShopLogInfo(openId,pageNum));
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+    /**
+     * 删除用户购买记录
+     * @param shopLogId
+     * @return
+     */
+    @ResponseBody
+    @PutMapping("/deleteShopLog")
+    public Object deleteShopLog(String shopLogId,String deleteFlag){
+        JsonResult<Object> json = new JsonResult<>();
+        try{
+            adminInfoService.deleteShopLog(shopLogId,deleteFlag);
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+    /**
+     * 输入用户运单号+变更物流状态
+     * @param shopLogId
+     * @return
+     */
+    @ResponseBody
+    @PutMapping("/inputUserWaybill")
+    public Object inputUserWaybill(String shopLogId,String ZIPNum){
+        JsonResult<Object> json = new JsonResult<>();
+        try{
+            adminInfoService.inputUserWaybill(shopLogId,ZIPNum);
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+    /**
+     * 获取全部用户购买记录
+     * @param pageNum
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getAllShopLog")
+    public Object getAllShopLog(String pageNum,String days,String nickName,String openId){
+        JsonResult<AllShopLogVO> json = new JsonResult<>();
+        try{
+            json.setData(adminInfoService.getAllShopLog(pageNum,days,nickName,openId));
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
 
 }

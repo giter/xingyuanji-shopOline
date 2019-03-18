@@ -6,9 +6,7 @@ import com.shopoline.xingyuanji.model.AdminLoginModel;
 import com.shopoline.xingyuanji.model.ChangeUserAddressInfoModel;
 import com.shopoline.xingyuanji.model.PrivilegeManageModel;
 import com.shopoline.xingyuanji.model.UserAddressInfoModel;
-import com.shopoline.xingyuanji.vo.AdminInfoVO;
-import com.shopoline.xingyuanji.vo.UserAssetListVO;
-import com.shopoline.xingyuanji.vo.UserInfoListVO;
+import com.shopoline.xingyuanji.vo.*;
 
 import java.util.List;
 
@@ -90,4 +88,31 @@ public interface IAdminInfoService extends IService<AdminInfo> {
      * @return
      */
     void changeUserAddressInfo(ChangeUserAddressInfoModel changeUserAddressInfoModel);
+
+    /**
+     *  获取用户购买记录
+     * @param openId
+     * @return
+     */
+    UserShopLogInfoVO getUserShopLogInfo(String openId, String pageNum);
+
+    /**
+     * 删除用户购买记录
+     * @param shopLogId
+     * @return
+     */
+    void deleteShopLog(String shopLogId,String deleteFlag);
+
+    /**
+     * 输入用户运单号+变更物流状态
+     * @param shopLogId
+     */
+    void inputUserWaybill(String shopLogId,String ZIPNum);
+
+    /**
+     * 获取全部用户购买记录
+     * @param pageNum
+     * @return
+     */
+    AllShopLogVO getAllShopLog(String pageNum, String days, String nickName, String openId);
 }

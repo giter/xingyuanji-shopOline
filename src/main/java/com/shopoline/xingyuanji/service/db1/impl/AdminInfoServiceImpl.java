@@ -5,19 +5,11 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
-import com.shopoline.xingyuanji.entity.AdminInfo;
-import com.shopoline.xingyuanji.entity.UserAddress;
-import com.shopoline.xingyuanji.entity.UserAsset;
-import com.shopoline.xingyuanji.entity.UserInfo;
+import com.shopoline.xingyuanji.entity.*;
 import com.shopoline.xingyuanji.mapper.AdminInfoMapper;
 import com.shopoline.xingyuanji.model.*;
-import com.shopoline.xingyuanji.service.db1.IAdminInfoService;
-import com.shopoline.xingyuanji.service.db1.IUserAddressService;
-import com.shopoline.xingyuanji.service.db1.IUserAssetService;
-import com.shopoline.xingyuanji.service.db1.IUserInfoService;
-import com.shopoline.xingyuanji.vo.AdminInfoVO;
-import com.shopoline.xingyuanji.vo.UserAssetListVO;
-import com.shopoline.xingyuanji.vo.UserInfoListVO;
+import com.shopoline.xingyuanji.service.db1.*;
+import com.shopoline.xingyuanji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -45,6 +37,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     private IUserAssetService userAssetService;
     @Autowired
     private IUserAddressService userAddressService;
+    @Autowired
+    private IShopLogService shopLogService;
 
 
     /**
@@ -348,6 +342,107 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             }
             userAddressService.updateById(userAddress);
         }
+    }
+
+    /**
+     *  获取用户购买记录
+     * @param openId
+     * @return
+     */
+    @Override
+    public UserShopLogInfoVO getUserShopLogInfo(String openId, String pageNum) {
+
+        // 每页记录数量
+        Integer pageSize = 6;
+        // 根据页码计算查询条数
+        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
+
+        List<UserShopLogInfoModel> userShopLogInfoModelList = baseMapper.getUserShopLogInfo(openId,pageStart,pageSize);
+
+        for(ListIterator<UserShopLogInfoModel> iterator = userShopLogInfoModelList.listIterator();iterator.hasNext();){
+            UserShopLogInfoModel userShopLogInfoModel = iterator.next();
+            if(userShopLogInfoModel.getAddressId() == null || userShopLogInfoModel.getAddressId().equals("")){
+                UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userShopLogInfoModel.getUserId()).
+                        eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+
+                userShopLogInfoModel.setName(userAddress.getName());
+                userShopLogInfoModel.setPhone(userAddress.getPhone());
+                userShopLogInfoModel.setProvince(userAddress.getProvince());
+                userShopLogInfoModel.setCity(userAddress.getCity());
+                userShopLogInfoModel.setArea(userAddress.getArea());
+                userShopLogInfoModel.setAddress(userAddress.getAddress());
+            }
+        }
+
+        UserShopLogInfoVO userShopLogInfoVO = new UserShopLogInfoVO();
+        userShopLogInfoVO.setUserShopLogInfolList(userShopLogInfoModelList);
+        userShopLogInfoVO.setPageCount(shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("openId",openId)));
+        return userShopLogInfoVO;
+    }
+
+    /**
+     * 删除用户购买记录
+     * @param shopLogId
+     * @return
+     */
+    @Override
+    public void deleteShopLog(String shopLogId,String deleteFlag) {
+        ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("id",shopLogId).last("Limit 1"));
+        if(deleteFlag.equals("1")){
+            shopLog.setDeleteFlag(0);
+        }else{
+            shopLog.setDeleteFlag(1);
+        }
+        shopLogService.updateById(shopLog);
+    }
+
+    /**
+     *  输入用户运单号+变更物流状态
+     * @param shopLogId
+     */
+    @Override
+    public void inputUserWaybill(String shopLogId,String ZIPNum) {
+        ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("id",shopLogId).last("Limit 1"));
+        shopLog.setZIPNum(ZIPNum);
+        shopLog.setIsDeliver(Constants.YI_FA_HUO);
+        shopLogService.updateById(shopLog);
+    }
+
+    /**
+     * 获取全部用户购买记录
+     * @param pageNum
+     * @return
+     */
+    @Override
+    public AllShopLogVO getAllShopLog(String pageNum, String days, String nickName, String openId) {
+
+        // 每页记录数量
+        Integer pageSize = 6;
+        // 根据页码计算查询条数
+        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
+        String day = null;
+        if(!days.equals("0")){
+            day = String.valueOf(Integer.valueOf(days) - 1);
+        }
+        List<UserShopLogInfoModel> allShopLogList = baseMapper.getAllShopLog(pageStart,pageSize,day,nickName,openId);
+        for(ListIterator<UserShopLogInfoModel> iterator = allShopLogList.listIterator();iterator.hasNext();){
+            UserShopLogInfoModel userShopLogInfoModel = iterator.next();
+            if(userShopLogInfoModel.getAddressId() == null || userShopLogInfoModel.getAddressId().equals("")){
+                UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userShopLogInfoModel.getUserId()).
+                        eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+                userShopLogInfoModel.setName(userAddress.getName());
+                userShopLogInfoModel.setPhone(userAddress.getPhone());
+                userShopLogInfoModel.setProvince(userAddress.getProvince());
+                userShopLogInfoModel.setCity(userAddress.getCity());
+                userShopLogInfoModel.setArea(userAddress.getArea());
+                userShopLogInfoModel.setAddress(userAddress.getAddress());
+            }
+        }
+        // VO
+        AllShopLogVO allShopLogVO = new AllShopLogVO();
+        allShopLogVO.setAllShopLogList(allShopLogList);
+        allShopLogVO.setPageCount(String.valueOf(shopLogService.selectCount(new EntityWrapper<>())));
+        return allShopLogVO;
     }
 
 
