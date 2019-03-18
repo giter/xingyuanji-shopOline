@@ -13,7 +13,7 @@ import java.util.Date;
  * </p>
  *
  * @author wuty
- * @since 2019-03-01
+ * @since 2019-03-18
  */
 @TableName("t_shop_log")
 public class ShopLog extends Model<ShopLog> {
@@ -102,6 +102,16 @@ public class ShopLog extends Model<ShopLog> {
      */
     @TableField(value = "updateTime")
     private Date updateTime;
+    /**
+     * 发货 状态 0 未发货 1 已经发货
+     */
+    @TableField(value = "isDeliver")
+    private String isDeliver;
+    /**
+     * 快递单号
+     */
+    @TableField(value = "ZIPNum")
+    private String ZIPNum;
 
 
     public String getId() {
@@ -257,6 +267,23 @@ public class ShopLog extends Model<ShopLog> {
         return this;
     }
 
+    public String getIsDeliver() {
+        return isDeliver;
+    }
+
+    public ShopLog setIsDeliver(String isDeliver) {
+        this.isDeliver = isDeliver;
+        return this;
+    }
+
+    public String getZIPNum() {
+        return ZIPNum;
+    }
+
+    public void setZIPNum(String ZIPNum) {
+        this.ZIPNum = ZIPNum;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -265,23 +292,25 @@ public class ShopLog extends Model<ShopLog> {
     @Override
     public String toString() {
         return "ShopLog{" +
-        "id=" + id +
-        ", userId=" + userId +
-        ", openId=" + openId +
-        ", goodsId=" + goodsId +
-        ", boxId=" + boxId +
-        ", editBy=" + editBy +
-        ", editTime=" + editTime +
-        ", deleteFlag=" + deleteFlag +
-        ", express=" + express +
-        ", outTradeNo=" + outTradeNo +
-        ", tradeNo=" + tradeNo +
-        ", isPay=" + isPay +
-        ", totalFee=" + totalFee +
-        ", ZIPAmount=" + ZIPAmount +
-        ", ZIPOutTradeNo=" + ZIPOutTradeNo +
-        ", addressId=" + addressId +
-        ", updateTime=" + updateTime +
-        "}";
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", openId='" + openId + '\'' +
+                ", goodsId=" + goodsId +
+                ", boxId='" + boxId + '\'' +
+                ", editBy='" + editBy + '\'' +
+                ", editTime=" + editTime +
+                ", deleteFlag=" + deleteFlag +
+                ", express=" + express +
+                ", outTradeNo='" + outTradeNo + '\'' +
+                ", tradeNo='" + tradeNo + '\'' +
+                ", isPay='" + isPay + '\'' +
+                ", totalFee='" + totalFee + '\'' +
+                ", ZIPAmount='" + ZIPAmount + '\'' +
+                ", ZIPOutTradeNo='" + ZIPOutTradeNo + '\'' +
+                ", addressId='" + addressId + '\'' +
+                ", updateTime=" + updateTime +
+                ", isDeliver='" + isDeliver + '\'' +
+                ", ZIPNum='" + ZIPNum + '\'' +
+                '}';
     }
 }

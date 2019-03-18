@@ -26,6 +26,26 @@ public class ShopLogModel {
 
     private String tradeNo;
 
+    private String isDeliver;
+
+    private String ZIPNum;
+
+    public String getIsDeliver() {
+        return isDeliver;
+    }
+
+    public void setIsDeliver(String isDeliver) {
+        this.isDeliver = isDeliver;
+    }
+
+    public String getZIPNum() {
+        return ZIPNum;
+    }
+
+    public void setZIPNum(String ZIPNum) {
+        this.ZIPNum = ZIPNum;
+    }
+
     public String getTradeNo() {
         return tradeNo;
     }

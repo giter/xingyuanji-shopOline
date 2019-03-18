@@ -172,6 +172,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             shopLog.setOutTradeNo(tradeNum);
             shopLog.setIsPay(isPay);
             shopLog.setTotalFee(totalFee);
+            shopLog.setIsDeliver(Constants.WEI_FA_HUO);
             shopLogService.insert(shopLog);
             // 写入购盒奖励
             UserAsset userAsset = new UserAsset();
@@ -211,7 +212,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         for(ListIterator<ShopLogModel> iterator = shopLogModelList.listIterator();iterator.hasNext();){
             ShopLogModel shopLogModel = iterator.next();
             if(shopLogModel.getExpress().equals("0")){
-                shopLogModel.setExpress("盒子正在飞奔而来");
+                shopLogModel.setExpress("已邮回家");
                 shopLogModel.setExpressCode("0");
             }else if(shopLogModel.getExpress().equals("1")){
                 shopLogModel.setExpress("送好友");
@@ -389,6 +390,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             shopLog.setEditTime(new Date());
             shopLog.setDeleteFlag(Constants.QIYONG);
             shopLog.setExpress(3);
+            shopLog.setIsDeliver(Constants.WEI_FA_HUO);
             this.insert(shopLog);
             // 减去商品数量
             productInfo.setProductCount(productInfo.getProductCount() - 1);

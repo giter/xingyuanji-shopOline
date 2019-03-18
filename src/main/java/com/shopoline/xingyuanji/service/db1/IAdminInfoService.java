@@ -3,6 +3,7 @@ package com.shopoline.xingyuanji.service.db1;
 import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.AdminInfo;
 import com.shopoline.xingyuanji.model.AdminLoginModel;
+import com.shopoline.xingyuanji.model.ChangeUserAddressInfoModel;
 import com.shopoline.xingyuanji.model.PrivilegeManageModel;
 import com.shopoline.xingyuanji.model.UserAddressInfoModel;
 import com.shopoline.xingyuanji.vo.AdminInfoVO;
@@ -82,4 +83,11 @@ public interface IAdminInfoService extends IService<AdminInfo> {
      * @param userId
      */
     void changeUserDefAddress(String addressId, String userId) throws Exception;
+
+    /**
+     * 变更或增加用户地址信息
+     * @param changeUserAddressInfoModel
+     * @return
+     */
+    void changeUserAddressInfo(ChangeUserAddressInfoModel changeUserAddressInfoModel);
 }

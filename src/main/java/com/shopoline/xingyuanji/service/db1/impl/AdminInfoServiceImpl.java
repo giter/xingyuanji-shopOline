@@ -280,5 +280,75 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
     }
 
+    /**
+     * 变更或增加用户地址信息
+     * @param changeUserAddressInfoModel
+     * @return
+     */
+    @Override
+    public void changeUserAddressInfo(ChangeUserAddressInfoModel changeUserAddressInfoModel) {
+
+        // 新增
+        if(changeUserAddressInfoModel.getAddressId().equals("") || changeUserAddressInfoModel.getAddressId().equals("")){
+            // 获取用户地址信息
+            UserAddress userDef = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",changeUserAddressInfoModel.getUserId()).
+                    eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+
+            UserAddress userAddress = new UserAddress();
+            userAddress.setId(IdWorker.get32UUID());
+            userAddress.setUserId(changeUserAddressInfoModel.getUserId());
+            userAddress.setName(changeUserAddressInfoModel.getName());
+            userAddress.setPhone(changeUserAddressInfoModel.getPhone());
+            userAddress.setProvince(changeUserAddressInfoModel.getProvince());
+            userAddress.setCity(changeUserAddressInfoModel.getCity());
+            userAddress.setArea(changeUserAddressInfoModel.getArea());
+            userAddress.setAddress(changeUserAddressInfoModel.getAddress());
+            if(userDef == null){
+                userAddress.setDef(Constants.DEF_ADDRESS);
+            }else {
+                userAddress.setDef(Constants.NO_DEF_ADDRESS);
+            }
+            userAddress.setEditTime(new Date());
+            userAddress.setEditBy(Constants.ADMIN);
+            userAddress.setDeleteFlag(Constants.QIYONG);
+            userAddressService.insert(userAddress);
+        }else{
+            // 更新地址
+            // 获取用户地址信息
+            UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().
+                    eq("userId",changeUserAddressInfoModel.getUserId()).
+                    eq("id",changeUserAddressInfoModel.getAddressId()).last("Limit 1"));
+
+            if(changeUserAddressInfoModel.getName() != null || !changeUserAddressInfoModel.getName().equals("")){
+                userAddress.setName(changeUserAddressInfoModel.getName());
+            }
+            if(changeUserAddressInfoModel.getPhone() != null || !changeUserAddressInfoModel.getPhone().equals("")){
+                userAddress.setPhone(changeUserAddressInfoModel.getPhone());
+            }
+            if(changeUserAddressInfoModel.getProvince() != null || !changeUserAddressInfoModel.getProvince().equals("")){
+                userAddress.setProvince(changeUserAddressInfoModel.getProvince());
+            }
+            if(changeUserAddressInfoModel.getCity() != null || !changeUserAddressInfoModel.getCity().equals("")){
+                userAddress.setCity(changeUserAddressInfoModel.getCity());
+            }
+            if(changeUserAddressInfoModel.getArea() != null || !changeUserAddressInfoModel.getArea().equals("")){
+                userAddress.setArea(changeUserAddressInfoModel.getArea());
+            }
+            if(changeUserAddressInfoModel.getAddress() != null || !changeUserAddressInfoModel.getAddress().equals("")){
+                userAddress.setAddress(changeUserAddressInfoModel.getAddress());
+            }
+            if(changeUserAddressInfoModel.getDeleteFlag() != null || !changeUserAddressInfoModel.getDeleteFlag().equals("")){
+                if(userAddress.getDef() == 1 && userAddress.getDeleteFlag() == 0 ){
+                    userAddress.setDeleteFlag(Constants.WEIQIYONG);
+                }else if(userAddress.getDef() == 1 && userAddress.getDeleteFlag() == 1 ){
+                    userAddress.setDeleteFlag(Constants.QIYONG);
+                }else{
+                    userAddress.setDeleteFlag(Integer.valueOf(changeUserAddressInfoModel.getDeleteFlag()));
+                }
+            }
+            userAddressService.updateById(userAddress);
+        }
+    }
+
 
 }

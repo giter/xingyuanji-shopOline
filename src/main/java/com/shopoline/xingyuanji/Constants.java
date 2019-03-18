@@ -93,4 +93,8 @@ public class Constants {
 
     public final static Integer DB2_YIDUIJAING = 2;
 
+    public final static String WEI_FA_HUO = "0";
+
+    public final static String YI_FA_HUO = "1";
+
 }

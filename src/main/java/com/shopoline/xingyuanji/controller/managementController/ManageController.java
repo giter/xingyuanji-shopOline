@@ -4,6 +4,7 @@ import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.common.JsonResult;
 import com.shopoline.xingyuanji.controller.baseController.BaseController;
 import com.shopoline.xingyuanji.model.AdminLoginModel;
+import com.shopoline.xingyuanji.model.ChangeUserAddressInfoModel;
 import com.shopoline.xingyuanji.model.PrivilegeManageModel;
 import com.shopoline.xingyuanji.model.UserAddressInfoModel;
 import com.shopoline.xingyuanji.service.db1.IAdminInfoService;
@@ -223,4 +224,25 @@ public class ManageController extends BaseController {
         }
         return JSONUtil.toJSONString(json);
     }
+
+    /**
+     * 变更或增加用户地址信息
+     * @param changeUserAddressInfoModel
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/changeUserAddressInfo")
+    public Object changeUserAddressInfo(@RequestBody ChangeUserAddressInfoModel changeUserAddressInfoModel){
+        JsonResult<Object> json = new JsonResult<>();
+        try{
+            adminInfoService.changeUserAddressInfo(changeUserAddressInfoModel);
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+
 }
