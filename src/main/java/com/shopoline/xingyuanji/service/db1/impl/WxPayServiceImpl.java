@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayUtil;
-import com.shopoline.xingyuanji.Config;
 import com.shopoline.xingyuanji.WxConfig;
 import com.shopoline.xingyuanji.service.db1.WxPayService;
 import org.slf4j.Logger;
@@ -53,7 +52,7 @@ public class WxPayServiceImpl implements WxPayService {
                     int capacity = (int) (5 / 0.75) + 1;
                     // 小程序，微信公众号
                     HashMap<String, String> payInfoMap = new HashMap<>(capacity);
-                    payInfoMap.put("appId", Config.APPID);
+                    payInfoMap.put("appId", resultMap.get("appid"));
                     payInfoMap.put("nonceStr", resultMap.get("nonce_str"));
                     payInfoMap.put("timeStamp", System.currentTimeMillis() / 1000 + "");
                     payInfoMap.put("package", "prepay_id=" + resultMap.get("prepay_id"));
