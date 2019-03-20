@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -137,6 +138,20 @@ public class ProductInfoController extends BaseController {
         JsonResult<Object> json = new JsonResult<>();
         try {
             json.setData(productInfoService.getBoxImg(boxId));
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+    @ResponseBody
+    @PutMapping("/setImg")
+    public Object setImg(HttpServletRequest request,HttpServletResponse response){
+        JsonResult<Object> json = new JsonResult<>();
+        try {
+            productInfoService.setImg();
         }catch (Exception e){
             logger.info(e.getMessage());
             json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));

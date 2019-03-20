@@ -9,10 +9,13 @@ import com.shopoline.xingyuanji.entity.*;
 import com.shopoline.xingyuanji.mapper.AdminInfoMapper;
 import com.shopoline.xingyuanji.model.*;
 import com.shopoline.xingyuanji.service.db1.*;
+import com.shopoline.xingyuanji.utils.UploadUtil;
 import com.shopoline.xingyuanji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.DateFormat;
 import java.util.*;
@@ -28,6 +31,8 @@ import java.util.*;
 @Service
 public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo> implements IAdminInfoService {
 
+
+
     @Autowired
     private IUserInfoService userInfoService;
     @Autowired
@@ -39,6 +44,14 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     @Autowired
     private IProductInfoService productInfoService;
 
+    @Value("${boxProductUploadDir}")
+    private String boxProductUploadDir;
+
+    @Value("${socerProductUploadDir}")
+    private String socerProductUploadDir;
+
+    @Value("${shopPicUploadDir}")
+    private String shopPicUploadDir;
 
     /**
      * 后台管理登陆
@@ -506,6 +519,103 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         return allShopLogVO;
     }
 
+    @Override
+    public AdminGetProductVO adminGetProductList(String pageNum,String productType) {
+
+        // 每页记录数量
+        Integer pageSize = 6;
+        // 根据页码计算查询条数
+        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
+
+        List<ProductInfo> productInfoList = baseMapper.getShopInfoList(pageStart,pageSize);
+
+        List<ProductListModel> productListModelList = new LinkedList<>();
+
+        for(ListIterator<ProductInfo> iterator = productInfoList.listIterator();iterator.hasNext();){
+            ProductInfo productInfo = iterator.next();
+            if(!productType.equals("3")){
+
+                if(productInfo.getStyle() == productType || productInfo.getStyle().equals(productType)){
+                    ProductListModel productListModel = new ProductListModel();
+                    productListModel.setProductId(String.valueOf(productInfo.getId()));
+                    productListModel.setProductName(productInfo.getGoodsname());
+                    productListModel.setPrice(String.valueOf(productInfo.getPrice()));
+                    if(productInfo.getStyle().equals("1")){
+                        productListModel.setProductImg("/productPic/"+productInfo.getImg());
+                    }else{
+                        productListModel.setProductImg(productInfo.getImg());
+                    }
+                    if(productInfo.getStyle().equals("1")){
+                        productListModel.setProductShopImg("/shop/"+productInfo.getShopImg());
+                    }else{
+                        productListModel.setProductShopImg(productInfo.getShopImg());
+                    }
+                    productListModel.setProductNum(String.valueOf(productInfo.getProductCount()));
+                    productListModel.setProductStyle(productInfo.getStyle());
+                    productListModel.setProductSocer(productInfo.getSocer());
+                    productListModel.setEditTime(String.valueOf(productInfo.getEditTime()));
+                    productListModel.setProductStatus(productInfo.getDeleteFlag());
+                    productListModelList.add(productListModel);
+                }
+            }else{
+                ProductListModel productListModel1 = new ProductListModel();
+                productListModel1.setProductId(String.valueOf(productInfo.getId()));
+                productListModel1.setProductName(productInfo.getGoodsname());
+                productListModel1.setPrice(String.valueOf(productInfo.getPrice()));
+                if(productInfo.getStyle().equals("1")){
+                    productListModel1.setProductImg("/productPic/"+productInfo.getImg());
+                }else{
+                    productListModel1.setProductImg(productInfo.getImg());
+                }
+                if(productInfo.getStyle().equals("1")){
+                    productListModel1.setProductShopImg("/shop/"+productInfo.getShopImg());
+                }else{
+                    productListModel1.setProductShopImg(productInfo.getShopImg());
+                }
+                productListModel1.setProductNum(String.valueOf(productInfo.getProductCount()));
+                productListModel1.setProductStyle(productInfo.getStyle());
+                productListModel1.setProductSocer(productInfo.getSocer());
+                productListModel1.setEditTime(String.valueOf(productInfo.getEditTime()));
+                productListModel1.setProductStatus(productInfo.getDeleteFlag());
+                productListModelList.add(productListModel1);
+            }
+        }
+
+        AdminGetProductVO adminGetProductVO = new AdminGetProductVO();
+        adminGetProductVO.setProductList(productListModelList);
+        adminGetProductVO.setPageCount(String.valueOf(productInfoService.selectCount(new EntityWrapper<>())));
+        return adminGetProductVO;
+    }
+
+    /**
+     * 上传图片
+     * @param file
+     * @param style
+     * @return
+     */
+    @Override
+    public ImgUploadVM uploadImg(MultipartFile file, String style,String productId) throws Exception {
+
+        String path = null;
+        if(style.equals("0")){
+            path = boxProductUploadDir;
+        }else if(style.equals("1")){
+            path = socerProductUploadDir;
+        }else if(style.equals("2")){
+            path = shopPicUploadDir;
+        }
+        ImgUploadVM imgUploadVM = UploadUtil.upload(file,path);
+
+        // 获取商品信息
+        ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId).last("Limit 1"));
+        productInfo.setImg(imgUploadVM.getImgFullName());
+        if(style.equals("2")){
+            productInfo.setShopImg(imgUploadVM.getImgFullName());
+        }
+        productInfoService.updateById(productInfo);
+
+        return imgUploadVM;
+    }
 
 
 }

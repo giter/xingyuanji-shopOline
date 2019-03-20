@@ -64,5 +64,9 @@
         TO_DAYS(NOW()) - TO_DAYS(editTime) &lt;= #{dayNum};
     </select>
 
+    <select id="getShopInfoList" resultType="com.shopoline.xingyuanji.entity.ProductInfo">
+        SELECT * FROM t_product_info ORDER BY editTime DESC LIMIT #{pageStart},#{pageSize};
+    </select>
+
 
 </mapper>

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 
 
@@ -157,7 +158,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         if(productInfo.getProductCount().equals(Constants.NULL)){
             throw new Exception(ExceptionEnum.EXCEPTION_19.getDesc());
         }
-        productInfo.setImg(productInfo.getGoodsname() + ".png");
+        productInfo.setImg(productInfo.getImg());
         return productInfo;
     }
 
@@ -165,6 +166,17 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public Object getBoxImg(String boxId) {
         String boxImgInfo = "\\boxImg\\" + boxId +".png";
         return boxImgInfo;
+    }
+
+    @Override
+    public void setImg() {
+        List<ProductInfo> productInfo = this.selectList(new EntityWrapper<>());
+        for(ListIterator<ProductInfo> iterator = productInfo.listIterator();iterator.hasNext();){
+            ProductInfo productInfo1 = iterator.next();
+            productInfo1.setImg(productInfo1.getGoodsname()+".png");
+            productInfo1.setShopImg(productInfo1.getGoodsname()+".png");
+            this.updateById(productInfo1);
+        }
     }
 
 

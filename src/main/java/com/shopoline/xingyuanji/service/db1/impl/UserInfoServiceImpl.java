@@ -19,6 +19,7 @@ import com.shopoline.xingyuanji.utils.OkhttpUtil;
 import com.shopoline.xingyuanji.vo.LoginVO;
 import com.shopoline.xingyuanji.vo.UserCoinVO;
 import com.shopoline.xingyuanji.vo.UserInfoVO;
+import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
             UserInfo user = new UserInfo();
             user.setUserId(IdWorker.get32UUID());
-            String nickName = EmojiConvertUtil.emojiConvert(jsonObject.getString("nickname"));
+            String nickName = EmojiParser.parseToUnicode(jsonObject.getString("nickname"));
             user.setNickName(nickName);
             user.setOpenId(openId);
             user.setSex(Integer.parseInt(jsonObject.getString("sex")));

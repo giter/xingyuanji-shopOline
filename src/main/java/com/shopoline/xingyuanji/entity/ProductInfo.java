@@ -73,6 +73,18 @@ public class ProductInfo extends Model<ProductInfo> {
     @TableField(value = "deleteFlag")
     private String deleteFlag;
 
+    @TableField(value = "shopImg")
+    private String shopImg;
+
+
+
+    public String getShopImg() {
+        return shopImg;
+    }
+
+    public void setShopImg(String shopImg) {
+        this.shopImg = shopImg;
+    }
 
     public Integer getId() {
         return id;
@@ -190,6 +202,7 @@ public class ProductInfo extends Model<ProductInfo> {
                 ", editTime=" + editTime +
                 ", editBy='" + editBy + '\'' +
                 ", deleteFlag='" + deleteFlag + '\'' +
+                ", shopImg='" + shopImg + '\'' +
                 '}';
     }
 }

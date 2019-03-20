@@ -3,6 +3,7 @@ package com.shopoline.xingyuanji.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.shopoline.xingyuanji.entity.AdminInfo;
+import com.shopoline.xingyuanji.entity.ProductInfo;
 import com.shopoline.xingyuanji.model.UserShopLogInfoModel;
 import org.apache.ibatis.annotations.Param;
 
@@ -37,5 +38,7 @@ public interface AdminInfoMapper extends BaseMapper<AdminInfo> {
     List<UserShopLogInfoModel> getDaysShopLogByOpenId(@Param("pageStart") Integer pageStart,@Param("pageSize") Integer pageSize,@Param("dayNum") Integer dayNum,@Param("openId") String openId);
 
     String getDaysCount(@Param("dayNum") Integer dayNum);
+
+    List<ProductInfo> getShopInfoList(@Param("pageStart") Integer pageStart,@Param("pageSize") Integer pageSize);
 
 }

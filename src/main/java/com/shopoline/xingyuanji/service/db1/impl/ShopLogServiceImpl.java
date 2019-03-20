@@ -80,9 +80,9 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 商品id，扫码支付必传。
         payInfoMap.put("product_id", ""+ 0);
         // 订单总金额，单位为分
-        payInfoMap.put("total_fee", ""+payModel.getTotalFee() * 100);
+        // payInfoMap.put("total_fee", ""+payModel.getTotalFee() * 100);
         // 订单总金额，单位为分测试
-        //data.put("total_fee", ""+payModel.getTotalFee());
+        payInfoMap.put("total_fee", ""+payModel.getTotalFee());
         // 币种
         payInfoMap.put("fee_type", "CNY");
         // 终端ip
@@ -233,11 +233,11 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             if(shopLogModel.getStyle().equals("0")){
                 shopLogModel.setStyle("盒子商品");
                 shopLogModel.setStyleCode("0");
-                shopLogModel.setImg(shopLogModel.getGoodsName() +".png");
+                shopLogModel.setImg(shopLogModel.getImg());
             }else if(shopLogModel.getStyle().equals("1")){
                 shopLogModel.setStyle("积分商品");
                 shopLogModel.setStyleCode("1");
-                shopLogModel.setImg("/productPic/"+shopLogModel.getGoodsName()+".jpg");
+                shopLogModel.setImg("/productPic/"+shopLogModel.getImg());
             }
         }
 
@@ -263,7 +263,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
                 eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
         shopLogInfoVO.setGoodsname(productInfo.getGoodsname());
         shopLogInfoVO.setPrice(productInfo.getPrice());
-        shopLogInfoVO.setImg(productInfo.getImg() + ".png");
+        shopLogInfoVO.setImg(productInfo.getImg());
         if(productInfo.getStyle().equals("0")){
             shopLogInfoVO.setStyle("盒子商品");
         }else if(productInfo.getStyle().equals("1")){

@@ -315,4 +315,22 @@ public class ManageController extends BaseController {
         return JSONUtil.toJSONString(json);
     }
 
+    /**
+     * 获取商品列表
+     * @param productType
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/adminGetProductList")
+    public Object adminGetProductList(String pageNum,String productType){
+        JsonResult<AdminGetProductVO> json = new JsonResult<>();
+        try{
+            json.setData(adminInfoService.adminGetProductList(pageNum,productType));
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
 }

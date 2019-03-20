@@ -2,11 +2,9 @@ package com.shopoline.xingyuanji.service.db1;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.AdminInfo;
-import com.shopoline.xingyuanji.model.AdminLoginModel;
-import com.shopoline.xingyuanji.model.ChangeUserAddressInfoModel;
-import com.shopoline.xingyuanji.model.PrivilegeManageModel;
-import com.shopoline.xingyuanji.model.UserAddressInfoModel;
+import com.shopoline.xingyuanji.model.*;
 import com.shopoline.xingyuanji.vo.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -115,4 +113,19 @@ public interface IAdminInfoService extends IService<AdminInfo> {
      * @return
      */
     AllShopLogVO getAllShopLog(String pageNum, String days, String nickName, String openId);
+
+    /**
+     * 获取商品列表
+     * @param productType
+     * @return
+     */
+    AdminGetProductVO adminGetProductList(String pageNum,String productType);
+
+    /**
+     * 上传图片
+     * @param file
+     * @param style
+     * @return
+     */
+    ImgUploadVM uploadImg(MultipartFile file, String style,String productId) throws Exception;
 }

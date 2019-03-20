@@ -15,6 +15,7 @@
         <result column="editTime" property="editTime" />
         <result column="editBy" property="editBy" />
         <result column="deleteFlag" property="deleteFlag" />
+        <result column="shopImg" property="shopImg" />
     </resultMap>
 
     <!--购盒成功后获取随机商品-->

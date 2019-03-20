@@ -56,4 +56,6 @@ public interface IProductInfoService extends IService<ProductInfo> {
      */
     Object getBoxImg(String boxId);
 
+    void setImg();
+
 }
