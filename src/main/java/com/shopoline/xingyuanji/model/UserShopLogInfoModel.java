@@ -26,6 +26,15 @@ public class UserShopLogInfoModel {
     private String address;
     private String editTime;
     private String userId;
+    private String goodsId;
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 
     public String getUserId() {
         return userId;

@@ -32,5 +32,8 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
      * @param openId
      * @return
      */
-    List<UserInfo> selectUserInfoByInformation(String nickName, String openId);
+    List<UserInfo> selectUserInfoByInformation(@Param("nickName") String nickName,@Param("openId") String openId);
+
+    List<UserInfo> getUserInfoByLike(@Param("nickName") String nickName);
+
 }

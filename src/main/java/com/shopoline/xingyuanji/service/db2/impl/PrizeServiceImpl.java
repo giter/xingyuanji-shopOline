@@ -3,6 +3,7 @@ package com.shopoline.xingyuanji.service.db2.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.shopoline.RedPacketConfig;
+import com.shopoline.xingyuanji.Config;
 import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.entity.*;
@@ -12,19 +13,20 @@ import com.shopoline.xingyuanji.model.SendRedPackageModel;
 import com.shopoline.xingyuanji.service.db1.IUserAddressService;
 import com.shopoline.xingyuanji.service.db1.IUserInfoService;
 import com.shopoline.xingyuanji.service.db2.IBuyerService;
+import com.shopoline.xingyuanji.service.db2.IPrizeCodeService;
 import com.shopoline.xingyuanji.service.db2.IPrizeLogService;
 import com.shopoline.xingyuanji.service.db2.IPrizeService;
+import com.shopoline.xingyuanji.utils.QRCodeUtils;
 import com.shopoline.xingyuanji.utils.RedisUtil;
 import com.shopoline.xingyuanji.utils.SendRedPackageUtil;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * <p>
@@ -47,6 +49,8 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
     private IUserAddressService userAddressService;
     @Autowired
     private IUserInfoService userInfoService;
+    @Autowired
+    private IPrizeCodeService prizeCodeService;
 
     /**
      * 获取用户奖品列表
@@ -142,10 +146,41 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         return "兑换成功";
     }
 
+    @Override
+    public void saveCode(int num) {
 
+        List<PrizeCode> list = new LinkedList<>();
+        int id = (int) (System.currentTimeMillis()/1000);
+        for (int i=0;i<num;i++){
+            PrizeCode prizeCode = new PrizeCode();
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            uuid = new SimpleHash("md5",uuid).toHex();
+            System.out.println(uuid);
+            prizeCode.setImg("https://www.xingyuanji.com/wxp/towx/");
+            prizeCode.setUid(uuid);
+            prizeCode.setStatus(0);
+            list.add(prizeCode);
+            id=id+i;
+            createQrImg(uuid,id);
+            prizeCode.setId(id);
+            if (i>9){
+                prizeCodeService.save(list);
+                list.clear();
+                i=0;
+                num=num-10;
+            }
+        }
+        if (list.size()>0) {
+            prizeCodeService.save(list);
+        }
+    }
 
-
-
+    //    创建二维码
+    private void createQrImg(String uid,Integer id){
+        String url = Config.SERVER+"wxp/towx/"+uid;
+        String savePath = Config.UPLOAD_DIR+id+".png";
+        QRCodeUtils.createQRCode(url,savePath);
+    }
 
 
 }

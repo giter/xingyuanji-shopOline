@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.text.DateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * <p>
@@ -39,6 +36,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     private IUserAddressService userAddressService;
     @Autowired
     private IShopLogService shopLogService;
+    @Autowired
+    private IProductInfoService productInfoService;
 
 
     /**
@@ -414,36 +413,99 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      * @return
      */
     @Override
-    public AllShopLogVO getAllShopLog(String pageNum, String days, String nickName, String openId) {
+    public AllShopLogVO getAllShopLog(String pageNum,String days, String nickName, String openId) {
 
+        AllShopLogVO allShopLogVO = new AllShopLogVO();
         // 每页记录数量
         Integer pageSize = 6;
         // 根据页码计算查询条数
         Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
-        String day = null;
-        if(!days.equals("0")){
-            day = String.valueOf(Integer.valueOf(days) - 1);
+        Integer dayNum;
+        if(days == null){
+            dayNum = 0;
+        }else {
+            dayNum = Integer.valueOf(days) - 1;
         }
-        List<UserShopLogInfoModel> allShopLogList = baseMapper.getAllShopLog(pageStart,pageSize,day,nickName,openId);
-        for(ListIterator<UserShopLogInfoModel> iterator = allShopLogList.listIterator();iterator.hasNext();){
-            UserShopLogInfoModel userShopLogInfoModel = iterator.next();
-            if(userShopLogInfoModel.getAddressId() == null || userShopLogInfoModel.getAddressId().equals("")){
-                UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userShopLogInfoModel.getUserId()).
-                        eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
-                userShopLogInfoModel.setName(userAddress.getName());
-                userShopLogInfoModel.setPhone(userAddress.getPhone());
-                userShopLogInfoModel.setProvince(userAddress.getProvince());
-                userShopLogInfoModel.setCity(userAddress.getCity());
-                userShopLogInfoModel.setArea(userAddress.getArea());
-                userShopLogInfoModel.setAddress(userAddress.getAddress());
+        List<UserShopLogInfoModel> logInfoModelList = new ArrayList<>();
+        if(days == null && nickName.equals("0") && openId.equals("0")){
+            // 所有记录
+            logInfoModelList = baseMapper.getAllShopLog(pageStart,pageSize);
+            allShopLogVO.setPageCount(String.valueOf(shopLogService.selectCount(new EntityWrapper<>())));
+        }else if(!nickName.equals("0")){
+            // 模糊查询NickName
+            // 获取模糊查询用户信息
+            List<UserInfo> userInfo = userInfoService.getUserInfoByLike(nickName);
+            // 遍历userInfo
+            for(ListIterator<UserInfo> userInfoIterator = userInfo.listIterator();userInfoIterator.hasNext();){
+                UserInfo userInfo1 = userInfoIterator.next();
+                List<ShopLog> shopLogList = shopLogService.selectList(new EntityWrapper<ShopLog>().eq("userId",userInfo1.getUserId()));
+                for(ListIterator<ShopLog> shopLogListIterator = shopLogList.listIterator();shopLogListIterator.hasNext();){
+                    ShopLog shopLog = shopLogListIterator.next();
+                    UserShopLogInfoModel userShopLogInfoModel = new UserShopLogInfoModel();
+                    userShopLogInfoModel.setOpenId(shopLog.getOpenId());
+                    userShopLogInfoModel.setAddressId(shopLog.getAddressId());
+                    userShopLogInfoModel.setShopLogId(shopLog.getId());
+                    userShopLogInfoModel.setDeleteFlag(String.valueOf(shopLog.getDeleteFlag()));
+                    userShopLogInfoModel.setIsDeliver(shopLog.getIsDeliver());
+                    userShopLogInfoModel.setZIPAmount(shopLog.getZIPAmount());
+                    userShopLogInfoModel.setZIPNum(shopLog.getZIPNum());
+                    userShopLogInfoModel.setExpress(String.valueOf(shopLog.getExpress()));
+                    userShopLogInfoModel.setOutTradeNo(shopLog.getOutTradeNo());
+                    userShopLogInfoModel.setZIPOutTradeNo(shopLog.getZIPOutTradeNo());
+                    userShopLogInfoModel.setIsPay(shopLog.getIsPay());
+                    userShopLogInfoModel.setTotalFee(shopLog.getTotalFee());
+                    userShopLogInfoModel.setUpdateTime(String.valueOf(shopLog.getUpdateTime()));
+                    userShopLogInfoModel.setBoxId(shopLog.getBoxId());
+                    userShopLogInfoModel.setEditTime(String.valueOf(shopLog.getEditTime()));
+                    userShopLogInfoModel.setGoodsId(String.valueOf(shopLog.getGoodsId()));
+                    logInfoModelList.add(userShopLogInfoModel);
+                }
             }
+            allShopLogVO.setPageCount(String.valueOf(logInfoModelList.size()));
+        }else if(!openId.equals("0")){
+            logInfoModelList = baseMapper.getAllShopLogByOpenId(pageStart,pageSize,openId);
+            allShopLogVO.setPageCount(String.valueOf(shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("openId",openId))));
+        }else if(!days.equals("0")){
+            logInfoModelList = baseMapper.getDaysShopLogByOpenId(pageStart,pageSize,dayNum,openId);
+            allShopLogVO.setPageCount(baseMapper.getDaysCount(dayNum));
+        }
+
+        for(ListIterator<UserShopLogInfoModel> iterator = logInfoModelList.listIterator();iterator.hasNext();){
+            UserShopLogInfoModel userShopLogInfo = iterator.next();
+            // 获取用户地址
+            UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("id",userShopLogInfo.getAddressId()).last("Limit 1"));
+            // 如果没有用户地址Id获取用户默认启用地址
+            if(userAddress == null){
+                UserAddress userAddressDef = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("def",Constants.DEF_ADDRESS).
+                        eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+                userShopLogInfo.setName(userAddressDef.getName());
+                userShopLogInfo.setPhone(userAddressDef.getPhone());
+                userShopLogInfo.setProvince(userAddressDef.getProvince());
+                userShopLogInfo.setCity(userAddressDef.getCity());
+                userShopLogInfo.setArea(userAddressDef.getArea());
+                userShopLogInfo.setAddress(userAddressDef.getAddress());
+            }else{
+                userShopLogInfo.setName(userAddress.getName());
+                userShopLogInfo.setPhone(userAddress.getPhone());
+                userShopLogInfo.setProvince(userAddress.getProvince());
+                userShopLogInfo.setCity(userAddress.getCity());
+                userShopLogInfo.setArea(userAddress.getArea());
+                userShopLogInfo.setAddress(userAddress.getAddress());
+            }
+            // 获取用户信息
+            UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",userShopLogInfo.getOpenId()).last("Limit 1"));
+            userShopLogInfo.setUserId(userInfo.getUserId());
+            userShopLogInfo.setName(userInfo.getNickName());
+            userShopLogInfo.setNickName(userInfo.getNickName());
+            // 获取商品信息
+            ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",userShopLogInfo.getGoodsId()).last("Limit 1"));
+            userShopLogInfo.setGoodsname(productInfo.getGoodsname());
         }
         // VO
-        AllShopLogVO allShopLogVO = new AllShopLogVO();
-        allShopLogVO.setAllShopLogList(allShopLogList);
-        allShopLogVO.setPageCount(String.valueOf(shopLogService.selectCount(new EntityWrapper<>())));
+        allShopLogVO.setAllShopLogList(logInfoModelList);
         return allShopLogVO;
     }
+
 
 
 }

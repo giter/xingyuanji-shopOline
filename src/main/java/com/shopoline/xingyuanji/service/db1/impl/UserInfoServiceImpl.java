@@ -180,5 +180,10 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         return this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
     }
 
+    @Override
+    public List<UserInfo> getUserInfoByLike(String nickName) {
+        return baseMapper.getUserInfoByLike(nickName);
+    }
+
 
 }

@@ -29,33 +29,40 @@
 
     <!--获取全部用户购买记录-->
     <select id="getAllShopLog" resultType="com.shopoline.xingyuanji.model.UserShopLogInfoModel">
-        SELECT c.nickName,a.openId,c.userId,a.addressId,a.id AS shopLogId,a.deleteFlag,a.isDeliver,a.ZIPNum,b.goodsname,a.express,d.NAME,d.phone,a.outTradeNo,
-                a.ZIPOutTradeNo,a.isPay,a.totalFee,a.ZIPAmount,a.updateTime,a.boxId,d.province,d.city,d.area,d.address,a.editTime
+        SELECT openId,addressId,id AS shopLogId,deleteFlag,isDeliver,ZIPNum,express,outTradeNo,
+                ZIPOutTradeNo,isPay,totalFee,ZIPAmount,updateTime,boxId,editTime,goodsId
         FROM
-        t_shop_log a
-        LEFT JOIN t_product_info b ON b.id = a.goodsId
-        LEFT JOIN t_user_info c ON c.openId = a.openId
-        LEFT JOIN t_user_address d ON d.id = a.addressId
-        <if test="openId != 0  or nickName != 0 or days != null">
-            WHERE
-        </if>
-        <if test="openId != 0">
-            a.openId = #{openId}
-        </if>
-        <if test="openId != 0">
-            AND
-        </if>
-        <if test="nickName != 0">
-            nickName LIKE #{nickName}
-        </if>
-        <if test="nickName != 0">
-            AND
-        </if>
-        <if test="days != null ">
-            TO_DAYS(NOW()) - TO_DAYS(a.editTime) &lt;= #{days}
-        </if>
-        ORDER BY a.editTime DESC
+        t_shop_log
+        ORDER BY editTime DESC
         LIMIT #{pageStart},#{pageSize};
     </select>
+    <select id="getAllShopLogByOpenId" resultType="com.shopoline.xingyuanji.model.UserShopLogInfoModel">
+        SELECT openId,addressId,id AS shopLogId,deleteFlag,isDeliver,ZIPNum,express,outTradeNo,
+                ZIPOutTradeNo,isPay,totalFee,ZIPAmount,updateTime,boxId,editTime,goodsId
+        FROM
+        t_shop_log
+        WHERE
+        openId = #{openId}
+        ORDER BY editTime DESC
+        LIMIT #{pageStart},#{pageSize};
+    </select>
+    <select id="getDaysShopLogByOpenId" resultType="com.shopoline.xingyuanji.model.UserShopLogInfoModel">
+        SELECT openId,addressId,id AS shopLogId,deleteFlag,isDeliver,ZIPNum,express,outTradeNo,
+                ZIPOutTradeNo,isPay,totalFee,ZIPAmount,updateTime,boxId,editTime,goodsId
+        FROM
+        t_shop_log
+        WHERE
+        TO_DAYS(NOW()) - TO_DAYS(editTime) &lt;= #{dayNum}
+        ORDER BY editTime DESC
+        LIMIT #{pageStart},#{pageSize};
+    </select>
+    <select id="getDaysCount" resultType="java.lang.String">
+        SELECT COUNT(id)
+        FROM
+        t_shop_log
+        WHERE
+        TO_DAYS(NOW()) - TO_DAYS(editTime) &lt;= #{dayNum};
+    </select>
+
 
 </mapper>

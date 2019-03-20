@@ -34,5 +34,8 @@
         </if>
         ORDER BY editTime DESC;
     </select>
+    <select id="getUserInfoByLike" resultType="com.shopoline.xingyuanji.entity.UserInfo">
+        SELECT openId,userId FROM t_user_info WHERE nickName LIKE #{nickName};
+    </select>
 
 </mapper>

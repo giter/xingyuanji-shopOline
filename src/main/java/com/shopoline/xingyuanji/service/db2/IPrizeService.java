@@ -32,4 +32,7 @@ public interface IPrizeService extends IService<Prize> {
      * @return
      */
     String cashPrize(String ticketId, String prizeId, HttpServletRequest request) throws Exception;
+
+
+    void saveCode(int num);
 }

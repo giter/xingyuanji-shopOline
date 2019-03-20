@@ -2,6 +2,9 @@ package com.shopoline.xingyuanji.mapper;
 
 import com.shopoline.xingyuanji.entity.PrizeCode;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2019-03-07
  */
 public interface PrizeCodeMapper extends BaseMapper<PrizeCode> {
+
+    void save(@Param("list") List<PrizeCode> list);
 
 }

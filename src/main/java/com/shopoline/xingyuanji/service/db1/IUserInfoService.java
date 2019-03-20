@@ -58,4 +58,7 @@ public interface IUserInfoService extends IService<UserInfo> {
     List<UserInfo> selectUserInfoByInformation(String nickName, String openId);
 
     UserInfo getRedPacketUserInfo(String openId);
+
+    List<UserInfo> getUserInfoByLike(String nickName);
+
 }

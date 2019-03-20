@@ -15,4 +15,15 @@
         <result column="update_id" property="updateId" />
     </resultMap>
 
+    <!-- 保存 -->
+    <insert id="save" parameterType="java.util.List">
+        insert into prize_code
+        (id,uid,status,img,useflag,insert_time,insert_id)
+        values
+        <foreach collection="list" item="item" index= "index" separator =",">
+            (#{item.id},#{item.uid},0,#{item.img},1,now(),#{item.insertId})
+        </foreach>
+
+    </insert>
+
 </mapper>
