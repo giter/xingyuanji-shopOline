@@ -53,8 +53,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     public Object WXLogin(String code) throws Exception {
 
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + Constants.APPID
-                + "&secret=" + Constants.SECRET + "&code=" + code
-                + "&grant_type=authorization_code";
+                + "&secret=" + Constants.SECRET + "&code=" + code + "&grant_type=authorization_code";
         String str = OkhttpUtil.get(url);
         JSONObject jsonObject = JSON.parseObject(str);
         String accessToken = jsonObject.getString("access_token");
@@ -175,8 +174,6 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
     @Override
     public UserInfo getRedPacketUserInfo(String openId) {
-
-
         return this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
     }
 

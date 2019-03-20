@@ -90,7 +90,6 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
                     "\tDELETE_XINGBI_AMOUNT："+userAsset1.getAmount()+"\tAMOUNT_TYPE：猩币"+"DATE："+userAsset1.getEditTime());
             this.insert(userAsset1);
         }
-
     }
 
     /**
@@ -102,7 +101,6 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
     @Override
     @Transactional
     public Object exchangeCoin(String ticketId, String goodsId) {
-
 
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         //查询商品信息

@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -61,14 +62,14 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
-    public Object setOrder(String ticketId,PayModel payModel){
+    public synchronized Object setOrder(String ticketId,PayModel payModel){
 
         // 获取用户信息
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 初始HASHMAP容量防止RESIZE
         int capacity = (int)(15/0.75)+1;
         // 写入微信支付数据
-        HashMap<String,String> payInfoMap = new HashMap<>(capacity);
+        ConcurrentHashMap<String,String> payInfoMap = new ConcurrentHashMap<>(capacity);
         // 商品的简单描述
         payInfoMap.put("body","猩愿盒");
         // 订单号，32个字符以内，只能是数字，字母
@@ -115,7 +116,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // token
         String randomToken = IdWorker.get32UUID();
         String UUID = IdWorker.get32UUID();
-
             // 向Redis中写入交易数据在后续接口中获取写入数据库
             // 写入微信支付订单号
             RedisUtil.setValue(ticketId+"tradeNum",tradeNum);
@@ -141,7 +141,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     @Override
     @Transactional
     public Object afterPaySuccess(String ticketId,String useXingBi,String isPay,String randomToken,String UUID) throws Exception {
-
         // 获取用户信息
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 获取随机商品
@@ -308,17 +307,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         sendHomeModel.setCity(userAddress.getCity());
         sendHomeModel.setAddress(userAddress.getAddress());
         sendHomeModel.setProductId(productId);
-        // SFResult sfResult = new SFResult();
-          // 写入邮费
-          // sfResult.setZIPAmount(CheckZIPAmount.checkAmount(sendHomeModel));
         // 获取产品详情
        ProductInfo productInfo = productInfoService.getShopProductInfo(productId);
-          // try {
-           // 顺丰下单
-             // sfResult = SFUtils.addOrder(sendHomeModel,productInfo,sfResult);
-         // } catch (Exception e) {
-            // e.printStackTrace();
-         // }
             // 从redis中获取邮费支付订单号
             String ZIPTradeNum = RedisUtil.getValue(ticketId+"tradeNum");
             String totalFee = RedisUtil.getValue(ticketId+"totalFee");
