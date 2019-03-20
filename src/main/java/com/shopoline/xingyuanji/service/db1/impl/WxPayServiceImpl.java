@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -28,7 +29,7 @@ public class WxPayServiceImpl implements WxPayService {
      * 微信统一下单
      * @return
      */
-    public synchronized JSONObject unifiedorder(ConcurrentHashMap<String, String> map){
+    public JSONObject unifiedorder(ConcurrentHashMap<String, String> map){
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", 0);
@@ -51,7 +52,7 @@ public class WxPayServiceImpl implements WxPayService {
                 if ("JSAPI".equals(tradeType)) {
                     int capacity = (int) (5 / 0.75) + 1;
                     // 小程序，微信公众号
-                    ConcurrentHashMap<String, String> payInfoMap = new ConcurrentHashMap<>(capacity);
+                    HashMap<String, String> payInfoMap = new HashMap<>(capacity);
                     payInfoMap.put("appId", Config.APPID);
                     payInfoMap.put("nonceStr", resultMap.get("nonce_str"));
                     payInfoMap.put("timeStamp", System.currentTimeMillis() / 1000 + "");
