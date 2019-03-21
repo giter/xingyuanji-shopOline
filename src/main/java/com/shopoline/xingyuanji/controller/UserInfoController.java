@@ -11,7 +11,6 @@ import com.shopoline.xingyuanji.vo.UserInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -43,7 +42,7 @@ public class UserInfoController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/login")
+    @RequestMapping("/login")
     public Object login(String code, HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -64,7 +63,7 @@ public class UserInfoController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/getUserInfo")
+    @RequestMapping("/getUserInfo")
     public Object getUserInfo(String ticketId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<UserInfoVO> json = new JsonResult<>();
         try {
@@ -86,7 +85,7 @@ public class UserInfoController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/getSign")
+    @RequestMapping("/getSign")
     public Object getSign(HttpServletRequest request, HttpServletResponse response){
         JsonResult<SignModel> json = new JsonResult<>();
         try {

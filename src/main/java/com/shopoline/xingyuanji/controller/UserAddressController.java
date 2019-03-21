@@ -42,7 +42,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/setAdderss")
+    @RequestMapping("/setAdderss")
     public Object setAdderss(String ticketId, @RequestBody UserAddressModel userAddressModel, HttpServletRequest request, HttpServletResponse response) {
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -85,7 +85,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/setAddressDef")
+    @RequestMapping("/setAddressDef")
     public Object setAddressDef(String ticketId,String id,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -107,7 +107,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/deleteAddress")
+    @RequestMapping("/deleteAddress")
     public Object deleteAddress(String ticketId,String id,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -129,7 +129,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/updateAddress")
+    @RequestMapping("/updateAddress")
     public Object updateAddress(String ticketId,String id,@RequestBody UserAddressModel userAddressModel,HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
@@ -150,7 +150,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/isUserAddress")
+    @RequestMapping("/isUserAddress")
     public Object isUserAddress(String ticketId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<String> json = new JsonResult<>();
         try {

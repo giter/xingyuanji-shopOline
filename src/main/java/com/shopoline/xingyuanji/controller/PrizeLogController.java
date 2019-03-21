@@ -32,7 +32,7 @@ public class PrizeLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping(value = "/getPrizeList")
+    @RequestMapping(value = "/getPrizeList")
     public Object getPrizeList(String ticketId, HttpServletRequest request, HttpServletResponse response){
         JsonResult<List<PrizeModel>> json = new JsonResult<>();
         try {
@@ -54,7 +54,7 @@ public class PrizeLogController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping(value = "/cashPrize")
+    @RequestMapping(value = "/cashPrize")
     public Object cashPrize(String ticketId, String prizeId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<String> json = new JsonResult<>();
         try {

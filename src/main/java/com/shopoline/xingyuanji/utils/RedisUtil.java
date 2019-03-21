@@ -29,6 +29,10 @@ public class RedisUtil {
         stringRedisTemplate.opsForValue().set(key, code, 10, TimeUnit.SECONDS);
     }
 
+    public static void setValueSecond(String key, String code) {
+        stringRedisTemplate.opsForValue().set(key, code, 10, TimeUnit.SECONDS);
+    }
+
     /**
      * 设置VALUE有效时间为n秒
      * @param key

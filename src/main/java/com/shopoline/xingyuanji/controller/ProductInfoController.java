@@ -11,10 +11,7 @@ import com.shopoline.xingyuanji.vo.ProductInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,7 +42,7 @@ public class ProductInfoController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/getBoxInfo")
+    @RequestMapping("/getBoxInfo")
     public Object getBoxInfo(String ticketId,String type,String kind,HttpServletRequest request,HttpServletResponse response){
         JsonResult<ProductInfoVO> json = new JsonResult<>();
         try {
@@ -66,7 +63,7 @@ public class ProductInfoController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/getBoxDeductionPrice")
+    @RequestMapping("/getBoxDeductionPrice")
     public Object getBoxDeductionPrice(String ticketId,String type,String kind,Integer boxCount,String boxId,HttpServletRequest request,HttpServletResponse response){
         JsonResult<Float> json = new JsonResult<>();
         try {
@@ -88,7 +85,7 @@ public class ProductInfoController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/getShopList")
+    @RequestMapping("/getShopList")
     public Object getShopList(String ticketId,HttpServletRequest request,HttpServletResponse response){
         JsonResult<List<ProductInfo>> json  = new JsonResult<>();
         try {
@@ -111,7 +108,7 @@ public class ProductInfoController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/getShopProductInfo")
+    @RequestMapping("/getShopProductInfo")
     public Object getShopProductInfo(String ticketId,String productId,HttpServletRequest request,HttpServletResponse response){
         JsonResult<ProductInfo> json = new JsonResult<>();
         try {
@@ -133,7 +130,7 @@ public class ProductInfoController extends BaseController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/getBoxImg")
+    @RequestMapping("/getBoxImg")
     public Object getBoxImg(String ticketId,String boxId,HttpServletRequest request,HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {

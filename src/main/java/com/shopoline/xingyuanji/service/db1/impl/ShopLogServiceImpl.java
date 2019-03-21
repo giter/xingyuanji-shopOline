@@ -62,7 +62,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
-    public synchronized Object setOrder(String ticketId,PayModel payModel){
+    public Object setOrder(String ticketId,PayModel payModel){
 
         // 获取用户信息
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
@@ -82,7 +82,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 订单总金额，单位为分
         // payInfoMap.put("total_fee", ""+payModel.getTotalFee() * 100);
         // 订单总金额，单位为分测试
-        payInfoMap.put("total_fee", ""+payModel.getTotalFee());
+        payInfoMap.put("total_fee",""+payModel.getTotalFee());
+        logger.info("total_fee:"+payInfoMap.get("total_fee"));
         // 币种
         payInfoMap.put("fee_type", "CNY");
         // 终端ip
@@ -122,8 +123,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             // 写入支付金额
             RedisUtil.setValue(ticketId+"totalFee", String.valueOf(payModel.getTotalFee()));
             // 向Redis中写入交易的TOKEN，防止盗刷
-            RedisUtil.setValueSeconds("RandomToken"+ticketId+UUID,randomToken);
-
+            RedisUtil.setValueSecond("RandomToken"+ticketId+UUID,randomToken);
+            logger.info(ticketId+UUID+"/t"+randomToken+"/t"+UUID);
         jsonObject.put("randomToken",randomToken);
         jsonObject.put("UUID",UUID);
 
