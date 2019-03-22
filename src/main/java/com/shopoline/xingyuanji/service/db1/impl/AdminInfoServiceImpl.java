@@ -32,7 +32,6 @@ import java.util.*;
 public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo> implements IAdminInfoService {
 
 
-
     @Autowired
     private IUserInfoService userInfoService;
     @Autowired
