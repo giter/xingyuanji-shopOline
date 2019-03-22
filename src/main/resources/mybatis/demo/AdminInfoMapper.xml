@@ -75,7 +75,7 @@
         SELECT id FROM t_product_info ORDER BY id DESC LIMIT 1;
     </select>
     <select id="getDaysSellCount" resultType="com.shopoline.xingyuanji.model.DaysSellCountModel">
-       SELECT DATE_FORMAT( editTime, '%Y-%m-%d' ) AS days,count( * ) count FROM t_shop_log GROUP BY days;
+       SELECT DATE_FORMAT( editTime, '%Y-%m-%d' ) AS days,count( * ) count FROM t_shop_log WHERE TO_DAYS(NOW()) - TO_DAYS(editTime) &lt;= '7' GROUP BY days;
 
     </select>
     <select id="sellAmountHistory" resultType="java.lang.Integer">
@@ -90,6 +90,12 @@
     </select>
     <select id="getProductInfo" resultType="com.shopoline.xingyuanji.entity.ProductInfo">
         SELECT * FROM t_product_info WHERE style = #{productType} AND kind = #{productType};
+    </select>
+    <select id="getBoxProductSellCountList" resultType="com.shopoline.xingyuanji.model.BoxProductSellCountModel">
+        SELECT DATE_FORMAT( editTime, '%Y-%m-%d' ) AS days,count( * ) count FROM t_shop_log WHERE TO_DAYS(NOW()) - TO_DAYS(editTime) &lt;= '7' AND boxId = 'box'  GROUP BY days;
+    </select>
+    <select id="getSocerProductSellCountList" resultType="com.shopoline.xingyuanji.model.SocerProductSellCountModel">
+        SELECT DATE_FORMAT( editTime, '%Y-%m-%d' ) AS days,count( * ) count FROM t_shop_log WHERE TO_DAYS(NOW()) - TO_DAYS(editTime) &lt;= '7' AND boxId = 'shop'  GROUP BY days;
     </select>
 
 </mapper>

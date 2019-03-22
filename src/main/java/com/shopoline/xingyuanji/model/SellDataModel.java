@@ -1,10 +1,13 @@
 package com.shopoline.xingyuanji.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class SellDataModel {
 
-    private Integer BoxProductSellCount;
+    private List<BoxProductSellCountModel> boxProductSellCountModels = new LinkedList<>();
     // 获取积分商品销售总量
-    private Integer SocerProductSellCount;
+    private  List<SocerProductSellCountModel> socerProductSellCountModelList = new LinkedList<>();
     // 获取邮回家商品数量
     private Integer MailToHomeProductCount;
     // 获取换猩币商品数量
@@ -24,20 +27,20 @@ public class SellDataModel {
         this.ZIPAmountHistory = ZIPAmountHistory;
     }
 
-    public Integer getBoxProductSellCount() {
-        return BoxProductSellCount;
+    public List<BoxProductSellCountModel> getBoxProductSellCountModels() {
+        return boxProductSellCountModels;
     }
 
-    public void setBoxProductSellCount(Integer boxProductSellCount) {
-        BoxProductSellCount = boxProductSellCount;
+    public void setBoxProductSellCountModels(List<BoxProductSellCountModel> boxProductSellCountModels) {
+        this.boxProductSellCountModels = boxProductSellCountModels;
     }
 
-    public Integer getSocerProductSellCount() {
-        return SocerProductSellCount;
+    public List<SocerProductSellCountModel> getSocerProductSellCountModelList() {
+        return socerProductSellCountModelList;
     }
 
-    public void setSocerProductSellCount(Integer socerProductSellCount) {
-        SocerProductSellCount = socerProductSellCount;
+    public void setSocerProductSellCountModelList(List<SocerProductSellCountModel> socerProductSellCountModelList) {
+        this.socerProductSellCountModelList = socerProductSellCountModelList;
     }
 
     public Integer getMailToHomeProductCount() {

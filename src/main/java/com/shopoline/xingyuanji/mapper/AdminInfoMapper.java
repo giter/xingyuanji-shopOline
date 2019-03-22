@@ -4,9 +4,7 @@ package com.shopoline.xingyuanji.mapper;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.shopoline.xingyuanji.entity.AdminInfo;
 import com.shopoline.xingyuanji.entity.ProductInfo;
-import com.shopoline.xingyuanji.model.DaysSellCountModel;
-import com.shopoline.xingyuanji.model.EveryDaySellAmountModel;
-import com.shopoline.xingyuanji.model.UserShopLogInfoModel;
+import com.shopoline.xingyuanji.model.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -56,6 +54,10 @@ public interface AdminInfoMapper extends BaseMapper<AdminInfo> {
     Integer ZIPAmountHistory();
 
     List<ProductInfo> getProductInfo(@Param("productType") String productType);
+
+    List<BoxProductSellCountModel> getBoxProductSellCountList();
+
+    List<SocerProductSellCountModel> getSocerProductSellCountList();
 
 }
 

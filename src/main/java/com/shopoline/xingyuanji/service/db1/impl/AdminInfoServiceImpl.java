@@ -709,10 +709,10 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         sellCountModel.setSellCount(baseMapper.getSellCount());
         // 获取每日销量
         List<DaysSellCountModel> daysSellCountModel = baseMapper.getDaysSellCount();
-        // 获取盒子商品销售总量
-        Integer BoxProductSellCount = shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("boxId",Constants.BOX));
-        // 获取积分商品销售总量
-        Integer SocerProductSellCount = shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("boxId",Constants.SHOP));
+        // 获取盒子商品每日销售总量
+        List<BoxProductSellCountModel> boxProductSellCountList = baseMapper.getBoxProductSellCountList();
+        // 获取积分商品每日销售总量
+        List<SocerProductSellCountModel> socerProductSellCountModelList= baseMapper.getSocerProductSellCountList();
         // 获取邮回家商品数量
         Integer MailToHomeProductCount = shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("express",Constants.YOU_HUI_JIA));
         // 获取换猩币商品数量
@@ -725,12 +725,12 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         Integer ZIPAmountHistory = baseMapper.ZIPAmountHistory();
         // Model
         SellDataModel sellDataModel = new SellDataModel();
-        sellDataModel.setBoxProductSellCount(BoxProductSellCount);
+        sellDataModel.setBoxProductSellCountModels(boxProductSellCountList);
         sellDataModel.setChangeXingBiProduct(ChangeXingBiProduct);
         sellDataModel.setDaiDingProduct(DaiDingProduct);
         sellDataModel.setMailToHomeProductCount(MailToHomeProductCount);
         sellDataModel.setSellAmountHistory(SellAmountHistory);
-        sellDataModel.setSocerProductSellCount(SocerProductSellCount);
+        sellDataModel.setSocerProductSellCountModelList(socerProductSellCountModelList);
         sellDataModel.setZIPAmountHistory(ZIPAmountHistory);
         // 获取每日销售总额
         List<EveryDaySellAmountModel> everyDaySellAmountModelList = baseMapper.everyDaySellAmount();
