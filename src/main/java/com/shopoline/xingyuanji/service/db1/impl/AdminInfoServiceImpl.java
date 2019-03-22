@@ -617,7 +617,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         return imgUploadVM;
     }
 
-    /**、
+    /**
      * 插入或更新产品信息
      * @param productInfoModel
      */
