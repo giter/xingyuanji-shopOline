@@ -2,15 +2,13 @@ package com.shopoline.xingyuanji.model;
 
 public class PayModel {
 
-    private Integer totalFee;
+    private String totalFee;
 
-    public Integer getTotalFee() {
+    public String getTotalFee() {
         return totalFee;
     }
 
-    public void setTotalFee(Integer totalFee) {
+    public void setTotalFee(String totalFee) {
         this.totalFee = totalFee;
     }
-
-
 }

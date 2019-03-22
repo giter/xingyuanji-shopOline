@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -333,4 +334,78 @@ public class ManageController extends BaseController {
         }
         return JSONUtil.toJSONString(json);
     }
+
+    /**
+     * 插入或更新产品信息
+     * @param productInfoModel
+     * @return
+     */
+    @ResponseBody
+    @PutMapping("/putProductInfo")
+    public Object putProductInfo(@RequestBody ProductInfoModel productInfoModel){
+        JsonResult<PutProductInfoVO> json = new JsonResult<>();
+        try{
+            json.setData(adminInfoService.putProductInfo(productInfoModel));
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+    /**
+     * 添加产品
+     * @param productInfoModel
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/insertProductInfo")
+    public Object insertProductInfo(@RequestParam(value = "file") MultipartFile file,ProductInfoModel productInfoModel,HttpServletRequest request,HttpServletResponse response){
+        JsonResult<Object> json = new JsonResult<>();
+        try{
+            adminInfoService.insertProductInfo(file,productInfoModel);
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
+    /**
+     * 更改产品状态
+     * @return
+     */
+    @ResponseBody
+    @PutMapping("/changeProductStatus")
+    public Object changeProductStatus(String productId,String status){
+        JsonResult<Object> json = new JsonResult<>();
+        try{
+            adminInfoService.changeProductStatus(productId,status);
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+    /**
+     * 获取数据详情
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getInfoData")
+    public Object getInfoData(){
+        JsonResult<DataVO> json = new JsonResult<>();
+        try{
+            json.setData(adminInfoService.getInfoData());
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
 }

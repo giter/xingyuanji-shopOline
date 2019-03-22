@@ -128,4 +128,29 @@ public interface IAdminInfoService extends IService<AdminInfo> {
      * @return
      */
     ImgUploadVM uploadImg(MultipartFile file, String style,String productId) throws Exception;
+
+    /**
+     * 插入或更新产品信息
+     * @param productInfoModel
+     */
+    PutProductInfoVO putProductInfo(ProductInfoModel productInfoModel);
+
+    /**
+     * 添加商品
+     * @param productInfoModel
+     * @param file
+     */
+    void insertProductInfo(MultipartFile file,ProductInfoModel productInfoModel) throws Exception;
+
+    /**
+     * 获取数据详情
+     */
+    DataVO getInfoData();
+
+    /**
+     * 更改产品状态
+     * @param productId
+     * @param status
+     */
+    void changeProductStatus(String productId, String status);
 }

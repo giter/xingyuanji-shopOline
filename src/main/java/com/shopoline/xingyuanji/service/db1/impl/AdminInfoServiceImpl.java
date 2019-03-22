@@ -617,5 +617,158 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         return imgUploadVM;
     }
 
+    /**、
+     * 插入或更新产品信息
+     * @param productInfoModel
+     */
+    @Override
+    public PutProductInfoVO putProductInfo(ProductInfoModel productInfoModel) {
+
+        ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productInfoModel.getId()).last("Limit 1"));
+        PutProductInfoVO putProductInfoVO = new PutProductInfoVO();
+        if(productInfo == null || productInfoModel.getId().equals("")){
+            ProductInfo productInfo1 = new ProductInfo();
+            productInfo1.setId(baseMapper.selectLastId() + 1);
+            putProductInfoVO.setProductId(String.valueOf(productInfo1.getId()));
+            productInfo1.setGoodsname(productInfoModel.getProductName());
+            productInfo1.setPrice(Float.valueOf(productInfoModel.getPrice()));
+            productInfo1.setProductCount(Integer.valueOf(productInfoModel.getProductNum()));
+            productInfo1.setStyle(productInfoModel.getStyle());
+            putProductInfoVO.setStyle(productInfo1.getStyle());
+            productInfo1.setKind(productInfoModel.getStyle());
+            productInfo1.setSocer(productInfoModel.getSocer());
+            productInfo1.setEditTime(new Date());
+            productInfo1.setEditBy(Constants.ADMIN);
+            productInfo1.setDeleteFlag(productInfoModel.getStatus());
+            productInfoService.insert(productInfo1);
+        }else{
+            putProductInfoVO.setProductId(productInfoModel.getId());
+            if(productInfoModel.getProductName() != null){
+                productInfo.setGoodsname(productInfoModel.getProductName());
+            }
+            if(productInfoModel.getPrice() != null){
+                productInfo.setPrice(Float.valueOf(productInfoModel.getPrice()));
+            }
+            if(productInfoModel.getProductNum() != null){
+                productInfo.setProductCount(Integer.valueOf(productInfoModel.getProductNum()));
+            }
+            if(productInfoModel.getStyle() != null){
+                productInfo.setStyle(productInfoModel.getStyle());
+                productInfo.setKind(productInfoModel.getStyle());
+                putProductInfoVO.getStyle();
+            }
+            if(productInfoModel.getSocer() != null){
+                productInfo.setSocer(productInfoModel.getSocer());
+            }
+            if(productInfoModel.getStatus() != null){
+                productInfo.setDeleteFlag(productInfoModel.getStatus());
+            }
+            productInfo.setEditTime(new Date());
+            productInfoService.updateById(productInfo);
+        }
+        return putProductInfoVO;
+    }
+
+    @Override
+    public void insertProductInfo(MultipartFile file,ProductInfoModel productInfoModel) throws Exception {
+
+        String path = null;
+        if(productInfoModel.getStyle().equals("0")){
+            path = boxProductUploadDir;
+        }else if(productInfoModel.getStyle().equals("1")){
+            path = socerProductUploadDir;
+        }else if(productInfoModel.getStyle().equals("2")){
+            path = shopPicUploadDir;
+        }
+        ProductInfo productInfo = new ProductInfo();
+        productInfo.setId(baseMapper.selectLastId() + 1);
+        productInfo.setGoodsname(productInfoModel.getProductName());
+        productInfo.setPrice(Float.valueOf(productInfoModel.getPrice()));
+        ImgUploadVM imgUploadVM = UploadUtil.upload(file,path);
+        productInfo.setImg(imgUploadVM.getImgFullName());
+        productInfo.setProductCount(Integer.valueOf(productInfoModel.getProductNum()));
+        productInfo.setStyle(productInfoModel.getStyle());
+        productInfo.setKind(productInfoModel.getStyle());
+        productInfo.setSocer(productInfoModel.getSocer());
+        productInfo.setEditTime(new Date());
+        productInfo.setEditBy(Constants.ADMIN);
+        productInfo.setDeleteFlag(productInfoModel.getStatus());
+        productInfoService.insert(productInfo);
+    }
+
+
+    /**
+     * 获取数据详情
+     */
+    @Override
+    public DataVO getInfoData() {
+
+        // 获取销售总量
+        SellCountModel sellCountModel = new SellCountModel();
+        sellCountModel.setSellCount(baseMapper.getSellCount());
+        // 获取每日销量
+        List<DaysSellCountModel> daysSellCountModel = baseMapper.getDaysSellCount();
+        // 获取盒子商品销售总量
+        Integer BoxProductSellCount = shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("boxId",Constants.BOX));
+        // 获取积分商品销售总量
+        Integer SocerProductSellCount = shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("boxId",Constants.SHOP));
+        // 获取邮回家商品数量
+        Integer MailToHomeProductCount = shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("express",Constants.YOU_HUI_JIA));
+        // 获取换猩币商品数量
+        Integer ChangeXingBiProduct = shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("express",Constants.HUAN_XING_BI));
+        // 获取待定商品数量
+        Integer DaiDingProduct = shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("express",Constants.ZAN_DING));
+        // 获取销售历史总金额
+        Integer SellAmountHistory = baseMapper.sellAmountHistory();
+        // 获取用费总金额
+        Integer ZIPAmountHistory = baseMapper.ZIPAmountHistory();
+        // Model
+        SellDataModel sellDataModel = new SellDataModel();
+        sellDataModel.setBoxProductSellCount(BoxProductSellCount);
+        sellDataModel.setChangeXingBiProduct(ChangeXingBiProduct);
+        sellDataModel.setDaiDingProduct(DaiDingProduct);
+        sellDataModel.setMailToHomeProductCount(MailToHomeProductCount);
+        sellDataModel.setSellAmountHistory(SellAmountHistory);
+        sellDataModel.setSocerProductSellCount(SocerProductSellCount);
+        sellDataModel.setZIPAmountHistory(ZIPAmountHistory);
+        // 获取每日销售总额
+        List<EveryDaySellAmountModel> everyDaySellAmountModelList = baseMapper.everyDaySellAmount();
+        for(ListIterator<EveryDaySellAmountModel> iterator = everyDaySellAmountModelList.listIterator();iterator.hasNext();){
+            EveryDaySellAmountModel everyDaySellAmountModel = iterator.next();
+            if(everyDaySellAmountModel.getAmount() == null){
+                everyDaySellAmountModel.setAmount("0");
+            }
+            if(everyDaySellAmountModel.getZIPAmount() == null){
+                everyDaySellAmountModel.setZIPAmount("0");
+            }
+        }
+        // VO
+        DataVO dataVO = new DataVO();
+        dataVO.setSellDataModel(sellDataModel);
+        dataVO.setSellCountModel(sellCountModel);
+        dataVO.setEveryDaySellAmountModelList(everyDaySellAmountModelList);
+        dataVO.setDaysSellCountModelList(daysSellCountModel);
+
+        return dataVO;
+    }
+
+    /**
+     * 更改产品状态
+     * @param productId
+     * @param status
+     */
+    @Override
+    public void changeProductStatus(String productId, String status) {
+        String deleteFlag = null;
+        ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId).last("Limit 1"));
+        if(status.equals("0")){
+            deleteFlag = "1";
+        }else{
+            deleteFlag = "0";
+        }
+        productInfo.setDeleteFlag(deleteFlag);
+        productInfoService.updateById(productInfo);
+    }
+
 
 }

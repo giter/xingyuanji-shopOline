@@ -67,7 +67,7 @@ public class Constants {
 
     public final static String SELL_COUNT="60";
 
-    public final static String BOX_ID_BOX="BOX";
+    public final static String BOX_ID_BOX="box";
 
     public final static String ISPAY="1";
 
@@ -81,9 +81,9 @@ public class Constants {
 
     public final static Integer NULL = 0;
 
-    public final static String SHOP="SHOP";
+    public final static String SHOP="shop";
 
-    public final static String BOX="BOX";
+    public final static String BOX="box";
 
     public final static Integer MAN = 1;
 
@@ -96,5 +96,13 @@ public class Constants {
     public final static String WEI_FA_HUO = "0";
 
     public final static String YI_FA_HUO = "1";
+
+    public final static String BOX_PRODUCT = "0";
+
+    public final static String SOCER_PRODUCT = "1";
+
+    public final static String HUAN_XING_BI = "2";
+
+    public final static String ZAN_DING = "3";
 
 }

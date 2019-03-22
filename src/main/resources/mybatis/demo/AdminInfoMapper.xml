@@ -68,5 +68,26 @@
         SELECT * FROM t_product_info ORDER BY editTime DESC LIMIT #{pageStart},#{pageSize};
     </select>
 
+    <select id="getSellCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_shop_log;
+    </select>
+    <select id="selectLastId" resultType="java.lang.Integer">
+        SELECT id FROM t_product_info ORDER BY id DESC LIMIT 1;
+    </select>
+    <select id="getDaysSellCount" resultType="com.shopoline.xingyuanji.model.DaysSellCountModel">
+       SELECT DATE_FORMAT( editTime, '%Y-%m-%d' ) AS days,count( * ) count FROM t_shop_log GROUP BY days;
+
+    </select>
+    <select id="sellAmountHistory" resultType="java.lang.Integer">
+        SELECT SUM(totalFee) FROM t_shop_log;
+    </select>
+    <select id="everyDaySellAmount" resultType="com.shopoline.xingyuanji.model.EveryDaySellAmountModel">
+        SELECT DATE_FORMAT( editTime, '%Y-%m-%d' ) AS days,SUM( totalFee ) amount ,SUM(ZIPAmount) ZIPAmount FROM
+	      t_shop_log GROUP BY days;
+    </select>
+    <select id="ZIPAmountHistory" resultType="java.lang.Integer">
+        SELECT SUM(ZIPAmount) FROM t_shop_log;
+    </select>
+
 
 </mapper>

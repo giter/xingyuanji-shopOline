@@ -16,14 +16,12 @@ public class UploadUtil {
     private static final Logger logger = LoggerFactory.getLogger(UploadUtil.class);
 
     public static ImgUploadVM upload(MultipartFile file, String path) throws Exception{
+
         ImgUploadVM imgUploadVM = new ImgUploadVM();
-
         BufferedImage image = ImageIO.read(file.getInputStream());
-
         if (image != null) {
             imgUploadVM.setSize(String.valueOf(image.getWidth())+'x'+String.valueOf(image.getHeight()));
         }
-
         if (file.isEmpty()){
             throw new Exception(ExceptionEnum.EXCEPTION_14.getDesc());
         }
@@ -31,23 +29,19 @@ public class UploadUtil {
         String fileName = file.getOriginalFilename();
         // 获取文件的后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
-
         fileName = UUID.randomUUID().toString().replace("-", "");
-
-        //使用原文件名
+        // 使用原文件名
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(path).append(fileName).append(suffixName);
         String realPath = stringBuilder.toString();
 
         File dest = new File(realPath);
-
-        //判断文件父目录是否存在
+        // 判断文件父目录是否存在
         if(!dest.getParentFile().exists()){
             dest.getParentFile().mkdir();
         }
-
         try {
-            //保存文件
+            // 保存文件
             file.transferTo(dest);
             imgUploadVM.setImgFullName(fileName + suffixName);
             return imgUploadVM;
