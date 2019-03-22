@@ -55,5 +55,7 @@ public interface AdminInfoMapper extends BaseMapper<AdminInfo> {
 
     Integer ZIPAmountHistory();
 
+    List<ProductInfo> getProductInfo(@Param("productType") String productType);
+
 }
 

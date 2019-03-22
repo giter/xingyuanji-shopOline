@@ -12,6 +12,8 @@ import com.shopoline.xingyuanji.service.db1.IUserAssetService;
 import com.shopoline.xingyuanji.utils.RedisUtil;
 import com.shopoline.xingyuanji.vo.ProductInfoVO;
 import com.shopoline.xingyuanji.vo.UserCoinVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -30,6 +32,8 @@ import java.util.Random;
  */
 @Service
 public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, ProductInfo> implements IProductInfoService {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     @Autowired
     private IUserAssetService userAssetService;
@@ -86,6 +90,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public ProductInfo getRedomProduct(String ticketId,Integer productStyle,Integer productKind,String randomToken,String UUID) throws Exception {
         // 判断token
         String token = RedisUtil.getValue("RandomToken"+ticketId+UUID);
+        logger.info("获取TOKEN");
         if(!token.equals(randomToken)){
             throw new Exception(ExceptionEnum.EXCEPTION_17.getDesc());
         }
@@ -134,7 +139,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
                             eq("style",productStyle).eq("kind",productKind).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
                         productInfo1.setProductCount(productInfo.getProductCount() - 1);
                         this.updateById(productInfo);
-                        RedisUtil.setValue("SELLCOUNT","1");
+                        RedisUtil.setValueDAY("SELLCOUNT","1");
                         return productInfo1;
                     }
                 }

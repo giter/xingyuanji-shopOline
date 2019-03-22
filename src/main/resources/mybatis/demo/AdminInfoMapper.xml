@@ -88,6 +88,8 @@
     <select id="ZIPAmountHistory" resultType="java.lang.Integer">
         SELECT SUM(ZIPAmount) FROM t_shop_log;
     </select>
-
+    <select id="getProductInfo" resultType="com.shopoline.xingyuanji.entity.ProductInfo">
+        SELECT * FROM t_product_info WHERE style = #{productType} AND kind = #{productType};
+    </select>
 
 </mapper>

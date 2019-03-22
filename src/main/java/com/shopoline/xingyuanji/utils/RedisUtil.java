@@ -30,7 +30,7 @@ public class RedisUtil {
     }
 
     public static void setValueSecond(String key, String code) {
-        stringRedisTemplate.opsForValue().set(key, code, 10, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set(key, code, 30, TimeUnit.SECONDS);
     }
 
     /**
@@ -51,6 +51,9 @@ public class RedisUtil {
         stringRedisTemplate.opsForValue().set(key,code,1, TimeUnit.HOURS);
     }
 
+    public static void setValueDAY(String key, String code) {
+        stringRedisTemplate.opsForValue().set(key,code,24, TimeUnit.HOURS);
+    }
     /**
      * 设置VALUE有效时间为n分钟
      * @param key

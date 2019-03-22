@@ -526,38 +526,38 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         Integer pageSize = 6;
         // 根据页码计算查询条数
         Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
-
-        List<ProductInfo> productInfoList = baseMapper.getShopInfoList(pageStart,pageSize);
-
         List<ProductListModel> productListModelList = new LinkedList<>();
 
-        for(ListIterator<ProductInfo> iterator = productInfoList.listIterator();iterator.hasNext();){
-            ProductInfo productInfo = iterator.next();
-            if(!productType.equals("3")){
-
-                if(productInfo.getStyle() == productType || productInfo.getStyle().equals(productType)){
-                    ProductListModel productListModel = new ProductListModel();
-                    productListModel.setProductId(String.valueOf(productInfo.getId()));
-                    productListModel.setProductName(productInfo.getGoodsname());
-                    productListModel.setPrice(String.valueOf(productInfo.getPrice()));
-                    if(productInfo.getStyle().equals("1")){
-                        productListModel.setProductImg("/productPic/"+productInfo.getImg());
-                    }else{
-                        productListModel.setProductImg(productInfo.getImg());
-                    }
-                    if(productInfo.getStyle().equals("1")){
-                        productListModel.setProductShopImg("/shop/"+productInfo.getShopImg());
-                    }else{
-                        productListModel.setProductShopImg(productInfo.getShopImg());
-                    }
-                    productListModel.setProductNum(String.valueOf(productInfo.getProductCount()));
-                    productListModel.setProductStyle(productInfo.getStyle());
-                    productListModel.setProductSocer(productInfo.getSocer());
-                    productListModel.setEditTime(String.valueOf(productInfo.getEditTime()));
-                    productListModel.setProductStatus(productInfo.getDeleteFlag());
-                    productListModelList.add(productListModel);
+        if(!productType.equals("3")){
+            List<ProductInfo> productInfoList = baseMapper.getProductInfo(productType);
+            for(ListIterator<ProductInfo> iterator = productInfoList.listIterator();iterator.hasNext();){
+                ProductInfo productInfo1 = iterator.next();
+                ProductListModel productListModel = new ProductListModel();
+                productListModel.setProductId(String.valueOf(productInfo1.getId()));
+                productListModel.setProductName(productInfo1.getGoodsname());
+                productListModel.setPrice(String.valueOf(productInfo1.getPrice()));
+                if(productInfo1.getStyle().equals("1")){
+                    productListModel.setProductImg("/productPic/"+productInfo1.getImg());
+                }else{
+                    productListModel.setProductImg(productInfo1.getImg());
                 }
-            }else{
+                if(productInfo1.getStyle().equals("1")){
+                    productListModel.setProductShopImg("/shop/"+productInfo1.getShopImg());
+                }else{
+                    productListModel.setProductShopImg(productInfo1.getShopImg());
+                }
+                productListModel.setProductNum(String.valueOf(productInfo1.getProductCount()));
+                productListModel.setProductStyle(productInfo1.getStyle());
+                productListModel.setProductSocer(productInfo1.getSocer());
+                productListModel.setEditTime(String.valueOf(productInfo1.getEditTime()));
+                productListModel.setProductStatus(productInfo1.getDeleteFlag());
+                productListModelList.add(productListModel);
+            }
+        }else{
+            List<ProductInfo> productInfoList = baseMapper.getShopInfoList(pageStart,pageSize);
+
+            for(ListIterator<ProductInfo> iterator = productInfoList.listIterator();iterator.hasNext();){
+                ProductInfo productInfo = iterator.next();
                 ProductListModel productListModel1 = new ProductListModel();
                 productListModel1.setProductId(String.valueOf(productInfo.getId()));
                 productListModel1.setProductName(productInfo.getGoodsname());
@@ -580,6 +580,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 productListModelList.add(productListModel1);
             }
         }
+
 
         AdminGetProductVO adminGetProductVO = new AdminGetProductVO();
         adminGetProductVO.setProductList(productListModelList);

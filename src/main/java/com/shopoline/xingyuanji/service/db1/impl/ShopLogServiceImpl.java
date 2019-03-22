@@ -124,7 +124,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             RedisUtil.setValue(ticketId+"totalFee", String.valueOf(payModel.getTotalFee()));
             // 向Redis中写入交易的TOKEN，防止盗刷
             RedisUtil.setValueSecond("RandomToken"+ticketId+UUID,randomToken);
-            logger.info(ticketId+UUID+"/t"+randomToken+"/t"+UUID);
+            logger.info("写入TOKEN"+"\t"+userInfo.getNickName());
         jsonObject.put("randomToken",randomToken);
         jsonObject.put("UUID",UUID);
 
@@ -189,6 +189,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             // 流程结束删除Redis中存入的交易TOKEN
             RedisUtil.delete(ticketId + "tradeNum");
             RedisUtil.delete(ticketId + "totalFee");
+            logger.info("删除TOKEN");
             //记录Log
             logger.info("<-AFTER_PAY->\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
                     productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tAssert："+XingBi+"\tDate："+userAsset.getEditTime());
