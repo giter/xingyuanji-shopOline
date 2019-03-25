@@ -33,8 +33,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     private IUserInfoService userInfoService;
 
 
-
-
     /**
      * 写入用户地址
      * @param ticketId
