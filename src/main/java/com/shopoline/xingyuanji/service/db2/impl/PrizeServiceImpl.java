@@ -139,6 +139,7 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         prizeLog.setStatus(Constants.DB2_YIDUIJAING);
         prizeLog.setUpdateId(0);
         prizeLog.setUpdateTime(new Date());
+        prizeLog.setUseflag(Constants.JINYONG);
         prizeLogService.updateByInfo(prizeLog);
         // log
         logger.info("<-奖品兑换->：" + prizeLog);
