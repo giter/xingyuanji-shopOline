@@ -182,7 +182,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      * @param userAddressModel
      */
     @Override
-    public void updateAddress(String ticketId, String id, UserAddressModel userAddressModel) throws Exception{
+    public synchronized void updateAddress(String ticketId, String id, UserAddressModel userAddressModel) throws Exception{
 
         Assert.isTrue(userAddressModel.getPhone().length()==11,ExceptionEnum.EXCEPTION_21.getDesc());
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
@@ -198,8 +198,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         userAddress.setArea(userAddressModel.getArea());
         userAddress.setEditTime(new Date());
         this.updateById(userAddress);
-        // 等待10ms
-        Thread.sleep(10);
     }
 
     /**
