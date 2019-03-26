@@ -27,7 +27,8 @@ public enum ExceptionEnum {
     EXCEPTION_23(23,"登陆失败"),
     EXCEPTION_24(24,"小猩正在忙，请稍等十秒再操作呦……"),
     EXCEPTION_25(25,"已是默认地址"),
-    EXCEPTION_26(26,"图片上传失败");
+    EXCEPTION_26(26,"图片上传失败"),
+    EXCEPTION_28(28,"小猩猩正在搬运地址，不要着急哦……");
 
     public Integer key;
     public String desc;

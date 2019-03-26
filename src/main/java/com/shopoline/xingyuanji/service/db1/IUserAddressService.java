@@ -38,7 +38,7 @@ public interface IUserAddressService extends IService<UserAddress> {
      * @param id
      * @return
      */
-    void setAddressDef(String ticketId, String id);
+    void setAddressDef(String ticketId, String id) throws Exception;
 
     /**
      * 删除地址
@@ -53,7 +53,7 @@ public interface IUserAddressService extends IService<UserAddress> {
      * @param id
      * @param userAddressModel
      */
-    void updateAddress(String ticketId, String id, UserAddressModel userAddressModel);
+    void updateAddress(String ticketId, String id, UserAddressModel userAddressModel) throws Exception;
 
     /**
      * 判断用户是否有默认地址

@@ -42,6 +42,11 @@ public class RedisUtil {
         stringRedisTemplate.opsForValue().set(key, code, 6, TimeUnit.SECONDS);
     }
 
+
+    public static void setAddressValueSeconds(String key, String code) {
+        stringRedisTemplate.opsForValue().set(key, code, 5, TimeUnit.SECONDS);
+    }
+
     /**
      * 设置VALUE有效时间为n小时
      * @param key

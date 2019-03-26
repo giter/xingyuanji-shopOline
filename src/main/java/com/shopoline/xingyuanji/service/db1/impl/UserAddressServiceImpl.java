@@ -12,12 +12,16 @@ import com.shopoline.xingyuanji.model.UserAddressInfoModel;
 import com.shopoline.xingyuanji.model.UserAddressModel;
 import com.shopoline.xingyuanji.service.db1.IUserAddressService;
 import com.shopoline.xingyuanji.service.db1.IUserInfoService;
+import com.shopoline.xingyuanji.utils.RedisUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * <p>
@@ -28,6 +32,8 @@ import java.util.List;
  */
 @Service
 public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserAddress> implements IUserAddressService {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     @Autowired
     private IUserInfoService userInfoService;
@@ -40,7 +46,14 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      * @return
      */
     @Override
-    public void insertAddress(String ticketId,UserAddressModel userAddressModel) throws Exception {
+    public synchronized void insertAddress(String ticketId,UserAddressModel userAddressModel) throws Exception {
+
+        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
+        boolean tokenResult = RedisUtil.hasKey("INSERTADDRESS"+userInfo.getOpenId());
+        if( tokenResult == true ){
+            logger.info("<-INSERT_ADDRESS_LOCK->:"+userInfo.getNickName()+"\tBUYER_TOKEN："+userInfo.getOpenId());
+            throw new Exception(ExceptionEnum.EXCEPTION_28.getDesc());
+        }
 
         Assert.isTrue(userAddressModel.getPhone().length()==11,ExceptionEnum.EXCEPTION_21.getDesc());
         if (userAddressModel.getAddress() == null || userAddressModel.getAddress().equals("")){
@@ -56,7 +69,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         }else if(userAddressModel.getPhone() == null || userAddressModel.getPhone().equals("")){
             throw new Exception(ExceptionEnum.EXCEPTION_13.getDesc());
         }
-        UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 判断用户是否存在默认地址
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
@@ -79,6 +91,10 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         insertUserAddress.setDeleteFlag(Constants.QIYONG);
         insertUserAddress.setArea(userAddressModel.getArea());
         this.insert(insertUserAddress);
+        // 写入token
+        RedisUtil.setAddressValueSeconds("INSERTADDRESS"+userInfo.getOpenId(),userInfo.getOpenId());
+        // 休眠20ms
+        Thread.sleep(20);
     }
 
     /**
@@ -104,13 +120,20 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      * @return
      */
     @Override
-    public void setAddressDef(String ticketId, String id) {
+    public synchronized void setAddressDef(String ticketId, String id) throws Exception {
 
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
+        boolean tokenResult = RedisUtil.hasKey("INSERTADDRESS"+userInfo.getOpenId());
+        if( tokenResult == true ){
+            logger.info("<-SET_ADDRESS_DEF_LOCK->:"+userInfo.getNickName()+"\tBUYER_TOKEN："+userInfo.getOpenId());
+            throw new Exception(ExceptionEnum.EXCEPTION_24.getDesc());
+        }
+
         List<UserAddress> userAddressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("deleteFlag",Constants.QIYONG));
 
-        for(UserAddress userAddress:userAddressList){
+        for(ListIterator<UserAddress> iterator = userAddressList.listIterator();iterator.hasNext();){
+            UserAddress userAddress = iterator.next();
             if(userAddress.getDef() == Constants.DEF_ADDRESS){
                 UserAddress address = new UserAddress();
                 address.setId(userAddress.getId());
@@ -128,10 +151,15 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
                 this.updateById(address);
             }
         }
+        // 等待10ms
+        Thread.sleep(10);
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).
                 eq("userId",userInfo.getUserId()).last("Limit 1"));
         userAddress.setDef(Constants.DEF_ADDRESS);
         this.updateById(userAddress);
+        // 写入redis
+        RedisUtil.setAddressValueSeconds("SETADDRESSDEF"+userInfo.getOpenId(),userInfo.getOpenId());
+
     }
 
     @Override
@@ -154,7 +182,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      * @param userAddressModel
      */
     @Override
-    public void updateAddress(String ticketId, String id, UserAddressModel userAddressModel) {
+    public void updateAddress(String ticketId, String id, UserAddressModel userAddressModel) throws Exception{
 
         Assert.isTrue(userAddressModel.getPhone().length()==11,ExceptionEnum.EXCEPTION_21.getDesc());
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
@@ -170,6 +198,8 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         userAddress.setArea(userAddressModel.getArea());
         userAddress.setEditTime(new Date());
         this.updateById(userAddress);
+        // 等待10ms
+        Thread.sleep(10);
     }
 
     /**
