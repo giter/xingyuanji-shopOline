@@ -131,8 +131,9 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
 
         List<UserAddress> userAddressList = this.selectList(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("deleteFlag",Constants.QIYONG));
-
-        for(ListIterator<UserAddress> iterator = userAddressList.listIterator();iterator.hasNext();){
+        // 遍历
+        ListIterator<UserAddress> iterator = userAddressList.listIterator();
+        while (iterator.hasNext()){
             UserAddress userAddress = iterator.next();
             if(userAddress.getDef() == Constants.DEF_ADDRESS){
                 UserAddress address = new UserAddress();

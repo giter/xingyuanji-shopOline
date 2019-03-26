@@ -118,18 +118,19 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         // 选用LinkedList因为插入删除快
         List<AdminInfoVO> adminInfoVOList = new LinkedList<>();
         // 遍历格式化时间
-        for(ListIterator<AdminInfo> adminInfoListIterator = adminInfoList.listIterator();adminInfoListIterator.hasNext();){
-                AdminInfoVO adminInfoVO = new AdminInfoVO();
-                AdminInfo adminInfo = adminInfoListIterator.next();
-                adminInfoVO.setId(adminInfo.getId());
-                adminInfoVO.setUserName(adminInfo.getUserName());
-                adminInfoVO.setName(adminInfo.getName());
-                adminInfoVO.setPassWord(adminInfo.getPassWord());
-                adminInfoVO.setPosition(adminInfo.getPosition());
-                adminInfoVO.setEditBy(adminInfo.getEditBy());
-                adminInfoVO.setEditTime(DateFormat.getDateInstance(DateFormat.FULL).format(adminInfo.getEditTime()));
-                adminInfoVO.setDeleteFlag(adminInfo.getDeleteFlag());
-                adminInfoVOList.add(adminInfoVO);
+        ListIterator<AdminInfo> adminInfoListIterator = adminInfoList.listIterator();
+        while(adminInfoListIterator.hasNext()){
+            AdminInfoVO adminInfoVO = new AdminInfoVO();
+            AdminInfo adminInfo = adminInfoListIterator.next();
+            adminInfoVO.setId(adminInfo.getId());
+            adminInfoVO.setUserName(adminInfo.getUserName());
+            adminInfoVO.setName(adminInfo.getName());
+            adminInfoVO.setPassWord(adminInfo.getPassWord());
+            adminInfoVO.setPosition(adminInfo.getPosition());
+            adminInfoVO.setEditBy(adminInfo.getEditBy());
+            adminInfoVO.setEditTime(DateFormat.getDateInstance(DateFormat.FULL).format(adminInfo.getEditTime()));
+            adminInfoVO.setDeleteFlag(adminInfo.getDeleteFlag());
+            adminInfoVOList.add(adminInfoVO);
         }
         return adminInfoVOList;
     }
@@ -156,16 +157,16 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         }
         List<UserInfoListModel> userInfoListVOList = new LinkedList<>();
         // 遍历
-        for (ListIterator<UserInfo> userInfoIterator = userInfoList.listIterator(); userInfoIterator.hasNext(); ) {
-             UserInfo userInfo = userInfoIterator.next();
-             UserInfoListModel userInfoListModel = new UserInfoListModel();
-                userInfoListModel.setUserId(userInfo.getUserId());
-                userInfoListModel.setOpenId(userInfo.getOpenId());
-                userInfoListModel.setNickName(userInfo.getNickName());
-                userInfoListModel.setSex(String.valueOf(userInfo.getSex()));
-                userInfoListModel.setEditTime(DateFormat.getDateInstance(DateFormat.FULL).format(userInfo.getEditTime()));
-
-                userInfoListVOList.add(userInfoListModel);
+        ListIterator<UserInfo> userInfoIterator = userInfoList.listIterator();
+        while(userInfoIterator.hasNext()){
+            UserInfo userInfo = userInfoIterator.next();
+            UserInfoListModel userInfoListModel = new UserInfoListModel();
+            userInfoListModel.setUserId(userInfo.getUserId());
+            userInfoListModel.setOpenId(userInfo.getOpenId());
+            userInfoListModel.setNickName(userInfo.getNickName());
+            userInfoListModel.setSex(String.valueOf(userInfo.getSex()));
+            userInfoListModel.setEditTime(DateFormat.getDateInstance(DateFormat.FULL).format(userInfo.getEditTime()));
+            userInfoListVOList.add(userInfoListModel);
         }
         // VO
         UserInfoListVO userInfoListVO = new UserInfoListVO();
@@ -189,7 +190,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         List<UserAssetInfoModel> userAssetList = userAssetService.getUserAssetInfoList(userId,pageStart,pageSize);
         List<UserAssetListModel> userAssetModelList = new LinkedList<>();
         //遍历
-        for(ListIterator<UserAssetInfoModel> iterator = userAssetList.listIterator();iterator.hasNext();){
+        ListIterator<UserAssetInfoModel> iterator = userAssetList.listIterator();
+        while(iterator.hasNext()){
             UserAssetListModel userAssetListModel = new UserAssetListModel();
             UserAssetInfoModel userAssetInfoModel = iterator.next();
             userAssetListModel.setAmount(userAssetInfoModel.getAmount());
@@ -272,7 +274,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         }
         // 将所有记录变为非默认
         List<UserAddress> userAddressList = userAddressService.selectList(new EntityWrapper<UserAddress>().eq("userId",userId));
-        for(ListIterator<UserAddress> iterator = userAddressList.listIterator();iterator.hasNext();){
+        ListIterator<UserAddress> iterator = userAddressList.listIterator();
+        while(iterator.hasNext()){
             UserAddress updateAddress = iterator.next();
             updateAddress.setDef(Constants.NO_DEF_ADDRESS);
             userAddressService.updateById(updateAddress);
@@ -370,9 +373,11 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
         List<UserShopLogInfoModel> userShopLogInfoModelList = baseMapper.getUserShopLogInfo(openId,pageStart,pageSize);
 
-        for(ListIterator<UserShopLogInfoModel> iterator = userShopLogInfoModelList.listIterator();iterator.hasNext();){
+        ListIterator<UserShopLogInfoModel> iterator = userShopLogInfoModelList.listIterator();
+        while(iterator.hasNext()){
             UserShopLogInfoModel userShopLogInfoModel = iterator.next();
             if(userShopLogInfoModel.getAddressId() == null || userShopLogInfoModel.getAddressId().equals("")){
+
                 UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userShopLogInfoModel.getUserId()).
                         eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
 
@@ -384,7 +389,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 userShopLogInfoModel.setAddress(userAddress.getAddress());
             }
         }
-
         UserShopLogInfoVO userShopLogInfoVO = new UserShopLogInfoVO();
         userShopLogInfoVO.setUserShopLogInfolList(userShopLogInfoModelList);
         userShopLogInfoVO.setPageCount(shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("openId",openId)));
@@ -448,7 +452,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             // 获取模糊查询用户信息
             List<UserInfo> userInfo = userInfoService.getUserInfoByLike(nickName);
             // 遍历userInfo
-            for(ListIterator<UserInfo> userInfoIterator = userInfo.listIterator();userInfoIterator.hasNext();){
+            ListIterator<UserInfo> userInfoIterator = userInfo.listIterator();
+            while(userInfoIterator.hasNext()){
                 UserInfo userInfo1 = userInfoIterator.next();
                 List<ShopLog> shopLogList = shopLogService.selectList(new EntityWrapper<ShopLog>().eq("userId",userInfo1.getUserId()));
                 for(ListIterator<ShopLog> shopLogListIterator = shopLogList.listIterator();shopLogListIterator.hasNext();){
@@ -481,8 +486,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             logInfoModelList = baseMapper.getDaysShopLogByOpenId(pageStart,pageSize,dayNum,openId);
             allShopLogVO.setPageCount(baseMapper.getDaysCount(dayNum));
         }
-
-        for(ListIterator<UserShopLogInfoModel> iterator = logInfoModelList.listIterator();iterator.hasNext();){
+        ListIterator<UserShopLogInfoModel> iterator = logInfoModelList.listIterator();
+        while(iterator.hasNext()){
             UserShopLogInfoModel userShopLogInfo = iterator.next();
             // 获取用户地址
             UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("id",userShopLogInfo.getAddressId()).last("Limit 1"));
@@ -529,7 +534,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
         if(!productType.equals("3")){
             List<ProductInfo> productInfoList = baseMapper.getProductInfo(productType);
-            for(ListIterator<ProductInfo> iterator = productInfoList.listIterator();iterator.hasNext();){
+            ListIterator<ProductInfo> iterator = productInfoList.listIterator();
+            while(iterator.hasNext()){
                 ProductInfo productInfo1 = iterator.next();
                 ProductListModel productListModel = new ProductListModel();
                 productListModel.setProductId(String.valueOf(productInfo1.getId()));
@@ -554,8 +560,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             }
         }else{
             List<ProductInfo> productInfoList = baseMapper.getShopInfoList(pageStart,pageSize);
-
-            for(ListIterator<ProductInfo> iterator = productInfoList.listIterator();iterator.hasNext();){
+            ListIterator<ProductInfo> iterator = productInfoList.listIterator();
+            while(iterator.hasNext()){
                 ProductInfo productInfo = iterator.next();
                 ProductListModel productListModel1 = new ProductListModel();
                 productListModel1.setProductId(String.valueOf(productInfo.getId()));
@@ -733,7 +739,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         sellDataModel.setZIPAmountHistory(ZIPAmountHistory);
         // 获取每日销售总额
         List<EveryDaySellAmountModel> everyDaySellAmountModelList = baseMapper.everyDaySellAmount();
-        for(ListIterator<EveryDaySellAmountModel> iterator = everyDaySellAmountModelList.listIterator();iterator.hasNext();){
+        ListIterator<EveryDaySellAmountModel> iterator = everyDaySellAmountModelList.listIterator();
+        while(iterator.hasNext()){
             EveryDaySellAmountModel everyDaySellAmountModel = iterator.next();
             if(everyDaySellAmountModel.getAmount() == null){
                 everyDaySellAmountModel.setAmount("0");

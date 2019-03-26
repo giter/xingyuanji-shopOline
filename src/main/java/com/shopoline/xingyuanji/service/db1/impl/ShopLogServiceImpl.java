@@ -210,7 +210,8 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 根据OpenId获取用户购物记录
         List<ShopLogModel> shopLogModelList = baseMapper.getShopList(openId);
 
-        for(ListIterator<ShopLogModel> iterator = shopLogModelList.listIterator();iterator.hasNext();){
+        ListIterator<ShopLogModel> iterator = shopLogModelList.listIterator();
+        while(iterator.hasNext()){
             ShopLogModel shopLogModel = iterator.next();
             if(shopLogModel.getExpress().equals("0")){
                 shopLogModel.setExpress("已邮回家");
@@ -224,8 +225,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             }else if(shopLogModel.getExpress().equals("3")){
                 shopLogModel.setExpress("盒子在等你哦");
                 shopLogModel.setExpressCode("3");
-            }
-
+        }
             if (shopLogModel.getIsPay() == null || shopLogModel.getIsPay().equals("0")){
                 shopLogModel.setIsPay("未支付");
             }else if(shopLogModel.getIsPay().equals("1")){
