@@ -2,12 +2,12 @@ package com.shopoline.xingyuanji.vo;
 
 import com.shopoline.xingyuanji.model.ProductListModel;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AdminGetProductVO {
 
-    List<ProductListModel> productList = new ArrayList<>();
+    List<ProductListModel> productList = new LinkedList<>();
 
     private String pageCount;
 
