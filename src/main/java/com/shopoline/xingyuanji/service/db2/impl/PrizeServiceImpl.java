@@ -65,7 +65,8 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         //获取抽奖列表
         List<PrizeModel> prizeList = baseMapper.getPrizeList(buyer.getId());
         // 遍历List写入图片信息
-        for(ListIterator<PrizeModel> iterator = prizeList.listIterator();iterator.hasNext();){
+        ListIterator<PrizeModel> iterator = prizeList.listIterator();
+        while(iterator.hasNext()){
             PrizeModel prizeModel = iterator.next();
             prizeModel.setImg(prizeModel.getPrizeId()+".jpg");
         }
