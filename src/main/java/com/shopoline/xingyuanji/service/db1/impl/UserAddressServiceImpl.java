@@ -93,8 +93,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         this.insert(insertUserAddress);
         // 写入token
         RedisUtil.setAddressValueSeconds("INSERTADDRESS"+userInfo.getOpenId(),userInfo.getOpenId());
-        // 服务器垃圾，休眠20ms
-        Thread.sleep(20);
     }
 
     /**
@@ -153,8 +151,6 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
                 this.updateById(address);
             }
         }
-        // 服务器垃圾，等待10ms
-        Thread.sleep(10);
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).
                 eq("userId",userInfo.getUserId()).last("Limit 1"));
         userAddress.setDef(Constants.DEF_ADDRESS);

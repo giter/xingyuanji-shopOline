@@ -51,6 +51,8 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
     private IUserInfoService userInfoService;
     @Autowired
     private IPrizeCodeService prizeCodeService;
+    @Autowired
+    private IPrizeService prizeService;
 
     /**
      * 获取用户奖品列表
@@ -69,6 +71,8 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         while(iterator.hasNext()){
             PrizeModel prizeModel = iterator.next();
             prizeModel.setImg(prizeModel.getPrizeId()+".jpg");
+            Prize prize = prizeService.selectOne(new EntityWrapper<Prize>().eq("id",prizeModel.getPrizeId()).last("Limit 1"));
+            prizeModel.setName(prize.getName());
         }
         return prizeList;
     }
