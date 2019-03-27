@@ -115,7 +115,7 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
             SendRedPackageUtil sendRedPackage = new SendRedPackageUtil();
             String result = sendRedPackage.sendRedPackage(sendRedPackageModel);
             //判断微信接口返回值
-            if (result.equals("SUCCESS")) {
+            if (result.equals("SUCCESS")){
                 //如果成功从priceLog更新相应信息（逻辑删除将status设为未启用）
                 prizeLog.setUseflag(0);
                 prizeLogService.updateById(prizeLog);
