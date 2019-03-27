@@ -93,7 +93,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         this.insert(insertUserAddress);
         // 写入token
         RedisUtil.setAddressValueSeconds("INSERTADDRESS"+userInfo.getOpenId(),userInfo.getOpenId());
-        // 休眠20ms
+        // 服务器垃圾，休眠20ms
         Thread.sleep(20);
     }
 
@@ -123,6 +123,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     public synchronized void setAddressDef(String ticketId, String id) throws Exception {
 
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
+        // 判断REDIS中是否有key
         boolean tokenResult = RedisUtil.hasKey("INSERTADDRESS"+userInfo.getOpenId());
         if( tokenResult == true ){
             logger.info("<-SET_ADDRESS_DEF_LOCK->:"+userInfo.getNickName()+"\tBUYER_TOKEN："+userInfo.getOpenId());
@@ -152,13 +153,13 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
                 this.updateById(address);
             }
         }
-        // 等待10ms
+        // 服务器垃圾，等待10ms
         Thread.sleep(10);
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("id",id).
                 eq("userId",userInfo.getUserId()).last("Limit 1"));
         userAddress.setDef(Constants.DEF_ADDRESS);
         this.updateById(userAddress);
-        // 写入redis
+        // 服务器慢,写入redis,key过期时间五秒
         RedisUtil.setAddressValueSeconds("SETADDRESSDEF"+userInfo.getOpenId(),userInfo.getOpenId());
 
     }
