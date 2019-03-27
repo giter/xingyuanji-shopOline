@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,7 +50,7 @@ public class WxPayServiceImpl implements WxPayService {
                 if ("JSAPI".equals(tradeType)) {
                     int capacity = (int) (5 / 0.75) + 1;
                     // 小程序，微信公众号
-                    HashMap<String, String> payInfoMap = new HashMap<>(capacity);
+                    ConcurrentHashMap<String, String> payInfoMap = new ConcurrentHashMap<>(capacity);
                     payInfoMap.put("appId", resultMap.get("appid"));
                     payInfoMap.put("nonceStr", resultMap.get("nonce_str"));
                     payInfoMap.put("timeStamp", System.currentTimeMillis() / 1000 + "");
