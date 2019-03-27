@@ -16,7 +16,7 @@ import java.util.Date;
  * @author wuty
  * @since 2019-03-07
  */
-public class Address extends Model<Address> {
+public class Address extends Model<Address>{
 
     private static final long serialVersionUID = 1L;
 

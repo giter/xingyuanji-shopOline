@@ -17,7 +17,7 @@ import java.util.Date;
  * @since 2019-01-09
  */
 @TableName("t_user_info")
-public class UserInfo extends Model<UserInfo> {
+public class UserInfo extends Model<UserInfo>{
 
     private static final long serialVersionUID = 1L;
 

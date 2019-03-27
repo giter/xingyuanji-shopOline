@@ -17,7 +17,7 @@ import java.util.Date;
  * @since 2019-01-10
  */
 @TableName("t_user_asset")
-public class UserAsset extends Model<UserAsset> {
+public class UserAsset extends Model<UserAsset>{
 
     private static final long serialVersionUID = 1L;
 

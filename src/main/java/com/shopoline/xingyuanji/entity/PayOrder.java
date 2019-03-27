@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-01-17
  */
 @TableName("t_pay_order")
-public class PayOrder extends Model<PayOrder> {
+public class PayOrder extends Model<PayOrder>{
 
     private static final long serialVersionUID = 1L;
 

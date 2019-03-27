@@ -1,11 +1,12 @@
 package com.shopoline.xingyuanji.entity;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * @author wuty
  * @since 2019-03-07
  */
-public class Prize extends Model<Prize> {
+public class Prize extends Model<Prize>{
 
     private static final long serialVersionUID = 1L;
 

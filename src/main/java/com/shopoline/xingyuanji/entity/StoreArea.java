@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @since 2019-01-17
  */
 @TableName("store_area")
-public class StoreArea extends Model<StoreArea> {
+public class StoreArea extends Model<StoreArea>{
 
     private static final long serialVersionUID = 1L;
 

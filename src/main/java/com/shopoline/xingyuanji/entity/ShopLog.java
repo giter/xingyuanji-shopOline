@@ -16,7 +16,7 @@ import java.util.Date;
  * @since 2019-03-18
  */
 @TableName("t_shop_log")
-public class ShopLog extends Model<ShopLog> {
+public class ShopLog extends Model<ShopLog>{
 
     private static final long serialVersionUID = 1L;
 

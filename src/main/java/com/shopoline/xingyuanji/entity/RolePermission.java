@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @since 2019-03-07
  */
 @TableName("role_permission")
-public class RolePermission extends Model<RolePermission> {
+public class RolePermission extends Model<RolePermission>{
 
     private static final long serialVersionUID = 1L;
 

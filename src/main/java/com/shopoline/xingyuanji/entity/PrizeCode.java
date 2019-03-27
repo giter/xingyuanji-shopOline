@@ -1,10 +1,11 @@
 package com.shopoline.xingyuanji.entity;
 
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-03-07
  */
 @TableName("prize_code")
-public class PrizeCode extends Model<PrizeCode> {
+public class PrizeCode extends Model<PrizeCode>{
 
     private static final long serialVersionUID = 1L;
 

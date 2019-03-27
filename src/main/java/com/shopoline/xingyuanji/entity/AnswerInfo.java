@@ -16,7 +16,7 @@ import java.util.Date;
  * @since 2019-01-10
  */
 @TableName("t_answer_info")
-public class AnswerInfo extends Model<AnswerInfo> {
+public class AnswerInfo extends Model<AnswerInfo>{
 
     private static final long serialVersionUID = 1L;
 
