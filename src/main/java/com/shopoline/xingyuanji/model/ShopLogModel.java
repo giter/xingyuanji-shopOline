@@ -2,6 +2,8 @@ package com.shopoline.xingyuanji.model;
 
 public class ShopLogModel {
 
+    private String shopLogId;
+
     private String express;
 
     private String expressCode;
@@ -29,6 +31,14 @@ public class ShopLogModel {
     private String isDeliver;
 
     private String ZIPNum;
+
+    public String getShopLogId() {
+        return shopLogId;
+    }
+
+    public void setShopLogId(String shopLogId) {
+        this.shopLogId = shopLogId;
+    }
 
     public String getIsDeliver() {
         return isDeliver;

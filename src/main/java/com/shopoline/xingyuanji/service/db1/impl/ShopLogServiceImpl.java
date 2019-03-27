@@ -15,10 +15,7 @@ import com.shopoline.xingyuanji.model.SendHomeModel;
 import com.shopoline.xingyuanji.model.ShopLogModel;
 import com.shopoline.xingyuanji.service.db1.*;
 import com.shopoline.xingyuanji.utils.*;
-import com.shopoline.xingyuanji.vo.BuyShopProductVO;
-import com.shopoline.xingyuanji.vo.LogisticInformationVO;
-import com.shopoline.xingyuanji.vo.ShopLogInfoVO;
-import com.shopoline.xingyuanji.vo.UserCoinVO;
+import com.shopoline.xingyuanji.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,7 +138,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      */
     @Override
     @Transactional
-    public Object afterPaySuccess(String ticketId,String useXingBi,String isPay,String randomToken,String UUID) throws Exception {
+    public AfterPaySuccessVO afterPaySuccess(String ticketId, String useXingBi, String isPay, String randomToken, String UUID) throws Exception {
         // 获取用户信息
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 获取随机商品
@@ -189,19 +186,20 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             // 流程结束删除Redis中存入的交易TOKEN
             RedisUtil.delete(ticketId + "tradeNum");
             RedisUtil.delete(ticketId + "totalFee");
+
+            AfterPaySuccessVO afterPaySuccessVO = new AfterPaySuccessVO();
+            afterPaySuccessVO.setProductInfo(productInfo);
+            afterPaySuccessVO.setShopLogId(shopLog.getId());
+
             logger.info("删除TOKEN");
             //记录Log
             logger.info("<-AFTER_PAY->\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
                     productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tAssert："+XingBi+"\tDate："+userAsset.getEditTime());
 
-        return productInfo;
+        return afterPaySuccessVO;
     }
 
-    @Override
-    public void updateExchangeCoinInfo(ShopLog shopLog) {
 
-        this.updateById(shopLog);
-    }
 
     @Override
     public List<ShopLogModel> getShopLog(String ticketId) {
@@ -292,7 +290,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
-    public void sendHome(String ticketId,String productId) throws Exception{
+    public void sendHome(String ticketId,String productId,String shopLogId) throws Exception{
 
 
         // 获取用户信息
@@ -316,8 +314,9 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             String totalFee = RedisUtil.getValue(ticketId+"totalFee");
             //写入相关记录
             String openId = GetOpenId.getOpenId(ticketId);
-            ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("openId",openId).eq("goodsId",productInfo.getId()).
-                    eq("express",Constants.KUAIDI_FROM_ZANDING).last("Limit 1"));
+
+            ShopLog shopLog = this.selectOne(new EntityWrapper<ShopLog>().eq("id", shopLogId).eq("openId", openId).eq("goodsId", productInfo.getId()).
+                        eq("express", Constants.KUAIDI_FROM_ZANDING).last("Limit 1"));
             shopLog.setExpress(Constants.YOU_HUI_JIA);
             shopLog.setZIPAmount(totalFee);
             shopLog.setZIPOutTradeNo(ZIPTradeNum);

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.shopoline.xingyuanji.entity.ShopLog;
 import com.shopoline.xingyuanji.model.PayModel;
 import com.shopoline.xingyuanji.model.ShopLogModel;
+import com.shopoline.xingyuanji.vo.AfterPaySuccessVO;
 import com.shopoline.xingyuanji.vo.LogisticInformationVO;
 import com.shopoline.xingyuanji.vo.ShopLogInfoVO;
 
@@ -32,13 +33,8 @@ public interface IShopLogService extends IService<ShopLog> {
      * @param useXingBi 使用猩币数量
      * @return
      */
-    Object afterPaySuccess(String ticketId,String useXingBi,String isPay,String randomToken,String UUID) throws Exception;
+    AfterPaySuccessVO afterPaySuccess(String ticketId, String useXingBi, String isPay, String randomToken, String UUID) throws Exception;
 
-    /**
-     * 卖了换币
-     * @param shopLog
-     */
-    void updateExchangeCoinInfo(ShopLog shopLog);
 
     /**
      * 获取订单记录基本信息
@@ -59,7 +55,7 @@ public interface IShopLogService extends IService<ShopLog> {
      * @param ticketId
      * @return
      */
-    void sendHome(String ticketId, String productId) throws Exception;
+    void sendHome(String ticketId, String productId,String shopLogId) throws Exception;
 
     /**
      * 取消订单

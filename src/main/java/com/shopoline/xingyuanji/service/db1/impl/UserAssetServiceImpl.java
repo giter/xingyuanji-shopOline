@@ -100,7 +100,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
      */
     @Override
     @Transactional
-    public Object exchangeCoin(String ticketId, String goodsId) {
+    public Object exchangeCoin(String ticketId, String goodsId,String shopLogId) {
 
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         //查询商品信息
@@ -121,11 +121,11 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         userAsset.setOpenId(openId);
         this.insert(userAsset);
         //更改用户购买商品信息
-        ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("goodsId",goodsId).
-                eq("openId",openId).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+        ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("id",shopLogId).eq("goodsId",goodsId).
+                    eq("openId",openId).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
         shopLog.setExpress(Constants.MALEHUANBI);
         shopLog.setUpdateTime(new Date());
-        shopLogService.updateExchangeCoinInfo(shopLog);
+        shopLogService.updateById(shopLog);
 
         logger.info("<-EXCHANGE_COIN->\t"+"UserName："+userInfo.getNickName()+"\tSelledProductName："+productInfo.getGoodsname()+
                 "\tSelledProductId："+productInfo.getId()+"\tAmount："+userAsset.getAmount()+"\tDate："+new Date());

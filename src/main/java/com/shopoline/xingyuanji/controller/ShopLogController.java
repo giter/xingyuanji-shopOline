@@ -8,6 +8,7 @@ import com.shopoline.xingyuanji.model.ShopLogModel;
 import com.shopoline.xingyuanji.service.db1.IShopLogService;
 import com.shopoline.xingyuanji.service.db1.WxPayService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
+import com.shopoline.xingyuanji.vo.AfterPaySuccessVO;
 import com.shopoline.xingyuanji.vo.LogisticInformationVO;
 import com.shopoline.xingyuanji.vo.ShopLogInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +108,7 @@ public class ShopLogController extends BaseController {
     @ResponseBody
     @RequestMapping("/getOpenRandomGoods")
     public Object getOpenRandomGoods(String ticketId,String useXingBi,String isPay,String randomToken,String UUID,HttpServletRequest request, HttpServletResponse response){
-        JsonResult<Object> json = new JsonResult<>();
+        JsonResult<AfterPaySuccessVO> json = new JsonResult<>();
         try {
             json.setData(shopLogService.afterPaySuccess(ticketId,useXingBi,isPay,randomToken,UUID));
         }catch (Exception e){
@@ -178,10 +179,10 @@ public class ShopLogController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/sendHome")
-    public Object sendHome(String ticketId,String productId,HttpServletRequest request, HttpServletResponse response){
+    public Object sendHome(String ticketId,String productId,String shopLogId,HttpServletRequest request, HttpServletResponse response){
         JsonResult json = new JsonResult();
         try {
-            shopLogService.sendHome(ticketId,productId);
+            shopLogService.sendHome(ticketId,productId,shopLogId);
         }catch (Exception e){
             logger.info(e.getMessage());
             json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));

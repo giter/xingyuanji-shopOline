@@ -60,10 +60,10 @@ public class UserAssetController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/exchangeCoin")
-    public Object exchangeCoin(String ticketId,String goodsId, HttpServletRequest request, HttpServletResponse response){
+    public Object exchangeCoin(String ticketId,String goodsId,String shopLogId, HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
-            json.setData(userAssetService.exchangeCoin(ticketId,goodsId));
+            json.setData(userAssetService.exchangeCoin(ticketId,goodsId,shopLogId));
         }catch (Exception e){
             logger.info(e.getMessage());
             json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));

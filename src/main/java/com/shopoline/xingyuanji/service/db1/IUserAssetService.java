@@ -36,7 +36,7 @@ public interface IUserAssetService extends IService<UserAsset> {
      * @param goodsId
      * @return
      */
-    Object exchangeCoin(String ticketId, String goodsId);
+    Object exchangeCoin(String ticketId, String goodsId,String shopLogId);
 
     /**
      * 扣除用户猩币
