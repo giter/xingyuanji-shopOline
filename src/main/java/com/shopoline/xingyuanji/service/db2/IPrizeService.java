@@ -35,4 +35,7 @@ public interface IPrizeService extends IService<Prize> {
 
 
     void saveCode(int num);
+
+    void savePrize();
+
 }

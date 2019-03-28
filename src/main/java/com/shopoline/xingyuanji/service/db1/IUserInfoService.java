@@ -52,10 +52,9 @@ public interface IUserInfoService extends IService<UserInfo> {
     /**
      * 按条件搜索
      * @param nickName
-     * @param openId
      * @return
      */
-    List<UserInfo> selectUserInfoByInformation(String nickName, String openId);
+    List<UserInfo> selectUserInfoByInformation(String nickName);
 
     UserInfo getRedPacketUserInfo(String openId);
 

@@ -71,8 +71,6 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         while(iterator.hasNext()){
             PrizeModel prizeModel = iterator.next();
             prizeModel.setImg(prizeModel.getPrizeId()+".jpg");
-            Prize prize = prizeService.selectOne(new EntityWrapper<Prize>().eq("id",prizeModel.getPrizeId()).last("Limit 1"));
-            prizeModel.setName(prize.getName());
         }
         return prizeList;
     }
@@ -178,6 +176,28 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         }
         if (list.size()>0) {
             prizeCodeService.save(list);
+        }
+    }
+
+    @Override
+    public void savePrize() {
+        List<PrizeLog> prizeLogList = prizeLogService.selectList(new EntityWrapper<>());
+        ListIterator<PrizeLog> iterator = prizeLogList.listIterator();
+        while(iterator.hasNext()){
+            PrizeLog prizeLog = iterator.next();
+            if(prizeLog.getPrizeId() != null){
+                if(prizeLog.getPrizeId() == 20 ||prizeLog.getPrizeId() == 21 ||prizeLog.getPrizeId() == 22 ||
+                        prizeLog.getPrizeId() == 23 ||prizeLog.getPrizeId() == 24 ||prizeLog.getPrizeId() == 25 ||
+                        prizeLog.getPrizeId() == 26 ||prizeLog.getPrizeId() == 27 ||prizeLog.getPrizeId() == 28 ||
+                        prizeLog.getPrizeId() == 29 ){
+                    Prize prize = prizeService.selectOne(new EntityWrapper<Prize>().eq("id",prizeLog.getPrizeId()).last("Limit 1"));
+                    prizeLog.setPrice(prize.getUpdateId());
+                    prizeLogService.updateById(prizeLog);
+                }
+
+            }
+
+
         }
     }
 

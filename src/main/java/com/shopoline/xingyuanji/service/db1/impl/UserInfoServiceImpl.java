@@ -163,12 +163,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     /**
      * 按条件搜索
      * @param nickName
-     * @param openId
      * @return
      */
     @Override
-    public List<UserInfo> selectUserInfoByInformation(String nickName, String openId) {
-        List<UserInfo> userInfoList = baseMapper.selectUserInfoByInformation(nickName,openId);
+    public List<UserInfo> selectUserInfoByInformation(String nickName) {
+        List<UserInfo> userInfoList = baseMapper.selectUserInfoByInformation(nickName);
         return userInfoList;
     }
 

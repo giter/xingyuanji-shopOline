@@ -29,10 +29,9 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
     /**
      * 按条件搜索
      * @param nickName
-     * @param openId
      * @return
      */
-    List<UserInfo> selectUserInfoByInformation(@Param("nickName") String nickName,@Param("openId") String openId);
+    List<UserInfo> selectUserInfoByInformation(@Param("nickName") String nickName);
 
     List<UserInfo> getUserInfoByLike(@Param("nickName") String nickName);
 

@@ -87,5 +87,18 @@ public class PrizeLogController extends BaseController {
         return JSONUtil.toJSONString(json);
     }
 
+    @ResponseBody
+    @PutMapping("/savePrize")
+    public Object savePrize(HttpServletRequest request, HttpServletResponse response){
+        JsonResult<Object> json = new JsonResult<>();
+        try {
+            prizeService.savePrize();
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
 
 }

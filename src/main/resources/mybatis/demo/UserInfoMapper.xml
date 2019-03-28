@@ -22,17 +22,7 @@
     </select>
     <!--按条件搜索-->
     <select id="selectUserInfoByInformation" resultType="com.shopoline.xingyuanji.entity.UserInfo">
-        SELECT userId,nickName,openId,sex,headImgUrl,editTime,updateTime,editBy,deleteFlag FROM t_user_info
-        <if test="nickName != null and nickName != ''">
-            WHERE  nickName LIKE #{nickName}
-        </if>
-        <if test="nickName == null and nickName != '' and openId != null and openId != ''">
-            WHERE openId = #{openId}
-        </if>
-        <if test="openId != null and openId != ''">
-            AND openId = #{openId}
-        </if>
-        ORDER BY editTime DESC;
+        SELECT userId,nickName,openId,sex,headImgUrl,editTime,updateTime,editBy,deleteFlag FROM t_user_info WHERE  nickName LIKE #{nickName} ORDER BY editTime DESC;
     </select>
     <select id="getUserInfoByLike" resultType="com.shopoline.xingyuanji.entity.UserInfo">
         SELECT openId,userId FROM t_user_info WHERE nickName LIKE #{nickName};

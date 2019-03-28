@@ -145,15 +145,17 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     public UserInfoListVO getUserInfoList(String nickName, String openId,String pageNum) {
 
         // 用户信息
-        List<UserInfo> userInfoList;
-        if(pageNum != null && !pageNum.equals("")){
+        List<UserInfo> userInfoList = new ArrayList<>();
+        if(!pageNum.equals("")){
             // 每页记录数量
             Integer pageSize = 6;
             // 根据页码计算查询条数
             Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
            userInfoList = userInfoService.selectUserInfoByCondition(nickName,openId,pageStart,pageSize);
-        }else{
-            userInfoList = userInfoService.selectUserInfoByInformation(nickName,openId);
+        }else if(!nickName.equals("")){
+            userInfoList = userInfoService.selectUserInfoByInformation(nickName);
+        }else if(!openId.equals("")){
+            userInfoList = userInfoService.selectList(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
         }
         List<UserInfoListModel> userInfoListVOList = new LinkedList<>();
         // 遍历
@@ -600,7 +602,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      * @return
      */
     @Override
-    public ImgUploadVM uploadImg(MultipartFile file, String style,String productId) throws Exception {
+    public synchronized ImgUploadVM uploadImg(MultipartFile file, String style,String productId) throws Exception {
 
         String path = null;
         if(style.equals("0")){
@@ -611,11 +613,11 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             path = shopPicUploadDir;
         }
         ImgUploadVM imgUploadVM = UploadUtil.upload(file,path);
-
         // 获取商品信息
         ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId).last("Limit 1"));
-        productInfo.setImg(imgUploadVM.getImgFullName());
-        if(style.equals("2")){
+        if(style.equals("0") || style.equals("1")){
+            productInfo.setImg(imgUploadVM.getImgFullName());
+        }else if(style.equals("2")){
             productInfo.setShopImg(imgUploadVM.getImgFullName());
         }
         productInfoService.updateById(productInfo);
