@@ -139,12 +139,14 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     @Override
     @Transactional
     public AfterPaySuccessVO afterPaySuccess(String ticketId, String useXingBi, String isPay, String randomToken, String UUID) throws Exception {
+
         // 获取用户信息
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
         // 获取随机商品
         ProductInfo productInfo = productInfoService.getRedomProduct(ticketId,Integer.parseInt(Constants.HEZI_PRODUCT),
                     Integer.parseInt(Constants.HEZI_PRODUCT),randomToken,UUID);
-        productInfo.setImg(productInfo.getGoodsname()+".png");
+        AfterPaySuccessVO afterPaySuccessVO = new AfterPaySuccessVO();
+        afterPaySuccessVO.setProductInfo(productInfo);
         // 扣除猩币
         if(useXingBi.equals("1") || useXingBi == "1"){
             userAssetService.setUseXingBi(userInfo);
@@ -157,6 +159,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             // 将商品写入ShopLog表
             ShopLog shopLog = new ShopLog();
             shopLog.setId(IdWorker.get32UUID());
+            afterPaySuccessVO.setShopLogId(shopLog.getId());
             shopLog.setUserId(userInfo.getUserId());
             String openId = GetOpenId.getOpenId(ticketId);
             shopLog.setOpenId(openId);
@@ -187,14 +190,10 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             RedisUtil.delete(ticketId + "tradeNum");
             RedisUtil.delete(ticketId + "totalFee");
 
-            AfterPaySuccessVO afterPaySuccessVO = new AfterPaySuccessVO();
-            afterPaySuccessVO.setProductInfo(productInfo);
-            afterPaySuccessVO.setShopLogId(shopLog.getId());
-
             logger.info("删除TOKEN");
             //记录Log
             logger.info("<-AFTER_PAY->\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
-                    productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tAssert："+XingBi+"\tDate："+userAsset.getEditTime());
+                    //productInfo.getGoodsname()+"\tTotalFee："+totalFee+"\tAssert："+XingBi+"\tDate："+userAsset.getEditTime());
 
         return afterPaySuccessVO;
     }
