@@ -27,7 +27,7 @@
 
     <select id="getShopList" resultType="com.shopoline.xingyuanji.model.ShopLogModel">
         SELECT a.id AS shopLogId,a.express,a.goodsId,a.isPay,a.editTime,a.tradeNo,a.isDeliver,a.ZIPNum,b.goodsname,b.price,b.img,b.style,b.socer FROM t_shop_log a
-        LEFT JOIN t_product_info b ON b.id = a.goodsId WHERE a.deleteFlag = '1'AND a.openId = #{openId} ORDER BY a.editTime DESC ;
+        LEFT JOIN t_product_info b ON b.id = a.goodsId WHERE a.deleteFlag = '1'AND a.openId = #{openId} ORDER BY a.express DESC ;
     </select>
 
     <!--查询当天线上销售数量-->
