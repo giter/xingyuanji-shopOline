@@ -617,7 +617,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId).last("Limit 1"));
         if(style.equals("0") || style.equals("1")){
             productInfo.setImg(imgUploadVM.getImgFullName());
-        }else if(style.equals("2")){
+        }
+        if(style.equals("2")){
             productInfo.setShopImg(imgUploadVM.getImgFullName());
         }
         productInfoService.updateById(productInfo);
