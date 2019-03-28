@@ -252,7 +252,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     @Override
     public ShopLogInfoVO getShopLogInfo(String ticketId) {
 
-
         ShopLogInfoVO shopLogInfoVO = new ShopLogInfoVO();
         // 获取购买记录
         String openId = GetOpenId.getOpenId(ticketId);
