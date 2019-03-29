@@ -132,7 +132,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     }
 
     /**
-     * 交易成功后业务
+     * 交易成功后业务,获取随机商品
      * @param ticketId
      * @return
      */
@@ -189,7 +189,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
             // 流程结束删除Redis中存入的交易TOKEN
             RedisUtil.delete(ticketId + "tradeNum");
             RedisUtil.delete(ticketId + "totalFee");
-
             logger.info("删除TOKEN");
             //记录Log
             logger.info("<-AFTER_PAY->\t"+"UserName："+userInfo.getNickName()+"\tProductId："+productInfo.getId()+"\tProductName："+
