@@ -197,8 +197,6 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         return afterPaySuccessVO;
     }
 
-
-
     @Override
     public List<ShopLogModel> getShopLog(String ticketId) {
 
