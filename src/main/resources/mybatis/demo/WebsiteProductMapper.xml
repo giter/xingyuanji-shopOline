@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopoline.xingyuanji.mapper.WebsiteProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.WebsiteProduct">
+        <id column="id" property="id" />
+        <result column="productName" property="productName" />
+        <result column="style" property="style" />
+        <result column="img" property="img" />
+        <result column="editTime" property="editTime" />
+        <result column="editBy" property="editBy" />
+        <result column="deleteFlag" property="deleteFlag" />
+    </resultMap>
+
+    <!--获取官网商品详情-->
+    <select id="getProductInfoByStyle" resultType="com.shopoline.xingyuanji.entity.WebsiteProduct">
+        SELECT id,productName,style,img,editTime,editBy,deleteFlag FROM t_website_product WHERE deleteFlag = '1' AND style = #{style} LIMIT #{pageStart},#{pageSize};
+    </select>
+
+</mapper>
