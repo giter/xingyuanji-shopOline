@@ -9,6 +9,16 @@ public class WebsiteProductInfoVO {
 
     private List<WebsiteProduct> websiteProductList = new LinkedList<>();
 
+    private Integer pagrCount;
+
+    public Integer getPagrCount() {
+        return pagrCount;
+    }
+
+    public void setPagrCount(Integer pagrCount) {
+        this.pagrCount = pagrCount;
+    }
+
     public List<WebsiteProduct> getWebsiteProductList() {
         return websiteProductList;
     }

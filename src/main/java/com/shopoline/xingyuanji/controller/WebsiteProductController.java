@@ -4,14 +4,13 @@ package com.shopoline.xingyuanji.controller;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.common.JsonResult;
 import com.shopoline.xingyuanji.controller.baseController.BaseController;
+import com.shopoline.xingyuanji.model.WebsiteProductModel;
 import com.shopoline.xingyuanji.service.db1.IWebsiteProductService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.WebsiteProductInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/websiteProduct")
 public class WebsiteProductController extends BaseController {
+
 
     @Autowired
     private IWebsiteProductService websiteProductService;
@@ -52,6 +52,28 @@ public class WebsiteProductController extends BaseController {
         }
         return JSONUtil.toJSONString(json);
     }
+
+    /**
+     * 增加或更新官网商品
+     * @param websiteProductModel
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @PutMapping("/insertWebSiteProduct")
+    public Object insertWebSiteProduct(@RequestBody WebsiteProductModel websiteProductModel, HttpServletRequest request, HttpServletResponse response){
+        JsonResult<Object> json= new JsonResult<>();
+        try {
+            websiteProductService.insertWebSiteProduct(websiteProductModel);
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
+            json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
+        }
+        return JSONUtil.toJSONString(json);
+    }
+
 
 
 }

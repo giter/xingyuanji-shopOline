@@ -1,6 +1,7 @@
 package com.shopoline.xingyuanji.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -19,27 +20,34 @@ public class WebsiteProduct extends Model<WebsiteProduct> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableField(value = "id")
     private String id;
     /**
      * 商品名称
      */
+    @TableField(value = "productName")
     private String productName;
     /**
      * 种类0：数码1：娱乐趣味2：美妆个护3：居家生活
      */
+    @TableField(value = "style")
     private String style;
     /**
      * 图片
      */
+    @TableField(value = "img")
     private String img;
     /**
      * 操作时间
      */
+    @TableField(value = "editTime")
     private Date editTime;
+    @TableField(value = "editBy")
     private String editBy;
     /**
      * 状态0：禁用1：启用
      */
+    @TableField(value = "deleteFlag")
     private String deleteFlag;
 
 

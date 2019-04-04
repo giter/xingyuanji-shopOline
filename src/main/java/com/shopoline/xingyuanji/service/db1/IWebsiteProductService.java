@@ -2,6 +2,7 @@ package com.shopoline.xingyuanji.service.db1;
 
 import com.shopoline.xingyuanji.entity.WebsiteProduct;
 import com.baomidou.mybatisplus.service.IService;
+import com.shopoline.xingyuanji.model.WebsiteProductModel;
 import com.shopoline.xingyuanji.vo.WebsiteProductInfoVO;
 
 /**
@@ -21,4 +22,10 @@ public interface IWebsiteProductService extends IService<WebsiteProduct> {
      * @return
      */
     WebsiteProductInfoVO getProductInfoByStyle(String style, String pageNum);
+
+    /**
+     * 增加或新增官网商品
+     * @param websiteProductModel
+     */
+    void insertWebSiteProduct(WebsiteProductModel websiteProductModel);
 }
