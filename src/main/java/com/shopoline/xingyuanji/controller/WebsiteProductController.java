@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/websiteProduct")
 public class WebsiteProductController extends BaseController {
+
     @Autowired
     private IWebsiteProductService websiteProductService;
 
