@@ -75,7 +75,7 @@ public class MpGenenator {
         // strategy.setCapitalMode(true);// ȫ�ִ�д���� ORACLE ע��
         strategy.setTablePrefix(new String[] { "t_" });// �˴������޸�Ϊ���ı�ǰ׺
         strategy.setNaming(NamingStrategy.underline_to_camel);// �������ɲ���
-        strategy.setInclude(new String[] { "t_shop_log"});
+        strategy.setInclude(new String[] { "t_website_product"});
         // ��Ҫ���ɵı�
         // strategy.setExclude(new String[]{"test"}); // �ų����ɵı�
         // �Զ���ʵ�常��

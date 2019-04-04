@@ -77,9 +77,9 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
         // 商品id，扫码支付必传。
         payInfoMap.put("product_id", ""+ 0);
         // 订单总金额，单位为分
-        // payInfoMap.put("total_fee", ""+payModel.getTotalFee() * 100);
+        payInfoMap.put("total_fee", ""+Integer.valueOf(payModel.getTotalFee()) * 100);
         // 订单总金额，单位为分测试
-        payInfoMap.put("total_fee", payModel.getTotalFee());
+        // payInfoMap.put("total_fee", payModel.getTotalFee());
         logger.info("total_fee:"+payInfoMap.get("total_fee"));
         // 币种
         payInfoMap.put("fee_type", "CNY");
