@@ -75,7 +75,7 @@ public class MpGenenator {
         // strategy.setCapitalMode(true);// ȫ�ִ�д���� ORACLE ע��
         strategy.setTablePrefix(new String[] { "t_" });// �˴������޸�Ϊ���ı�ǰ׺
         strategy.setNaming(NamingStrategy.underline_to_camel);// �������ɲ���
-        strategy.setInclude(new String[] { "t_website_product"});
+        strategy.setInclude(new String[] { "t_wedsite_article"});
         // ��Ҫ���ɵı�
         // strategy.setExclude(new String[]{"test"}); // �ų����ɵı�
         // �Զ���ʵ�常��
@@ -103,7 +103,7 @@ public class MpGenenator {
         pc.setParent("com");
         pc.setParent("com.shopoline");
         pc.setModuleName("xingyuanji");
-        // pc.setController("controller");
+        pc.setController("controller");
         pc.setEntity("entity");
         pc.setMapper("mapper");
         pc.setService("service.db1");

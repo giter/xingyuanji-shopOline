@@ -1,4 +1,4 @@
-package com.shopoline.xingyuanji.controller;
+package com.shopoline.xingyuanji.controller.websiteController;
 
 
 import com.shopoline.xingyuanji.common.ExceptionEnum;
