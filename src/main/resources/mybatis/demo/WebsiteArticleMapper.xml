@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shopoline.xingyuanji.mapper.WedsiteArticleMapper">
+<mapper namespace="com.shopoline.xingyuanji.mapper.WebsiteArticleMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.WedsiteArticle">
+    <resultMap id="BaseResultMap" type="com.shopoline.xingyuanji.entity.WebsiteArticle">
         <id column="id" property="id" />
         <result column="title" property="title" />
         <result column="text" property="text" />
@@ -12,6 +12,10 @@
         <result column="editBy" property="editBy" />
         <result column="updateTime" property="updateTime" />
         <result column="deleteFlag" property="deleteFlag" />
+        <result column="mark" property="mark" />
     </resultMap>
+    <select id="getArticleList" resultType="com.shopoline.xingyuanji.entity.WebsiteArticle">
+        SELECT id,title,text,author,editTime,editBy,updateTime,deleteFlag,mark FROM t_website_article WHERE deleteFlag= '1' LIMIT #{pageStart},#{pageSize};
+    </select>
 
 </mapper>

@@ -49,7 +49,8 @@ public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper,
         }
         WebsiteProductInfoVO websiteProductInfoVO=new WebsiteProductInfoVO();
         websiteProductInfoVO.setWebsiteProductList(websiteProductList);
-        websiteProductInfoVO.setPagrCount(this.selectCount(new EntityWrapper<WebsiteProduct>().eq("style",style).eq("deleteFlag", Constants.QIYONG)));
+        websiteProductInfoVO.setPagrCount(this.selectCount(new EntityWrapper<WebsiteProduct>().eq("style",style).
+                eq("deleteFlag", Constants.QIYONG)));
         return websiteProductInfoVO;
     }
 

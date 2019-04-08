@@ -1,6 +1,8 @@
 package com.shopoline.xingyuanji.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -14,47 +16,65 @@ import java.util.Date;
  * @author wuty
  * @since 2019-04-08
  */
-@TableName("t_wedsite_article")
-public class WedsiteArticle extends Model<WedsiteArticle> {
+@TableName("t_website_article")
+public class WebsiteArticle extends Model<WebsiteArticle> {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
+    @TableId("id")
+    private String id;
     /**
      * 标题
      */
+    @TableField("title")
     private String title;
     /**
      * 正文
      */
+    @TableField("text")
     private String text;
     /**
      * 作者
      */
+    @TableField("author")
     private String author;
     /**
      * 创建时间
      */
+    @TableField("editTime")
     private Date editTime;
     /**
      * 创建人
      */
+    @TableField("editBy")
     private String editBy;
     /**
      * 更新时间
      */
+    @TableField("updateTime")
     private Date updateTime;
     /**
      * 状态 0：未启用 1：启用
      */
+    @TableField("deleteFlag")
     private String deleteFlag;
 
+    private String mark;
 
-    public Integer getId() {
+    public String getMark() {
+        return mark;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+
+    public String getId() {
         return id;
     }
 
-    public WedsiteArticle setId(Integer id) {
+    public WebsiteArticle setId(String id) {
         this.id = id;
         return this;
     }
@@ -63,7 +83,7 @@ public class WedsiteArticle extends Model<WedsiteArticle> {
         return title;
     }
 
-    public WedsiteArticle setTitle(String title) {
+    public WebsiteArticle setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -72,7 +92,7 @@ public class WedsiteArticle extends Model<WedsiteArticle> {
         return text;
     }
 
-    public WedsiteArticle setText(String text) {
+    public WebsiteArticle setText(String text) {
         this.text = text;
         return this;
     }
@@ -81,7 +101,7 @@ public class WedsiteArticle extends Model<WedsiteArticle> {
         return author;
     }
 
-    public WedsiteArticle setAuthor(String author) {
+    public WebsiteArticle setAuthor(String author) {
         this.author = author;
         return this;
     }
@@ -90,7 +110,7 @@ public class WedsiteArticle extends Model<WedsiteArticle> {
         return editTime;
     }
 
-    public WedsiteArticle setEditTime(Date editTime) {
+    public WebsiteArticle setEditTime(Date editTime) {
         this.editTime = editTime;
         return this;
     }
@@ -99,7 +119,7 @@ public class WedsiteArticle extends Model<WedsiteArticle> {
         return editBy;
     }
 
-    public WedsiteArticle setEditBy(String editBy) {
+    public WebsiteArticle setEditBy(String editBy) {
         this.editBy = editBy;
         return this;
     }
@@ -108,7 +128,7 @@ public class WedsiteArticle extends Model<WedsiteArticle> {
         return updateTime;
     }
 
-    public WedsiteArticle setUpdateTime(Date updateTime) {
+    public WebsiteArticle setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
         return this;
     }
@@ -117,7 +137,7 @@ public class WedsiteArticle extends Model<WedsiteArticle> {
         return deleteFlag;
     }
 
-    public WedsiteArticle setDeleteFlag(String deleteFlag) {
+    public WebsiteArticle setDeleteFlag(String deleteFlag) {
         this.deleteFlag = deleteFlag;
         return this;
     }
@@ -129,7 +149,7 @@ public class WedsiteArticle extends Model<WedsiteArticle> {
 
     @Override
     public String toString() {
-        return "WedsiteArticle{" +
+        return "WebsiteArticle{" +
         "id=" + id +
         ", title=" + title +
         ", text=" + text +
