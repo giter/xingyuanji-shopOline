@@ -24,7 +24,7 @@ import java.util.ListIterator;
  * @since 2019-04-04
  */
 @Service
-public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper, WebsiteProduct> implements IWebsiteProductService {
+public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper, WebsiteProduct> implements IWebsiteProductService   {
 
 
     /**
