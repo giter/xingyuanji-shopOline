@@ -10,7 +10,6 @@ import com.shopoline.xingyuanji.Config;
 import com.shopoline.xingyuanji.entity.ProductInfo;
 import com.shopoline.xingyuanji.model.SFPrintInfoModel;
 import com.shopoline.xingyuanji.model.SendHomeModel;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
