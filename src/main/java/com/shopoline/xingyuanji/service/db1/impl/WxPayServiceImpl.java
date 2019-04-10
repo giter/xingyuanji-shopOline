@@ -31,21 +31,25 @@ public class WxPayServiceImpl implements WxPayService {
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", 0);
+
             try {
                 String tradeType = map.get("trade_type");
                 // 微信sdk，统一下单接口
                 Map<String, String> resultMap = wxPay.unifiedOrder(map);
+
                 if (!"SUCCESS".equals(resultMap.get("result_code"))) {
                     jsonObject.put("object", resultMap);
                     jsonObject.put("msg", "统一下单失败");
                     logger.error("<-WXPAY_RESULT->：" + jsonObject.get("object") + "\tResult：统一下单失败");
                     return jsonObject;
                 }
+
                 if (!WXPayUtil.isSignatureValid(resultMap, WxConfig.SECRET)) {
                     jsonObject.put("msg", "验证签名失败");
                     logger.error("<-WXPAY_RESULT->：" + "\tResult：验证签名失败");
                     return jsonObject;
                 }
+
                 jsonObject.put("result", 0);
                 if ("JSAPI".equals(tradeType)) {
                     int capacity = (int) (5 / 0.75) + 1;
@@ -61,6 +65,7 @@ public class WxPayServiceImpl implements WxPayService {
                     jsonObject.put("object", payInfoMap);
                     logger.info("<-JSAPI_WXPAY_RESULT->：" + payInfoMap);
                 }
+
                 if ("NATIVE".equals(tradeType)) {//扫码
                     jsonObject.put("url", resultMap.get("code_url"));
                 }
@@ -84,6 +89,7 @@ public class WxPayServiceImpl implements WxPayService {
      */
     @Override
     public Object payNotify(String string) {
+
         try {
             Map<String,String> map = WXPayUtil.xmlToMap(string);
             JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map));

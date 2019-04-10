@@ -57,6 +57,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         String openId = GetOpenId.getOpenId(ticketId);
         Assert.isTrue(openId != null, ExceptionEnum.EXCEPTION_1.getDesc());
         UserAsset asset = baseMapper.sumAmountById(openId, Constants.XINGBI);
+
         if(asset == null){
             userCoinVO.setAmount(Constants.NULL);
         }else {
@@ -76,6 +77,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
     public void setUseXingBi(UserInfo userInfo) {
 
         UserAsset userAsset = baseMapper.selectUserXingBi(Constants.XINGBI,userInfo.getOpenId());
+
         if (userAsset != null){
             UserAsset userAsset1 = new UserAsset();
             userAsset1.setId(IdWorker.get32UUID());
@@ -86,8 +88,10 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
             userAsset1.setEditTime(new Date());
             userAsset1.setEditBy(Constants.ADMIN);
             userAsset1.setOpenId(userInfo.getOpenId());
+
             logger.info("<-DELETE_USER_XINGBI->\t"+"NickName："+userInfo.getNickName()+"\tOpenId："+userInfo.getOpenId()+
                     "\tDELETE_XINGBI_AMOUNT："+userAsset1.getAmount()+"\tAMOUNT_TYPE：猩币"+"DATE："+userAsset1.getEditTime());
+
             this.insert(userAsset1);
         }
     }
@@ -107,6 +111,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",goodsId).
                 eq("style",Constants.XINGBI).eq("kind",Constants.XINGBI).
                 eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+
         //将商品积分写入用户财富表
         UserAsset userAsset = new UserAsset();
         userAsset.setId(IdWorker.get32UUID());
@@ -120,11 +125,13 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         String openId = GetOpenId.getOpenId(ticketId);
         userAsset.setOpenId(openId);
         this.insert(userAsset);
+
         //更改用户购买商品信息
         ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("id",shopLogId).eq("goodsId",goodsId).
                     eq("openId",openId).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
         shopLog.setExpress(Constants.MALEHUANBI);
         shopLog.setUpdateTime(new Date());
+
         shopLogService.updateById(shopLog);
 
         logger.info("<-EXCHANGE_COIN->\t"+"UserName："+userInfo.getNickName()+"\tSelledProductName："+productInfo.getGoodsname()+
@@ -151,10 +158,12 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
         userAsset.setEditBy(Constants.ADMIN);
         userAsset.setDeltFlag(Constants.QIYONG);
         userAsset.setOpenId(userInfo.getOpenId());
+
         // log
         logger.info("<-DELETE_USER_AMOUNT->\t"+"UserName："+userInfo.getNickName()+"\tOpenId："+userInfo.getOpenId()+
                 "\tSelledProductName："+productInfo.getGoodsname()+"\tSelledProductId："+productInfo.getId()+"\tDELETE_TYPE：猩币"+"\tAmount："+
                 userAsset.getAmount()+"\tDate："+userAsset.getEditTime());
+
         this.insert(userAsset);
     }
 
@@ -165,6 +174,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
      */
     @Override
     public List<UserAssetInfoModel> getUserAssetInfoList(String userId,Integer pageStart,Integer pageSize) {
+
         return baseMapper.getUserAssetInfoList(userId,pageStart,pageSize);
     }
 

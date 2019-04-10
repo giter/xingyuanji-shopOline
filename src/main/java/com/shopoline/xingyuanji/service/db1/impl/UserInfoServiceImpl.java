@@ -54,6 +54,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + Constants.APPID
                 + "&secret=" + Constants.SECRET + "&code=" + code + "&grant_type=authorization_code";
+
         String str = OkhttpUtil.get(url);
         JSONObject jsonObject = JSON.parseObject(str);
         String accessToken = jsonObject.getString("access_token");
@@ -127,8 +128,10 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
      */
     @Override
     public SignModel getSign() {
+
         String url = "https://www.xingyuanji.com/dist";
         SignModel signModel = WxConfig.getSign(url);
+
         return signModel;
     }
 
@@ -167,17 +170,20 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
      */
     @Override
     public List<UserInfo> selectUserInfoByInformation(String nickName) {
+
         List<UserInfo> userInfoList = baseMapper.selectUserInfoByInformation(nickName);
         return userInfoList;
     }
 
     @Override
     public UserInfo getRedPacketUserInfo(String openId) {
+
         return this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
     }
 
     @Override
     public List<UserInfo> getUserInfoByLike(String nickName) {
+
         return baseMapper.getUserInfoByLike(nickName);
     }
 

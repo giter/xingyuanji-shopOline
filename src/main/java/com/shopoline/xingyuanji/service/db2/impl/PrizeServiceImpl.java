@@ -88,13 +88,16 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         Buyer buyer = buyerService.getDB2UserInfo(ticketId);
 
         boolean tokenResult = RedisUtil.hasKey("RED_PACKAGE"+buyer.getOpenId());
+
         if( tokenResult == true ){
             logger.info("<-RED_PACKAGE->:"+buyer.getNickName()+"\tBUYER_TOKEN："+buyer.getOpenId());
             throw new Exception(ExceptionEnum.EXCEPTION_24.getDesc());
         }
+
         // 获取奖品信息
         PrizeLog prizeLog = prizeLogService.selectOne(new EntityWrapper<PrizeLog>().eq("id", prizeId).
                 eq("useflag",Constants.QIYONG).last("Limit 1"));
+
         // 判断是否是红包,如果是，则直接兑换红包
         if (prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_88 ||
                 prizeLog.getPrizeId() == RedPacketConfig.REDPACKET_36_6 ||
@@ -116,6 +119,7 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
             // 兑换红包
             SendRedPackageUtil sendRedPackage = new SendRedPackageUtil();
             String result = sendRedPackage.sendRedPackage(sendRedPackageModel);
+
             //判断微信接口返回值
             if (result.equals("SUCCESS")){
                 //如果成功从priceLog更新相应信息（逻辑删除将status设为未启用）
@@ -128,7 +132,9 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
             } else {
                 throw new Exception(ExceptionEnum.EXCEPTION_22.getDesc());
             }
+
         }
+
         // 获取用户默认地址
         UserInfo userInfo = userInfoService.getRedPacketUserInfo(buyer.getOpenId());
         UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().
@@ -144,6 +150,7 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
         prizeLog.setUpdateTime(new Date());
         prizeLog.setUseflag(Constants.JINYONG);
         prizeLogService.updateByInfo(prizeLog);
+
         // log
         logger.info("<-奖品兑换->：" + prizeLog);
 
@@ -155,6 +162,7 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
 
         List<PrizeCode> list = new LinkedList<>();
         int id = (int) (System.currentTimeMillis()/1000);
+
         for (int i=0;i<num;i++){
             PrizeCode prizeCode = new PrizeCode();
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
@@ -167,25 +175,33 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
             id=id+i;
             createQrImg(uuid,id);
             prizeCode.setId(id);
+
             if (i>9){
                 prizeCodeService.save(list);
                 list.clear();
                 i=0;
                 num=num-10;
             }
+
         }
+
         if (list.size()>0) {
             prizeCodeService.save(list);
         }
+
     }
 
     @Override
     public void savePrize() {
+
         List<PrizeLog> prizeLogList = prizeLogService.selectList(new EntityWrapper<>());
+
         ListIterator<PrizeLog> iterator = prizeLogList.listIterator();
         while(iterator.hasNext()){
             PrizeLog prizeLog = iterator.next();
+
             if(prizeLog.getPrizeId() != null){
+
                 if(prizeLog.getPrizeId() == 20 ||prizeLog.getPrizeId() == 21 ||prizeLog.getPrizeId() == 22 ||
                         prizeLog.getPrizeId() == 23 ||prizeLog.getPrizeId() == 24 ||prizeLog.getPrizeId() == 25 ||
                         prizeLog.getPrizeId() == 26 ||prizeLog.getPrizeId() == 27 ||prizeLog.getPrizeId() == 28 ||
@@ -196,16 +212,17 @@ public class PrizeServiceImpl extends ServiceImpl<PrizeMapper, Prize> implements
                 }
 
             }
-
-
         }
+
     }
 
     //    创建二维码
     private void createQrImg(String uid,Integer id){
+
         String url = Config.SERVER+"wxp/towx/"+uid;
         String savePath = Config.UPLOAD_DIR+id+".png";
         QRCodeUtils.createQRCode(url,savePath);
+
     }
 
 

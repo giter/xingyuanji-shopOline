@@ -49,7 +49,9 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     public synchronized void insertAddress(String ticketId,UserAddressModel userAddressModel) throws Exception {
 
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
+
         boolean tokenResult = RedisUtil.hasKey("INSERTADDRESS"+userInfo.getOpenId());
+
         if( tokenResult == true ){
             logger.info("<-INSERT_ADDRESS_LOCK->:"+userInfo.getNickName()+"\tBUYER_TOKEN："+userInfo.getOpenId());
             throw new Exception(ExceptionEnum.EXCEPTION_28.getDesc());
@@ -69,9 +71,11 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         }else if(userAddressModel.getPhone() == null || userAddressModel.getPhone().equals("")){
             throw new Exception(ExceptionEnum.EXCEPTION_13.getDesc());
         }
+
         // 判断用户是否存在默认地址
         UserAddress userAddress = this.selectOne(new EntityWrapper<UserAddress>().eq("userId",userInfo.getUserId()).
                 eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
+
         // 写入地址信息
         UserAddress insertUserAddress = new UserAddress();
         insertUserAddress.setId(IdWorker.get32UUID());
@@ -81,16 +85,19 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
         insertUserAddress.setProvince(userAddressModel.getProvince());
         insertUserAddress.setCity(userAddressModel.getCity());
         insertUserAddress.setAddress(userAddressModel.getAddress());
+
         if(userAddress == null){
             insertUserAddress.setDef(Constants.DEF_ADDRESS);
         }else{
             insertUserAddress.setDef(Constants.NO_DEF_ADDRESS);
         }
+
         insertUserAddress.setEditTime(new Date());
         insertUserAddress.setEditBy("admin");
         insertUserAddress.setDeleteFlag(Constants.QIYONG);
         insertUserAddress.setArea(userAddressModel.getArea());
         this.insert(insertUserAddress);
+
         // 写入token
         RedisUtil.setAddressValueSeconds("INSERTADDRESS"+userInfo.getOpenId(),userInfo.getOpenId());
     }
@@ -225,6 +232,7 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
      */
     @Override
     public List<UserAddressInfoModel> getUserAddressInfoList(String userId) {
+
         return baseMapper.getUserAddressInfoList(userId);
     }
 

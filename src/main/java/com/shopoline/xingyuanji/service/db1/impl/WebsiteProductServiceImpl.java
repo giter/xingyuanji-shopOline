@@ -61,8 +61,9 @@ public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper,
     @Override
     public void insertWebSiteProduct(WebsiteProductModel websiteProductModel) {
 
-        WebsiteProduct websiteProduct = this.selectOne(new EntityWrapper<WebsiteProduct>().eq("id",websiteProductModel.getId()).last("LIMIT 1"));
-        if(websiteProduct == null){
+        WebsiteProduct websiteProduct = this.selectOne(new EntityWrapper<WebsiteProduct>().eq("id", websiteProductModel.getId()).last("LIMIT 1"));
+
+        if (websiteProduct == null) {
             WebsiteProduct product = new WebsiteProduct();
             product.setId(IdWorker.get32UUID());
             product.setProductName(websiteProductModel.getProductName());
@@ -71,18 +72,21 @@ public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper,
             product.setEditBy(Constants.ADMIN);
             product.setDeleteFlag(websiteProductModel.getDeleteFlag());
             this.insert(product);
-        }else {
-            if(websiteProductModel.getProductName() != null){
+        } else {
+            if (websiteProductModel.getProductName() != null) {
                 websiteProduct.setProductName(websiteProductModel.getProductName());
             }
-            if(websiteProductModel.getStyle() != null){
+            if (websiteProductModel.getStyle() != null) {
                 websiteProduct.setStyle(websiteProductModel.getStyle());
             }
-            if(websiteProductModel.getDeleteFlag() != null){
+            if (websiteProductModel.getDeleteFlag() != null) {
                 websiteProduct.setDeleteFlag(websiteProductModel.getDeleteFlag());
             }
             websiteProduct.setEditTime(new Date());
             this.updateById(websiteProduct);
         }
+
     }
+
+
 }

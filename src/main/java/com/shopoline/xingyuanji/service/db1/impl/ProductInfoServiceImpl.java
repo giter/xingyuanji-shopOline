@@ -58,6 +58,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         productInfoVO.setStyle(productInfo.getStyle());
         productInfoVO.setKind(productInfo.getKind());
         productInfoVO.setSocer(productInfo.getSocer());
+
         return productInfoVO;
     }
 
@@ -78,6 +79,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         Assert.isTrue(userCoinVO.getAmount()>= Constants.XINGBI_DUIHUAN_ZUIDI_COUNT,ExceptionEnum.EXCEPTION_15.getDesc());
         Assert.isTrue(userCoinVO.getAmount() > Constants.BOX_USER_DEDUCTION_XINGBI * boxCount,ExceptionEnum.EXCEPTION_5.getDesc());
         Float deductionPrice = productInfoVO.getPrice() - Constants.XINGBI_DIKOU * boxCount;
+
         return deductionPrice;
     }
 
@@ -88,23 +90,31 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
      */
     @Override
     public ProductInfo getRedomProduct(String ticketId,Integer productStyle,Integer productKind,String randomToken,String UUID) throws Exception {
-        // 判断token
+
+        // 判断token,防止页面刷新，页面刷新前端会将存下的token删除，取不到VALUE会抛出异常
         String token = RedisUtil.getValue("RandomToken"+ticketId+UUID);
         logger.info("获取TOKEN");
+
         if(!token.equals(randomToken)){
             throw new Exception(ExceptionEnum.EXCEPTION_17.getDesc());
         }
-            // 获取随机产品
-            ProductInfo productInfo = baseMapper.getRedomProduct(productStyle,productKind);
+
+        // 获取随机产品
+        ProductInfo productInfo = baseMapper.getRedomProduct(productStyle,productKind);
+
         // 判断产品是否是高价值
         if(productInfo.getId() == 110 || productInfo.getId() == 111 || productInfo.getId() == 112 || productInfo.getId() == 113 ||
         productInfo.getId() == 114 || productInfo.getId() == 115 || productInfo.getId() == 105 || productInfo.getId() == 106){
+
             String COUNT = RedisUtil.getValue("SELLCOUNT");
+
             if(!COUNT.equals("1")){
+
                 // 查询当天销售总数
                 Integer sellCount = shopLogService.selectTodaySellCount();
                 // 判断销售量是否达到60个
                 if(sellCount >= 60){
+
                     Random random = new Random();
                     Integer randomNum = random.nextInt(8);
                     String productId = null;
@@ -140,6 +150,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
                         productInfo1.setProductCount(productInfo.getProductCount() - 1);
                         this.updateById(productInfo);
                         RedisUtil.setValueDAY("SELLCOUNT","1");
+
                         return productInfo1;
                     }
                 }
@@ -152,31 +163,40 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
     @Override
     public List<ProductInfo> getShopList() {
+
         List<ProductInfo> productInfo = this.selectList(new EntityWrapper<ProductInfo>().eq("style", Constants.JIFEN_PRODUCT).
                 eq("kind",Constants.JIFEN_PRODUCT).eq("deleteFlag",Constants.QIYONG).orderBy("price",false));
+
         return productInfo;
     }
 
     @Override
     public ProductInfo getShopProductInfo(String productId) throws Exception {
+
         ProductInfo productInfo = this.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId).last("Limit 1"));
+
         if(productInfo.getProductCount().equals(Constants.NULL)){
             throw new Exception(ExceptionEnum.EXCEPTION_19.getDesc());
         }
         productInfo.setImg(productInfo.getImg());
+
         return productInfo;
     }
 
     @Override
     public Object getBoxImg(String boxId) {
+
         String boxImgInfo = "\\boxImg\\" + boxId +".png";
+
         return boxImgInfo;
     }
 
     @Override
     public void setImg() {
+
         List<ProductInfo> productInfo = this.selectList(new EntityWrapper<>());
-        for(ListIterator<ProductInfo> iterator = productInfo.listIterator();iterator.hasNext();){
+        ListIterator<ProductInfo> iterator = productInfo.listIterator();
+        while(iterator.hasNext()){
             ProductInfo productInfo1 = iterator.next();
             productInfo1.setImg(productInfo1.getGoodsname()+".png");
             productInfo1.setShopImg(productInfo1.getGoodsname()+".png");

@@ -9,6 +9,8 @@ import com.shopoline.xingyuanji.entity.*;
 import com.shopoline.xingyuanji.mapper.AdminInfoMapper;
 import com.shopoline.xingyuanji.model.*;
 import com.shopoline.xingyuanji.service.db1.*;
+import com.shopoline.xingyuanji.utils.DateUtil;
+import com.shopoline.xingyuanji.utils.PagingUtil;
 import com.shopoline.xingyuanji.utils.UploadUtil;
 import com.shopoline.xingyuanji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.DateFormat;
 import java.util.*;
 
 /**
@@ -128,7 +129,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             adminInfoVO.setPassWord(adminInfo.getPassWord());
             adminInfoVO.setPosition(adminInfo.getPosition());
             adminInfoVO.setEditBy(adminInfo.getEditBy());
-            adminInfoVO.setEditTime(DateFormat.getDateInstance(DateFormat.FULL).format(adminInfo.getEditTime()));
+            adminInfoVO.setEditTime(DateUtil.FormatDate(adminInfo.getEditTime()));
             adminInfoVO.setDeleteFlag(adminInfo.getDeleteFlag());
             adminInfoVOList.add(adminInfoVO);
         }
@@ -147,33 +148,36 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         // 用户信息
         List<UserInfo> userInfoList = new ArrayList<>();
         if(!pageNum.equals("")){
-            // 每页记录数量
-            Integer pageSize = 6;
-            // 根据页码计算查询条数
-            Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
-           userInfoList = userInfoService.selectUserInfoByCondition(nickName,openId,pageStart,pageSize);
+            // 计算分页
+           PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+           userInfoList = userInfoService.selectUserInfoByCondition(nickName,openId,pagingModel.getPageStart(),pagingModel.getPageSize());
         }else if(!nickName.equals("")){
+
             userInfoList = userInfoService.selectUserInfoByInformation(nickName);
         }else if(!openId.equals("")){
+
             userInfoList = userInfoService.selectList(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
         }
         List<UserInfoListModel> userInfoListVOList = new LinkedList<>();
         // 遍历
         ListIterator<UserInfo> userInfoIterator = userInfoList.listIterator();
         while(userInfoIterator.hasNext()){
+
             UserInfo userInfo = userInfoIterator.next();
             UserInfoListModel userInfoListModel = new UserInfoListModel();
             userInfoListModel.setUserId(userInfo.getUserId());
             userInfoListModel.setOpenId(userInfo.getOpenId());
             userInfoListModel.setNickName(userInfo.getNickName());
             userInfoListModel.setSex(String.valueOf(userInfo.getSex()));
-            userInfoListModel.setEditTime(DateFormat.getDateInstance(DateFormat.FULL).format(userInfo.getEditTime()));
+            userInfoListModel.setEditTime(DateUtil.FormatDate(userInfo.getEditTime()));
             userInfoListVOList.add(userInfoListModel);
         }
+
         // VO
         UserInfoListVO userInfoListVO = new UserInfoListVO();
-            userInfoListVO.setUserInfoListModelList(userInfoListVOList);
-            userInfoListVO.setCount(userInfoService.selectCount(new EntityWrapper<>()));
+        userInfoListVO.setUserInfoListModelList(userInfoListVOList);
+        userInfoListVO.setCount(userInfoService.selectCount(new EntityWrapper<>()));
+
         return userInfoListVO;
     }
 
@@ -184,23 +188,23 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public UserAssetListVO getUserAssetList(String userId,String pageNum) {
-        // 每页记录数量
-        Integer pageSize = 6;
-        // 根据页码计算查询条数
-        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
+
+        // 计算分页
+        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
         // 获取用户资产信息列表
-        List<UserAssetInfoModel> userAssetList = userAssetService.getUserAssetInfoList(userId,pageStart,pageSize);
+        List<UserAssetInfoModel> userAssetList = userAssetService.getUserAssetInfoList(userId,pagingModel.getPageStart(),pagingModel.getPageSize());
         List<UserAssetListModel> userAssetModelList = new LinkedList<>();
         //遍历
         ListIterator<UserAssetInfoModel> iterator = userAssetList.listIterator();
         while(iterator.hasNext()){
+
             UserAssetListModel userAssetListModel = new UserAssetListModel();
             UserAssetInfoModel userAssetInfoModel = iterator.next();
             userAssetListModel.setAmount(userAssetInfoModel.getAmount());
             userAssetListModel.setAmountId(userAssetInfoModel.getAmountId());
             userAssetListModel.setAmountType(userAssetInfoModel.getAmountType());
             userAssetListModel.setDeletFlag(userAssetInfoModel.getDeletFlag());
-            userAssetListModel.setEditTime(DateFormat.getDateInstance(DateFormat.FULL).format(userAssetInfoModel.getEditTime()));
+            userAssetListModel.setEditTime(DateUtil.FormatDate(userAssetInfoModel.getEditTime()));
             userAssetListModel.setNickName(userAssetInfoModel.getNickName());
             userAssetListModel.setOpenId(userAssetInfoModel.getOpenId());
             userAssetListModel.setUserId(userAssetInfoModel.getUserId());
@@ -256,6 +260,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
         UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("id",addressId).last("Limit 1"));
         if(userAddress.getDef() == Constants.DEF_ADDRESS && userAddress.getDeleteFlag() == Constants.QIYONG){
+
             throw new Exception(ExceptionEnum.EXCEPTION_20.getDesc());
         }
         userAddressService.delete(new EntityWrapper<UserAddress>().eq("id",addressId));
@@ -278,6 +283,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         List<UserAddress> userAddressList = userAddressService.selectList(new EntityWrapper<UserAddress>().eq("userId",userId));
         ListIterator<UserAddress> iterator = userAddressList.listIterator();
         while(iterator.hasNext()){
+
             UserAddress updateAddress = iterator.next();
             updateAddress.setDef(Constants.NO_DEF_ADDRESS);
             userAddressService.updateById(updateAddress);
@@ -349,15 +355,19 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             }
             if(changeUserAddressInfoModel.getDeleteFlag() != null || !changeUserAddressInfoModel.getDeleteFlag().equals("")){
                 if(userAddress.getDef() == 1 && userAddress.getDeleteFlag() == 0 ){
+
                     userAddress.setDeleteFlag(Constants.WEIQIYONG);
                 }else if(userAddress.getDef() == 1 && userAddress.getDeleteFlag() == 1 ){
+
                     userAddress.setDeleteFlag(Constants.QIYONG);
                 }else{
+
                     userAddress.setDeleteFlag(Integer.valueOf(changeUserAddressInfoModel.getDeleteFlag()));
                 }
             }
             userAddressService.updateById(userAddress);
         }
+
     }
 
     /**
@@ -368,21 +378,19 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     @Override
     public UserShopLogInfoVO getUserShopLogInfo(String openId, String pageNum) {
 
-        // 每页记录数量
-        Integer pageSize = 6;
-        // 根据页码计算查询条数
-        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
-
-        List<UserShopLogInfoModel> userShopLogInfoModelList = baseMapper.getUserShopLogInfo(openId,pageStart,pageSize);
+        // 计算分页
+        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+        List<UserShopLogInfoModel> userShopLogInfoModelList = baseMapper.getUserShopLogInfo(openId,pagingModel.getPageStart(),pagingModel.getPageSize());
 
         ListIterator<UserShopLogInfoModel> iterator = userShopLogInfoModelList.listIterator();
         while(iterator.hasNext()){
+
             UserShopLogInfoModel userShopLogInfoModel = iterator.next();
+
             if(userShopLogInfoModel.getAddressId() == null || userShopLogInfoModel.getAddressId().equals("")){
 
                 UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userShopLogInfoModel.getUserId()).
                         eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
-
                 userShopLogInfoModel.setName(userAddress.getName());
                 userShopLogInfoModel.setPhone(userAddress.getPhone());
                 userShopLogInfoModel.setProvince(userAddress.getProvince());
@@ -390,10 +398,13 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 userShopLogInfoModel.setArea(userAddress.getArea());
                 userShopLogInfoModel.setAddress(userAddress.getAddress());
             }
+
         }
+
         UserShopLogInfoVO userShopLogInfoVO = new UserShopLogInfoVO();
         userShopLogInfoVO.setUserShopLogInfolList(userShopLogInfoModelList);
         userShopLogInfoVO.setPageCount(shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("openId",openId)));
+
         return userShopLogInfoVO;
     }
 
@@ -404,12 +415,15 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public void deleteShopLog(String shopLogId,String deleteFlag) {
+
         ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("id",shopLogId).last("Limit 1"));
+
         if(deleteFlag.equals("1")){
             shopLog.setDeleteFlag(0);
         }else{
             shopLog.setDeleteFlag(1);
         }
+
         shopLogService.updateById(shopLog);
     }
 
@@ -419,6 +433,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public void inputUserWaybill(String shopLogId,String ZIPNum) {
+
         ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("id",shopLogId).last("Limit 1"));
         shopLog.setZIPNum(ZIPNum);
         shopLog.setIsDeliver(Constants.YI_FA_HUO);
@@ -434,31 +449,38 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     public AllShopLogVO getAllShopLog(String pageNum,String days, String nickName, String openId) {
 
         AllShopLogVO allShopLogVO = new AllShopLogVO();
-        // 每页记录数量
-        Integer pageSize = 6;
-        // 根据页码计算查询条数
-        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
+
+        // 计算分页
+        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+
         Integer dayNum;
         if(days == null){
             dayNum = 0;
         }else {
             dayNum = Integer.valueOf(days) - 1;
         }
+
         List<UserShopLogInfoModel> logInfoModelList = new ArrayList<>();
         if(days == null && nickName.equals("0") && openId.equals("0")){
+
             // 所有记录
-            logInfoModelList = baseMapper.getAllShopLog(pageStart,pageSize);
+            logInfoModelList = baseMapper.getAllShopLog(pagingModel.getPageStart(),pagingModel.getPageSize());
             allShopLogVO.setPageCount(String.valueOf(shopLogService.selectCount(new EntityWrapper<>())));
         }else if(!nickName.equals("0")){
+
             // 模糊查询NickName
             // 获取模糊查询用户信息
             List<UserInfo> userInfo = userInfoService.getUserInfoByLike(nickName);
             // 遍历userInfo
             ListIterator<UserInfo> userInfoIterator = userInfo.listIterator();
+
             while(userInfoIterator.hasNext()){
+
                 UserInfo userInfo1 = userInfoIterator.next();
                 List<ShopLog> shopLogList = shopLogService.selectList(new EntityWrapper<ShopLog>().eq("userId",userInfo1.getUserId()));
-                for(ListIterator<ShopLog> shopLogListIterator = shopLogList.listIterator();shopLogListIterator.hasNext();){
+
+                ListIterator<ShopLog> shopLogListIterator = shopLogList.listIterator();
+                while (shopLogListIterator.hasNext()){
                     ShopLog shopLog = shopLogListIterator.next();
                     UserShopLogInfoModel userShopLogInfoModel = new UserShopLogInfoModel();
                     userShopLogInfoModel.setOpenId(shopLog.getOpenId());
@@ -479,15 +501,19 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                     userShopLogInfoModel.setGoodsId(String.valueOf(shopLog.getGoodsId()));
                     logInfoModelList.add(userShopLogInfoModel);
                 }
+
             }
             allShopLogVO.setPageCount(String.valueOf(logInfoModelList.size()));
         }else if(!openId.equals("0")){
-            logInfoModelList = baseMapper.getAllShopLogByOpenId(pageStart,pageSize,openId);
+
+            logInfoModelList = baseMapper.getAllShopLogByOpenId(pagingModel.getPageStart(),pagingModel.getPageSize(),openId);
             allShopLogVO.setPageCount(String.valueOf(shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("openId",openId))));
         }else if(!days.equals("0")){
-            logInfoModelList = baseMapper.getDaysShopLogByOpenId(pageStart,pageSize,dayNum,openId);
+
+            logInfoModelList = baseMapper.getDaysShopLogByOpenId(pagingModel.getPageStart(),pagingModel.getPageSize(),dayNum,openId);
             allShopLogVO.setPageCount(baseMapper.getDaysCount(dayNum));
         }
+
         ListIterator<UserShopLogInfoModel> iterator = logInfoModelList.listIterator();
         while(iterator.hasNext()){
             UserShopLogInfoModel userShopLogInfo = iterator.next();
@@ -495,6 +521,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("id",userShopLogInfo.getAddressId()).last("Limit 1"));
             // 如果没有用户地址Id获取用户默认启用地址
             if(userAddress == null){
+
                 UserAddress userAddressDef = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("def",Constants.DEF_ADDRESS).
                         eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
                 userShopLogInfo.setName(userAddressDef.getName());
@@ -511,15 +538,18 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 userShopLogInfo.setArea(userAddress.getArea());
                 userShopLogInfo.setAddress(userAddress.getAddress());
             }
+
             // 获取用户信息
             UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",userShopLogInfo.getOpenId()).last("Limit 1"));
             userShopLogInfo.setUserId(userInfo.getUserId());
             userShopLogInfo.setName(userInfo.getNickName());
             userShopLogInfo.setNickName(userInfo.getNickName());
+
             // 获取商品信息
             ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",userShopLogInfo.getGoodsId()).last("Limit 1"));
             userShopLogInfo.setGoodsname(productInfo.getGoodsname());
         }
+
         // VO
         allShopLogVO.setAllShopLogList(logInfoModelList);
         return allShopLogVO;
@@ -528,31 +558,34 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     @Override
     public AdminGetProductVO adminGetProductList(String pageNum,String productType) {
 
-        // 每页记录数量
-        Integer pageSize = 6;
-        // 根据页码计算查询条数
-        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
         List<ProductListModel> productListModelList = new LinkedList<>();
 
         if(!productType.equals("3")){
+
             List<ProductInfo> productInfoList = baseMapper.getProductInfo(productType);
             ListIterator<ProductInfo> iterator = productInfoList.listIterator();
             while(iterator.hasNext()){
+
                 ProductInfo productInfo1 = iterator.next();
                 ProductListModel productListModel = new ProductListModel();
                 productListModel.setProductId(String.valueOf(productInfo1.getId()));
                 productListModel.setProductName(productInfo1.getGoodsname());
                 productListModel.setPrice(String.valueOf(productInfo1.getPrice()));
+
                 if(productInfo1.getStyle().equals("1")){
+
                     productListModel.setProductImg("/productPic/"+productInfo1.getImg());
                 }else{
                     productListModel.setProductImg(productInfo1.getImg());
                 }
+
                 if(productInfo1.getStyle().equals("1")){
+
                     productListModel.setProductShopImg("/shop/"+productInfo1.getShopImg());
                 }else{
                     productListModel.setProductShopImg(productInfo1.getShopImg());
                 }
+
                 productListModel.setProductNum(String.valueOf(productInfo1.getProductCount()));
                 productListModel.setProductStyle(productInfo1.getStyle());
                 productListModel.setProductSocer(productInfo1.getSocer());
@@ -560,8 +593,12 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 productListModel.setProductStatus(productInfo1.getDeleteFlag());
                 productListModelList.add(productListModel);
             }
+
         }else{
-            List<ProductInfo> productInfoList = baseMapper.getShopInfoList(pageStart,pageSize);
+            // 计算分页
+            PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+            List<ProductInfo> productInfoList = baseMapper.getShopInfoList(pagingModel.getPageStart(),pagingModel.getPageSize());
+
             ListIterator<ProductInfo> iterator = productInfoList.listIterator();
             while(iterator.hasNext()){
                 ProductInfo productInfo = iterator.next();
@@ -569,7 +606,9 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 productListModel1.setProductId(String.valueOf(productInfo.getId()));
                 productListModel1.setProductName(productInfo.getGoodsname());
                 productListModel1.setPrice(String.valueOf(productInfo.getPrice()));
+
                 if(productInfo.getStyle().equals("1")){
+
                     productListModel1.setProductImg("/productPic/"+productInfo.getImg());
                 }else{
                     productListModel1.setProductImg(productInfo.getImg());
@@ -579,6 +618,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 }else{
                     productListModel1.setProductShopImg(productInfo.getShopImg());
                 }
+
                 productListModel1.setProductNum(String.valueOf(productInfo.getProductCount()));
                 productListModel1.setProductStyle(productInfo.getStyle());
                 productListModel1.setProductSocer(productInfo.getSocer());
@@ -586,6 +626,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 productListModel1.setProductStatus(productInfo.getDeleteFlag());
                 productListModelList.add(productListModel1);
             }
+
         }
 
 
@@ -635,7 +676,9 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
         ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productInfoModel.getId()).last("Limit 1"));
         PutProductInfoVO putProductInfoVO = new PutProductInfoVO();
+
         if(productInfo == null || productInfoModel.getId().equals("")){
+
             ProductInfo productInfo1 = new ProductInfo();
             productInfo1.setId(baseMapper.selectLastId() + 1);
             putProductInfoVO.setProductId(String.valueOf(productInfo1.getId()));
@@ -649,6 +692,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             productInfo1.setEditTime(new Date());
             productInfo1.setEditBy(Constants.ADMIN);
             productInfo1.setDeleteFlag(productInfoModel.getStatus());
+
             productInfoService.insert(productInfo1);
         }else{
             putProductInfoVO.setProductId(productInfoModel.getId());
@@ -673,9 +717,12 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 productInfo.setDeleteFlag(productInfoModel.getStatus());
             }
             productInfo.setEditTime(new Date());
+
             productInfoService.updateById(productInfo);
         }
+
         return putProductInfoVO;
+
     }
 
     @Override
@@ -689,6 +736,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         }else if(productInfoModel.getStyle().equals("2")){
             path = shopPicUploadDir;
         }
+
         ProductInfo productInfo = new ProductInfo();
         productInfo.setId(baseMapper.selectLastId() + 1);
         productInfo.setGoodsname(productInfoModel.getProductName());
@@ -702,7 +750,9 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         productInfo.setEditTime(new Date());
         productInfo.setEditBy(Constants.ADMIN);
         productInfo.setDeleteFlag(productInfoModel.getStatus());
+
         productInfoService.insert(productInfo);
+
     }
 
 
@@ -745,6 +795,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         ListIterator<EveryDaySellAmountModel> iterator = everyDaySellAmountModelList.listIterator();
         while(iterator.hasNext()){
             EveryDaySellAmountModel everyDaySellAmountModel = iterator.next();
+
             if(everyDaySellAmountModel.getAmount() == null){
                 everyDaySellAmountModel.setAmount("0");
             }
@@ -752,6 +803,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 everyDaySellAmountModel.setZIPAmount("0");
             }
         }
+
         // VO
         DataVO dataVO = new DataVO();
         dataVO.setSellDataModel(sellDataModel);
@@ -769,8 +821,10 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
      */
     @Override
     public void changeProductStatus(String productId, String status) {
+
         String deleteFlag = null;
         ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",productId).last("Limit 1"));
+
         if(status.equals("0")){
             deleteFlag = "1";
         }else{

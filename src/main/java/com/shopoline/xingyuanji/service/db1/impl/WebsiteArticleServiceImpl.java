@@ -10,13 +10,12 @@ import com.shopoline.xingyuanji.model.ArticleTitleModel;
 import com.shopoline.xingyuanji.model.WebSiteArticleModel;
 import com.shopoline.xingyuanji.model.WebsiteArticleVOModel;
 import com.shopoline.xingyuanji.service.db1.IWebsiteArticleService;
+import com.shopoline.xingyuanji.utils.DateUtil;
 import com.shopoline.xingyuanji.vo.ArticleInfoVO;
 import com.shopoline.xingyuanji.vo.ArticleListVO;
 import com.shopoline.xingyuanji.vo.ArticleTitleListVO;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,15 +48,16 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
         List<WebsiteArticle> websiteArticleList = baseMapper.getArticleList(pageStart,pageSize);
         ListIterator<WebsiteArticle> iterator = websiteArticleList.listIterator();
         List<WebsiteArticleVOModel> articleVOList = new LinkedList<>();
+
         while (iterator.hasNext()){
             WebsiteArticleVOModel websiteArticleVOModel = new WebsiteArticleVOModel();
             WebsiteArticle article = iterator.next();
             websiteArticleVOModel.setId(article.getId());
             websiteArticleVOModel.setTitle(article.getTitle());
             websiteArticleVOModel.setAuthor(article.getAuthor());
-            websiteArticleVOModel.setEditTime(DateUtil(article.getEditTime()));
+            websiteArticleVOModel.setEditTime(DateUtil.FormatDate(article.getEditTime()));
             websiteArticleVOModel.setEditBy(article.getEditBy());
-            websiteArticleVOModel.setUpdateTime(DateUtil(article.getUpdateTime()));
+            websiteArticleVOModel.setUpdateTime(DateUtil.FormatDate(article.getUpdateTime()));
             websiteArticleVOModel.setDeleteFlag(article.getDeleteFlag());
             websiteArticleVOModel.setMark(article.getMark());
             articleVOList.add(websiteArticleVOModel);
@@ -66,6 +66,7 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
         ArticleListVO articleListVO= new ArticleListVO();
         articleListVO.setArticleList(articleVOList);
         articleListVO.setCount(String.valueOf(this.selectCount(new EntityWrapper<WebsiteArticle>().eq("deleteFlag", Constants.QIYONG))));
+
         return articleListVO;
     }
 
@@ -80,7 +81,6 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
         WebsiteArticle websiteArticle = this.selectOne(new EntityWrapper<WebsiteArticle>().eq("id",webSiteArticleModel.getId()).last("Limit 1"));
 
         if(websiteArticle == null){
-
             WebsiteArticle article= new WebsiteArticle();
             article.setId(IdWorker.get32UUID());
             article.setTitle(webSiteArticleModel.getTitle());
@@ -132,9 +132,9 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
         articleInfo.setTitle(article.getTitle());
         articleInfo.setText(article.getText());
         articleInfo.setAuthor(article.getAuthor());
-        articleInfo.setEditTime(DateUtil(article.getEditTime()));
+        articleInfo.setEditTime(DateUtil.FormatDate(article.getEditTime()));
         articleInfo.setEditBy(article.getEditBy());
-        articleInfo.setUpdateTime(DateUtil(article.getUpdateTime()));
+        articleInfo.setUpdateTime(DateUtil.FormatDate(article.getUpdateTime()));
         articleInfo.setDeleteFlag(article.getDeleteFlag());
         articleInfo.setMark(article.getMark());
 
@@ -157,7 +157,7 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
             ArticleTitleModel articleTitleModel = new ArticleTitleModel();
             articleTitleModel.setId(websiteArticle.getId());
             articleTitleModel.setTitle(websiteArticle.getTitle());
-            articleTitleModel.setEditTime(DateUtil(websiteArticle.getEditTime()));
+            articleTitleModel.setEditTime(DateUtil.FormatDate(websiteArticle.getEditTime()));
             articleTitleModelList.add(articleTitleModel);
         }
 
@@ -168,10 +168,6 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
     }
 
 
-    private String DateUtil(Date date){
-        DateFormat bf = new SimpleDateFormat("yyyy-MM-dd E a HH:mm:ss");
-        String format = bf.format(date);
-        return format;
-    }
+
 
 }
