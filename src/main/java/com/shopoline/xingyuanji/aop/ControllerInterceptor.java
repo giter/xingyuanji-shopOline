@@ -1,6 +1,7 @@
 package com.shopoline.xingyuanji.aop;
 
 
+import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.common.ExceptionEnum;
 import com.shopoline.xingyuanji.common.JsonResult;
 import com.shopoline.xingyuanji.utils.RedisUtil;
@@ -50,14 +51,14 @@ public class ControllerInterceptor {
 //                response = (HttpServletResponse) param;
 //            }
 //        }
-        // if (!Constants.IGNORE_METHOD.contains("all") && !Constants.IGNORE_METHOD.contains(methodName)){
+         if (!Constants.IGNORE_METHOD.contains("all") && !Constants.IGNORE_METHOD.contains(methodName)){
             if (args == null || StringUtils.isEmpty(args[0].toString()) || StringUtils.isEmpty(RedisUtil.getValue(args[0].toString()))){
                 Exception e = new Exception(ExceptionEnum.EXCEPTION_2.getDesc());
                 JsonResult json = new JsonResult(new Exception(ExceptionEnum.EXCEPTION_2.getDesc()));
                 json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
                 result=json;
             }
-        // }
+        }
 
         if(result == null){
             // 一切正常的情况下，继续执行被拦截的方法
