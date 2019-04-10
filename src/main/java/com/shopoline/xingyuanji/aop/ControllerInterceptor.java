@@ -38,11 +38,15 @@ public class ControllerInterceptor {
      * @param pjp
      * @return JsonResult（被拦截方法的执行结果，或需要登录的错误提示。）
      */
-    @Around("controllerMethodPointcut()") //指定拦截器规则；也可以直接把“execution(* com.xjj.........)”写进这里
+    // 指定拦截器规则；也可以直接把“execution(* com.xjj.........)”写进这里
+    @Around("controllerMethodPointcut()")
     public Object Interceptor(ProceedingJoinPoint pjp) throws Throwable {
+
         MethodSignature signature = (MethodSignature) pjp.getSignature();
-        Method method = signature.getMethod(); //获取被拦截的方法
-        String methodName = method.getName(); //获取被拦截的方法名
+        // 获取被拦截的方法
+        Method method = signature.getMethod();
+        // 获取被拦截的方法名
+        String methodName = method.getName();
 
         Object[] args = pjp.getArgs();
         Object result = null;
