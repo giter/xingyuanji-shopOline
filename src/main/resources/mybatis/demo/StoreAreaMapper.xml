@@ -12,7 +12,7 @@
     </resultMap>
 
     <select id="getStoreArea" resultType="com.shopoline.xingyuanji.entity.StoreArea">
-        SELECT * FROM store_area where city = #{city} LIMIT 1;
+        SELECT * FROM store_area WHERE city = #{city} LIMIT 1;
     </select>
 
 </mapper>
