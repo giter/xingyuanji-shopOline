@@ -43,14 +43,17 @@ public class ControllerInterceptor {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         Method method = signature.getMethod(); //获取被拦截的方法
         String methodName = method.getName(); //获取被拦截的方法名
+
         Object[] args = pjp.getArgs();
         Object result = null;
+
 //        HttpServletResponse response = null;
 //        for (Object param : pjp.getArgs()) {
 //            if (param instanceof HttpServletResponse) {
 //                response = (HttpServletResponse) param;
 //            }
 //        }
+
          if (!Constants.IGNORE_METHOD.contains("all") && !Constants.IGNORE_METHOD.contains(methodName)){
             if (args == null || StringUtils.isEmpty(args[0].toString()) || StringUtils.isEmpty(RedisUtil.getValue(args[0].toString()))){
                 Exception e = new Exception(ExceptionEnum.EXCEPTION_2.getDesc());
@@ -64,6 +67,7 @@ public class ControllerInterceptor {
             // 一切正常的情况下，继续执行被拦截的方法
             result = pjp.proceed();
         }
+
         return result;
     }
 }
