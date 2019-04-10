@@ -67,7 +67,6 @@ public class UserInfoController extends BaseController {
     public Object getUserInfo(String ticketId,HttpServletRequest request, HttpServletResponse response){
         JsonResult<UserInfoVO> json = new JsonResult<>();
         try {
-
             json.setData(userInfoService.getUserInfo(ticketId));
         }catch (Exception e){
             logger.info(e.getMessage());
