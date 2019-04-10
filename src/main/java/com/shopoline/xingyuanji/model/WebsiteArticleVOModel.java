@@ -31,6 +31,16 @@ public class WebsiteArticleVOModel {
 
     private String mark;
 
+    private String listImg;
+
+    public String getListImg() {
+        return listImg;
+    }
+
+    public void setListImg(String listImg) {
+        this.listImg = listImg;
+    }
+
     public String getMark() {
         return mark;
     }

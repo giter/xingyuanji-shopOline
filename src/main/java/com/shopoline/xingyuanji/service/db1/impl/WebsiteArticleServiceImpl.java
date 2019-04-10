@@ -7,10 +7,12 @@ import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.entity.WebsiteArticle;
 import com.shopoline.xingyuanji.mapper.WebsiteArticleMapper;
 import com.shopoline.xingyuanji.model.ArticleTitleModel;
+import com.shopoline.xingyuanji.model.PagingModel;
 import com.shopoline.xingyuanji.model.WebSiteArticleModel;
 import com.shopoline.xingyuanji.model.WebsiteArticleVOModel;
 import com.shopoline.xingyuanji.service.db1.IWebsiteArticleService;
 import com.shopoline.xingyuanji.utils.DateUtil;
+import com.shopoline.xingyuanji.utils.PagingUtil;
 import com.shopoline.xingyuanji.vo.ArticleInfoVO;
 import com.shopoline.xingyuanji.vo.ArticleListVO;
 import com.shopoline.xingyuanji.vo.ArticleTitleListVO;
@@ -39,13 +41,11 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
     @Override
     public ArticleListVO getArticleList(String pageNum) {
 
-        // 每页记录数量
-        Integer pageSize = 6;
-        // 根据页码计算查询条数
-        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
+        // 计算分页
+        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
 
         // 获取文章列表
-        List<WebsiteArticle> websiteArticleList = baseMapper.getArticleList(pageStart,pageSize);
+        List<WebsiteArticle> websiteArticleList = baseMapper.getArticleList(pagingModel.getPageStart(),pagingModel.getPageSize());
         ListIterator<WebsiteArticle> iterator = websiteArticleList.listIterator();
         List<WebsiteArticleVOModel> articleVOList = new LinkedList<>();
 
@@ -60,6 +60,7 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
             websiteArticleVOModel.setUpdateTime(DateUtil.FormatDate(article.getUpdateTime()));
             websiteArticleVOModel.setDeleteFlag(article.getDeleteFlag());
             websiteArticleVOModel.setMark(article.getMark());
+            websiteArticleVOModel.setListImg("\\articleListImg\\" + article.getListImg());
             articleVOList.add(websiteArticleVOModel);
         }
 
@@ -113,8 +114,10 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
                 websiteArticle.setMark(webSiteArticleModel.getMark());
             }
             websiteArticle.setUpdateTime(new Date());
+
             this.updateById(websiteArticle);
         }
+
     }
 
     /**

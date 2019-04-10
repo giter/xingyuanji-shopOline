@@ -13,9 +13,10 @@
         <result column="updateTime" property="updateTime" />
         <result column="deleteFlag" property="deleteFlag" />
         <result column="mark" property="mark" />
+        <result column="listImg" property="listImg"/>
     </resultMap>
     <select id="getArticleList" resultType="com.shopoline.xingyuanji.entity.WebsiteArticle">
-        SELECT id,title,text,author,editTime,editBy,updateTime,deleteFlag,mark FROM t_website_article WHERE deleteFlag= '1' LIMIT #{pageStart},#{pageSize};
+        SELECT id,title,text,author,editTime,editBy,updateTime,deleteFlag,mark,listImg FROM t_website_article WHERE deleteFlag= '1' LIMIT #{pageStart},#{pageSize};
     </select>
 
 </mapper>
