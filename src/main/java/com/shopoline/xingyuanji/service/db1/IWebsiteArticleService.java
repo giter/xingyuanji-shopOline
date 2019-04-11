@@ -11,7 +11,6 @@ import com.shopoline.xingyuanji.vo.ArticleTitleListVO;
  * <p>
  *  服务类
  * </p>
- *
  * @author wuty
  * @since 2019-04-08
  */
