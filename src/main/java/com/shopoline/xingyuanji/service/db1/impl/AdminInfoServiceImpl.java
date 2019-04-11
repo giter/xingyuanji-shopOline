@@ -147,9 +147,10 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
         // 用户信息
         List<UserInfo> userInfoList = new ArrayList<>();
+        Integer pageSize = 6;
         if(!pageNum.equals("")){
             // 计算分页
-           PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+           PagingModel pagingModel = PagingUtil.getPageInfo(Integer.valueOf(pageNum),pageSize);
            userInfoList = userInfoService.selectUserInfoByCondition(nickName,openId,pagingModel.getPageStart(),pagingModel.getPageSize());
         }else if(!nickName.equals("")){
 
@@ -190,7 +191,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     public UserAssetListVO getUserAssetList(String userId,String pageNum) {
 
         // 计算分页
-        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+        Integer pageSize = 6;
+        PagingModel pagingModel = PagingUtil.getPageInfo(Integer.valueOf(pageNum),pageSize);
         // 获取用户资产信息列表
         List<UserAssetInfoModel> userAssetList = userAssetService.getUserAssetInfoList(userId,pagingModel.getPageStart(),pagingModel.getPageSize());
         List<UserAssetListModel> userAssetModelList = new LinkedList<>();
@@ -379,7 +381,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     public UserShopLogInfoVO getUserShopLogInfo(String openId, String pageNum) {
 
         // 计算分页
-        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+        Integer pageSize = 6;
+        PagingModel pagingModel = PagingUtil.getPageInfo(Integer.valueOf(pageNum),pageSize);
         List<UserShopLogInfoModel> userShopLogInfoModelList = baseMapper.getUserShopLogInfo(openId,pagingModel.getPageStart(),pagingModel.getPageSize());
 
         ListIterator<UserShopLogInfoModel> iterator = userShopLogInfoModelList.listIterator();
@@ -451,7 +454,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         AllShopLogVO allShopLogVO = new AllShopLogVO();
 
         // 计算分页
-        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+        Integer pageSize = 6;
+        PagingModel pagingModel = PagingUtil.getPageInfo(Integer.valueOf(pageNum),pageSize);
 
         Integer dayNum;
         if(days == null){
@@ -596,7 +600,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
         }else{
             // 计算分页
-            PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+            Integer pageSize = 6;
+            PagingModel pagingModel = PagingUtil.getPageInfo(Integer.valueOf(pageNum),pageSize);
             List<ProductInfo> productInfoList = baseMapper.getShopInfoList(pagingModel.getPageStart(),pagingModel.getPageSize());
 
             ListIterator<ProductInfo> iterator = productInfoList.listIterator();

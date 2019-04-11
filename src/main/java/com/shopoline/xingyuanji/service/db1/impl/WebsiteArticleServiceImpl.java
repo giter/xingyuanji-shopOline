@@ -42,7 +42,8 @@ public class WebsiteArticleServiceImpl extends ServiceImpl<WebsiteArticleMapper,
     public ArticleListVO getArticleList(String pageNum) {
 
         // 计算分页
-        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+        Integer pageSize = 6;
+        PagingModel pagingModel = PagingUtil.getPageInfo(Integer.valueOf(pageNum),pageSize);
 
         // 获取文章列表
         List<WebsiteArticle> websiteArticleList = baseMapper.getArticleList(pagingModel.getPageStart(),pagingModel.getPageSize());

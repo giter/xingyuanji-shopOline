@@ -39,7 +39,8 @@ public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper,
     public WebsiteProductInfoVO getProductInfoByStyle(String style, String pageNum) {
 
         // 计算分页
-        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
+        Integer pageSize = 8;
+        PagingModel pagingModel = PagingUtil.getPageInfo(Integer.valueOf(pageNum),pageSize);
 
         List<WebsiteProduct> websiteProductList = baseMapper.getProductInfoByStyle(style,pagingModel.getPageStart(),pagingModel.getPageSize());
         ListIterator<WebsiteProduct> iterator = websiteProductList.listIterator();

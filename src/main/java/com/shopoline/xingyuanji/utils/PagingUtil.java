@@ -5,12 +5,11 @@ import com.shopoline.xingyuanji.model.PagingModel;
 public class PagingUtil {
 
 
-    public static PagingModel getPageInfo(String pageNum){
+    public static PagingModel getPageInfo(Integer pageNum,Integer pageSize){
 
-        // 每页记录数量
-        Integer pageSize = 6;
+
         // 根据页码计算查询条数
-        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
+        Integer pageStart = pageNum - 1 * pageSize;
 
         PagingModel pagingModel = new PagingModel();
         pagingModel.setPageSize(pageSize);
@@ -18,4 +17,6 @@ public class PagingUtil {
 
         return pagingModel;
     }
+
+
 }
