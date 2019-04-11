@@ -64,6 +64,7 @@ public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper,
         WebsiteProduct websiteProduct = this.selectOne(new EntityWrapper<WebsiteProduct>().eq("id", websiteProductModel.getId()).last("LIMIT 1"));
 
         if (websiteProduct == null) {
+
             WebsiteProduct product = new WebsiteProduct();
             product.setId(IdWorker.get32UUID());
             product.setProductName(websiteProductModel.getProductName());
@@ -73,6 +74,7 @@ public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper,
             product.setDeleteFlag(websiteProductModel.getDeleteFlag());
             this.insert(product);
         } else {
+
             if (websiteProductModel.getProductName() != null) {
                 websiteProduct.setProductName(websiteProductModel.getProductName());
             }
