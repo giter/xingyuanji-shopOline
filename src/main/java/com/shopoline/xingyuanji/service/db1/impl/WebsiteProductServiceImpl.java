@@ -88,7 +88,6 @@ public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper,
             websiteProduct.setEditTime(new Date());
             this.updateById(websiteProduct);
         }
-
     }
 
 

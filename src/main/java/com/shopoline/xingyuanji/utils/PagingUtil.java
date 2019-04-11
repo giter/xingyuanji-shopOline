@@ -9,7 +9,7 @@ public class PagingUtil {
 
 
         // 根据页码计算查询条数
-        Integer pageStart = pageNum - 1 * pageSize;
+        Integer pageStart = (pageNum - 1) * pageSize;
 
         PagingModel pagingModel = new PagingModel();
         pagingModel.setPageSize(pageSize);
