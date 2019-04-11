@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.shopoline.xingyuanji.Constants;
 import com.shopoline.xingyuanji.entity.WebsiteProduct;
 import com.shopoline.xingyuanji.mapper.WebsiteProductMapper;
+import com.shopoline.xingyuanji.model.PagingModel;
 import com.shopoline.xingyuanji.model.WebsiteProductModel;
 import com.shopoline.xingyuanji.service.db1.IWebsiteProductService;
+import com.shopoline.xingyuanji.utils.PagingUtil;
 import com.shopoline.xingyuanji.vo.WebsiteProductInfoVO;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +38,10 @@ public class WebsiteProductServiceImpl extends ServiceImpl<WebsiteProductMapper,
     @Override
     public WebsiteProductInfoVO getProductInfoByStyle(String style, String pageNum) {
 
-        // 每页记录数量
-        Integer pageSize = 6;
-        // 根据页码计算查询条数
-        Integer pageStart = (Integer.valueOf(pageNum) - 1) * pageSize;
+        // 计算分页
+        PagingModel pagingModel = PagingUtil.getPageInfo(pageNum);
 
-        List<WebsiteProduct> websiteProductList = baseMapper.getProductInfoByStyle(style,pageStart,pageSize);
+        List<WebsiteProduct> websiteProductList = baseMapper.getProductInfoByStyle(style,pagingModel.getPageStart(),pagingModel.getPageSize());
         ListIterator<WebsiteProduct> iterator = websiteProductList.listIterator();
         while (iterator.hasNext()){
             WebsiteProduct websiteProduct= iterator.next();
