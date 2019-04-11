@@ -20,8 +20,8 @@
        a.outTradeNo,a.ZIPOutTradeNo,a.isPay,a.totalFee,a.ZIPAmount,a.updateTime,a.boxId,d.province,d.city,d.area,d.address,a.editTime
        FROM t_shop_log a
 	   LEFT JOIN t_product_info b ON b.id = a.goodsId
-	   LEFT JOIN t_user_info c ON c.openId = a.openId
 	   LEFT JOIN t_user_address d ON d.id = a.addressId
+	   LEFT JOIN t_user_info c ON c.openId = a.openId
 	   WHERE a.openId = #{openId}
        ORDER BY a.editTime DESC
        LIMIT #{pageStart},#{pageSize};

@@ -32,8 +32,8 @@
 
     <!--查询当天线上销售数量-->
     <select id="selectTodaySellCount" resultType="java.lang.Integer">
-        select COUNT(id) from t_shop_log where to_days(editTime) = to_days(now()) AND boxId = #{boxIdBox}
-        AND isPay = 'ispay' AND deleteFlag = '1';
+        select COUNT(id) from t_shop_log where deleteFlag = '1' AND to_days(editTime) = to_days(now()) AND boxId = #{boxIdBox}
+        AND isPay = 'ispay';
     </select>
 
 </mapper>

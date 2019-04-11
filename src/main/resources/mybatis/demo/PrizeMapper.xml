@@ -19,8 +19,7 @@
 
     <!-- 获取奖品记录 -->
     <select id="getPrizeList" resultType="com.shopoline.xingyuanji.model.PrizeModel">
-      SELECT a.id,a.prize_id as prizeId,a.status,a.useflag FROM prize_log a join prize b ON b.id = a.prize_id WHERE
-      a.buyer_id = #{id} ORDER BY a.useflag DESC;
+      SELECT a.id,a.prize_id as prizeId,a.status,a.useflag FROM prize_log a join prize b ON b.id = a.prize_id WHERE a.buyer_id = #{id} ORDER BY a.useflag DESC;
     </select>
 
 </mapper>

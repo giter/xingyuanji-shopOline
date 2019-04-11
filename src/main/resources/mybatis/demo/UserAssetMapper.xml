@@ -16,10 +16,10 @@
 
 
     <select id="sumAmountById" resultType="com.shopoline.xingyuanji.entity.UserAsset">
-        SELECT SUM(amount) AS amount,amountType FROM t_user_asset WHERE openId = #{openId} AND amountType = '0' AND deltFlag = '1';
+        SELECT SUM(amount) AS amount,amountType FROM t_user_asset WHERE openId = #{openId} AND deltFlag = '1' AND amountType = '0'  ;
     </select>
     <select id="selectUserXingBi" resultType="com.shopoline.xingyuanji.entity.UserAsset">
-        SELECT SUM(amount) AS amount FROM  t_user_asset WHERE amountType = '0' AND openId = #{openId} AND deltFlag != '0';
+        SELECT SUM(amount) AS amount FROM  t_user_asset WHERE deltFlag != '0' AND openId = #{openId} AND amountType = '0';
     </select>
 
     <!--获取用户资产信息列表-->
