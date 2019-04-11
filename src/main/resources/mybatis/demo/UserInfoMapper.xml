@@ -16,9 +16,7 @@
     </resultMap>
     <!--条件查询用户信息-->
     <select id="selectUserInfoByCondition" resultType="com.shopoline.xingyuanji.entity.UserInfo">
-        SELECT userId,nickName,openId,sex,headImgUrl,editTime,updateTime,editBy,deleteFlag FROM t_user_info
-        ORDER BY editTime DESC
-        LIMIT #{pageStart},#{pageSize}
+        SELECT userId,nickName,openId,sex,headImgUrl,editTime,updateTime,editBy,deleteFlag FROM t_user_info ORDER BY editTime DESC LIMIT #{pageStart},#{pageSize};
     </select>
     <!--按条件搜索-->
     <select id="selectUserInfoByInformation" resultType="com.shopoline.xingyuanji.entity.UserInfo">
