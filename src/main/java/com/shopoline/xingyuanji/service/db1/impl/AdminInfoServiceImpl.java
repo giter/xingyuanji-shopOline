@@ -154,17 +154,15 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
            PagingModel pagingModel = PagingUtil.getPageInfo(Integer.valueOf(pageNum),pageSize);
            userInfoList = userInfoService.selectUserInfoByCondition(nickName,openId,pagingModel.getPageStart(),pagingModel.getPageSize());
         }else if(!nickName.equals("")){
-
             userInfoList = userInfoService.selectUserInfoByInformation(nickName);
         }else if(!openId.equals("")){
-
             userInfoList = userInfoService.selectList(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
         }
+
         List<UserInfoListModel> userInfoListVOList = new LinkedList<>();
         // 遍历
         ListIterator<UserInfo> userInfoIterator = userInfoList.listIterator();
         while(userInfoIterator.hasNext()){
-
             UserInfo userInfo = userInfoIterator.next();
             UserInfoListModel userInfoListModel = new UserInfoListModel();
             userInfoListModel.setUserId(userInfo.getUserId());
@@ -174,7 +172,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             userInfoListModel.setEditTime(DateUtil.FormatDate(userInfo.getEditTime()));
             userInfoListVOList.add(userInfoListModel);
         }
-
         // VO
         UserInfoListVO userInfoListVO = new UserInfoListVO();
         userInfoListVO.setUserInfoListModelList(userInfoListVOList);
@@ -231,10 +228,10 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     public void replaceUserAsset(String amountId,String deleteFlag) {
 
         Integer status = null;
-        if(deleteFlag.equals("1")){
-            status = 0;
-        }else if(deleteFlag.equals("0")){
-            status = 1;
+        if(deleteFlag.equals(Constants.QIYONG)){
+            status = Constants.WEIQIYONG;
+        }else if(deleteFlag.equals(Constants.WEIQIYONG)){
+            status = Constants.QIYONG;
         }
         UserAsset userAsset = new UserAsset();
         userAsset.setId(amountId);
@@ -286,7 +283,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         List<UserAddress> userAddressList = userAddressService.selectList(new EntityWrapper<UserAddress>().eq("userId",userId));
         ListIterator<UserAddress> iterator = userAddressList.listIterator();
         while(iterator.hasNext()){
-
             UserAddress updateAddress = iterator.next();
             updateAddress.setDef(Constants.NO_DEF_ADDRESS);
             userAddressService.updateById(updateAddress);
@@ -357,9 +353,9 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             }
             if(changeUserAddressInfoModel.getDeleteFlag() != null || !changeUserAddressInfoModel.getDeleteFlag().equals("")){
 
-                if(userAddress.getDef() == 1 && userAddress.getDeleteFlag() == 0 ){
+                if(userAddress.getDef() == Constants.DEF_ADDRESS && userAddress.getDeleteFlag() == Constants.WEIQIYONG ){
                     userAddress.setDeleteFlag(Constants.WEIQIYONG);
-                }else if(userAddress.getDef() == 1 && userAddress.getDeleteFlag() == 1 ){
+                }else if(userAddress.getDef() == Constants.DEF_ADDRESS && userAddress.getDeleteFlag() == Constants.QIYONG ){
                     userAddress.setDeleteFlag(Constants.QIYONG);
                 }else{
                     userAddress.setDeleteFlag(Integer.valueOf(changeUserAddressInfoModel.getDeleteFlag()));
@@ -386,11 +382,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
 
         ListIterator<UserShopLogInfoModel> iterator = userShopLogInfoModelList.listIterator();
         while(iterator.hasNext()){
-
             UserShopLogInfoModel userShopLogInfoModel = iterator.next();
-
             if(userShopLogInfoModel.getAddressId() == null || userShopLogInfoModel.getAddressId().equals("")){
-
                 UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().eq("userId",userShopLogInfoModel.getUserId()).
                         eq("def",Constants.DEF_ADDRESS).eq("deleteFlag",Constants.QIYONG).last("Limit 1"));
                 userShopLogInfoModel.setName(userAddress.getName());
@@ -402,7 +395,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             }
 
         }
-
         UserShopLogInfoVO userShopLogInfoVO = new UserShopLogInfoVO();
         userShopLogInfoVO.setUserShopLogInfolList(userShopLogInfoModelList);
         userShopLogInfoVO.setPageCount(shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("openId",openId)));
@@ -419,11 +411,10 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
     public void deleteShopLog(String shopLogId,String deleteFlag) {
 
         ShopLog shopLog = shopLogService.selectOne(new EntityWrapper<ShopLog>().eq("id",shopLogId).last("Limit 1"));
-
-        if(deleteFlag.equals("1")){
-            shopLog.setDeleteFlag(0);
+        if(deleteFlag.equals(Constants.QIYONG)){
+            shopLog.setDeleteFlag(Constants.WEIQIYONG);
         }else{
-            shopLog.setDeleteFlag(1);
+            shopLog.setDeleteFlag(Constants.QIYONG);
         }
 
         shopLogService.updateById(shopLog);
@@ -508,11 +499,9 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             }
             allShopLogVO.setPageCount(String.valueOf(logInfoModelList.size()));
         }else if(!openId.equals("0")){
-
             logInfoModelList = baseMapper.getAllShopLogByOpenId(pagingModel.getPageStart(),pagingModel.getPageSize(),openId);
             allShopLogVO.setPageCount(String.valueOf(shopLogService.selectCount(new EntityWrapper<ShopLog>().eq("openId",openId))));
         }else if(!days.equals("0")){
-
             logInfoModelList = baseMapper.getDaysShopLogByOpenId(pagingModel.getPageStart(),pagingModel.getPageSize(),dayNum,openId);
             allShopLogVO.setPageCount(baseMapper.getDaysCount(dayNum));
         }
@@ -541,18 +530,15 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 userShopLogInfo.setArea(userAddress.getArea());
                 userShopLogInfo.setAddress(userAddress.getAddress());
             }
-
             // 获取用户信息
             UserInfo userInfo = userInfoService.selectOne(new EntityWrapper<UserInfo>().eq("openId",userShopLogInfo.getOpenId()).last("Limit 1"));
             userShopLogInfo.setUserId(userInfo.getUserId());
             userShopLogInfo.setName(userInfo.getNickName());
             userShopLogInfo.setNickName(userInfo.getNickName());
-
             // 获取商品信息
             ProductInfo productInfo = productInfoService.selectOne(new EntityWrapper<ProductInfo>().eq("id",userShopLogInfo.getGoodsId()).last("Limit 1"));
             userShopLogInfo.setGoodsname(productInfo.getGoodsname());
         }
-
         // VO
         allShopLogVO.setAllShopLogList(logInfoModelList);
         return allShopLogVO;
@@ -612,7 +598,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 productListModel1.setPrice(String.valueOf(productInfo.getPrice()));
 
                 if(productInfo.getStyle().equals("1")){
-
                     productListModel1.setProductImg("/productPic/"+productInfo.getImg());
                 }else{
                     productListModel1.setProductImg(productInfo.getImg());
@@ -632,11 +617,10 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             }
 
         }
-
-
         AdminGetProductVO adminGetProductVO = new AdminGetProductVO();
         adminGetProductVO.setProductList(productListModelList);
         adminGetProductVO.setPageCount(String.valueOf(productInfoService.selectCount(new EntityWrapper<>())));
+
         return adminGetProductVO;
     }
 
@@ -807,7 +791,6 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 everyDaySellAmountModel.setZIPAmount("0");
             }
         }
-
         // VO
         DataVO dataVO = new DataVO();
         dataVO.setSellDataModel(sellDataModel);

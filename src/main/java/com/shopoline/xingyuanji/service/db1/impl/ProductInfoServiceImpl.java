@@ -101,7 +101,6 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
         // 获取随机产品
         ProductInfo productInfo = baseMapper.getRedomProduct(productStyle,productKind);
-
         // 判断产品是否是高价值
         if(productInfo.getId() == 110 || productInfo.getId() == 111 || productInfo.getId() == 112 || productInfo.getId() == 113 ||
         productInfo.getId() == 114 || productInfo.getId() == 115 || productInfo.getId() == 105 || productInfo.getId() == 106){
