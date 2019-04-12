@@ -31,7 +31,7 @@ public class MpGenenator {
     public static void main(String[] args) {
         AutoGenerator mpg = new AutoGenerator();
         // ѡ�� freemarker ���棬Ĭ�� Veloctiy
-        //mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+        // mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         // ȫ������
         GlobalConfig gc = new GlobalConfig();
         gc.setOutputDir(dirPath);
