@@ -187,7 +187,6 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public Object getBoxImg(String boxId) {
 
         String boxImgInfo = "\\boxImg\\" + boxId +".png";
-
         return boxImgInfo;
     }
 

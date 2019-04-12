@@ -47,7 +47,11 @@ public class ProductInfoController extends BaseController {
         JsonResult<ProductInfoVO> json = new JsonResult<>();
         try {
             json.setData(productInfoService.getBoxInfo(type,kind));
-        }catch (Exception e){
+        }catch (Exception e
+
+
+
+         ){
             logger.info(e.getMessage());
             json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
             json.setMessage(ExceptionEnum.getValueByKey(json.getState()));
