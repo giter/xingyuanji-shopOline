@@ -230,7 +230,7 @@ public class SFPrintUtil {
 //				high = 210;
 //			}
 //			for (String fileName : files) {
-//				PrintUtil.drawImage(fileName,high,false);//false为不弹出打印框
+//				PrintUtil.drawImage(fileName,high,false);// false为不弹出打印框
 //			}
 //		}
         return fileName;
