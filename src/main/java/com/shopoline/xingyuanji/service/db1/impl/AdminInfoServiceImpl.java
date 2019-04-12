@@ -121,6 +121,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         // 遍历格式化时间
         ListIterator<AdminInfo> adminInfoListIterator = adminInfoList.listIterator();
         while(adminInfoListIterator.hasNext()){
+
             AdminInfoVO adminInfoVO = new AdminInfoVO();
             AdminInfo adminInfo = adminInfoListIterator.next();
             adminInfoVO.setId(adminInfo.getId());
