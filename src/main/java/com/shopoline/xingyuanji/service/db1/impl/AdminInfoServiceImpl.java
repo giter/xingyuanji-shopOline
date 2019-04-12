@@ -332,8 +332,7 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
             userAddress.setDeleteFlag(Constants.QIYONG);
             userAddressService.insert(userAddress);
         }else{
-            // 更新地址
-            // 获取用户地址信息
+            // 更新地址，获取用户地址信息
             UserAddress userAddress = userAddressService.selectOne(new EntityWrapper<UserAddress>().
                     eq("userId",changeUserAddressInfoModel.getUserId()).
                     eq("id",changeUserAddressInfoModel.getAddressId()).last("Limit 1"));
@@ -357,16 +356,15 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
                 userAddress.setAddress(changeUserAddressInfoModel.getAddress());
             }
             if(changeUserAddressInfoModel.getDeleteFlag() != null || !changeUserAddressInfoModel.getDeleteFlag().equals("")){
-                if(userAddress.getDef() == 1 && userAddress.getDeleteFlag() == 0 ){
 
+                if(userAddress.getDef() == 1 && userAddress.getDeleteFlag() == 0 ){
                     userAddress.setDeleteFlag(Constants.WEIQIYONG);
                 }else if(userAddress.getDef() == 1 && userAddress.getDeleteFlag() == 1 ){
-
                     userAddress.setDeleteFlag(Constants.QIYONG);
                 }else{
-
                     userAddress.setDeleteFlag(Integer.valueOf(changeUserAddressInfoModel.getDeleteFlag()));
                 }
+
             }
             userAddressService.updateById(userAddress);
         }
