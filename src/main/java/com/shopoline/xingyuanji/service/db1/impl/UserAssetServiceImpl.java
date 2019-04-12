@@ -174,7 +174,6 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
      */
     @Override
     public List<UserAssetInfoModel> getUserAssetInfoList(String userId,Integer pageStart,Integer pageSize) {
-
         return baseMapper.getUserAssetInfoList(userId,pageStart,pageSize);
     }
 
