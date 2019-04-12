@@ -73,7 +73,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
      * @param userInfo
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void setUseXingBi(UserInfo userInfo) {
 
         UserAsset userAsset = baseMapper.selectUserXingBi(Constants.XINGBI,userInfo.getOpenId());
@@ -103,7 +103,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Object exchangeCoin(String ticketId, String goodsId,String shopLogId) {
 
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
@@ -146,7 +146,7 @@ public class UserAssetServiceImpl extends ServiceImpl<UserAssetMapper, UserAsset
      * @param userInfo
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void dedUserXingbi(ProductInfo productInfo, UserInfo userInfo) {
 
         UserAsset userAsset = new UserAsset();

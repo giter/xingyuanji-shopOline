@@ -138,7 +138,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AfterPaySuccessVO afterPaySuccess(String ticketId, String useXingBi, String isPay, String randomToken, String UUID) throws Exception {
 
         // 获取用户信息
@@ -371,7 +371,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Object buyXingBiProduct(String ticketId, String productId) throws Exception{
 
         UserCoinVO userCoinVO = userAssetService.quertUserCoin(ticketId);
@@ -423,7 +423,7 @@ public class ShopLogServiceImpl extends ServiceImpl<ShopLogMapper, ShopLog> impl
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deductXingBi(String ticketId) {
 
         UserInfo userInfo = userInfoService.getDB1UserInfo(ticketId);
