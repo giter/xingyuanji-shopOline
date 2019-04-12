@@ -33,42 +33,42 @@ public class SFUtils {
         sendHomeModel.setOrderId(UUID.randomUUID().toString().replaceAll("-", ""));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<Request service='OrderService' lang='zh-CN' >");
-        buffer.append("<Head>");
+        StringBuilder builder = new StringBuilder();
+        builder.append("<Request service='OrderService' lang='zh-CN' >");
+        builder.append("<Head>");
         // 顾客编码
-        buffer.append(Config.Client_CODE);
-        buffer.append("</Head>");
-        buffer.append("<Body>");
-        buffer.append("<Order ");
-        buffer.append("orderid='").append(sendHomeModel.getOrderId()).append("' ");
+        builder.append(Config.Client_CODE);
+        builder.append("</Head>");
+        builder.append("<Body>");
+        builder.append("<Order ");
+        builder.append("orderid='").append(sendHomeModel.getOrderId()).append("' ");
         // 寄件信息
-        buffer.append("j_company='").append(Config.J_COMPANY).append("' ");
-        buffer.append("j_contact='").append(Config.J_CONTANT).append("' ");
-        buffer.append("j_mobile='").append(Config.J_MOBILE).append("' ");
-        buffer.append("j_province='").append(Config.J_PROVINCE).append("' ");
-        buffer.append("j_city='").append(Config.J_CITY).append("' ");
-        buffer.append("j_county='").append(Config.J_COUNTRY).append("' ");
-        buffer.append("j_address='").append(Config.J_ADDRESS).append("' ");
+        builder.append("j_company='").append(Config.J_COMPANY).append("' ");
+        builder.append("j_contact='").append(Config.J_CONTANT).append("' ");
+        builder.append("j_mobile='").append(Config.J_MOBILE).append("' ");
+        builder.append("j_province='").append(Config.J_PROVINCE).append("' ");
+        builder.append("j_city='").append(Config.J_CITY).append("' ");
+        builder.append("j_county='").append(Config.J_COUNTRY).append("' ");
+        builder.append("j_address='").append(Config.J_ADDRESS).append("' ");
         // 收货信息
-        buffer.append("d_contact='").append(sendHomeModel.getName()).append("' ");
-        buffer.append("d_mobile='").append(sendHomeModel.getPhone()).append("' ");
-        buffer.append("d_province='").append(sendHomeModel.getProvince()).append("' ");
-        buffer.append("d_city='").append(sendHomeModel.getCity()).append("' ");
-        buffer.append("d_county='").append(sendHomeModel.getArea()).append("' ");
-        buffer.append("d_address='").append(sendHomeModel.getAddress()).append("' ");
-        buffer.append("sendstarttime='").append(sdf.format(new Date())).append("' ");
-        buffer.append("parcel_quantity='1' ");
-        buffer.append("is_docall ='1' ");   // 特别重要
-        buffer.append("pay_method='1' ");// 付款方式
-        buffer.append("routelabelService='1' ");// 路由标签查询服务默认0不查询1查询其他不查询
+        builder.append("d_contact='").append(sendHomeModel.getName()).append("' ");
+        builder.append("d_mobile='").append(sendHomeModel.getPhone()).append("' ");
+        builder.append("d_province='").append(sendHomeModel.getProvince()).append("' ");
+        builder.append("d_city='").append(sendHomeModel.getCity()).append("' ");
+        builder.append("d_county='").append(sendHomeModel.getArea()).append("' ");
+        builder.append("d_address='").append(sendHomeModel.getAddress()).append("' ");
+        builder.append("sendstarttime='").append(sdf.format(new Date())).append("' ");
+        builder.append("parcel_quantity='1' ");
+        builder.append("is_docall ='1' ");   // 特别重要
+        builder.append("pay_method='1' ");// 付款方式
+        builder.append("routelabelService='1' ");// 路由标签查询服务默认0不查询1查询其他不查询
         // buffer.append("routelabelForReturn='1' ");// 签回单路由标签返回：默认0，1：查询，其他：不查询
-        buffer.append("need_return_tracking_no='1' ");
-        buffer.append("custid ='").append(Config.CUST_ID).append("' >");
-        buffer.append("</Order>");
-        buffer.append("</Body>");
-        buffer.append("</Request>");
-        String send = send(buffer.toString());
+        builder.append("need_return_tracking_no='1' ");
+        builder.append("custid ='").append(Config.CUST_ID).append("' >");
+        builder.append("</Order>");
+        builder.append("</Body>");
+        builder.append("</Request>");
+        String send = send(builder.toString());
         System.out.print(send);
         JSONObject resp = JSONObject.fromObject(send);
         String code = resp.getString("Head");
