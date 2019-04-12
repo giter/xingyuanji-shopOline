@@ -61,6 +61,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         String openId = jsonObject.getString("openid");
 
         UserInfo userInfo = this.selectOne(new EntityWrapper<UserInfo>().eq("openId",openId).last("Limit 1"));
+        String hasUserInfo = null;
         if (userInfo==null) {
             //拉取用户信息
             url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN";
@@ -79,11 +80,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             user.setEditBy(Constants.ADMIN);
             user.setDeleteFlag(Constants.QIYONG);
             this.insert(user);
+            hasUserInfo = "0";
         }
-
+        hasUserInfo = "1";
         CheckTicketIdUtil checkTicketIdUtil = new CheckTicketIdUtil();
         //登陆将openId写入REDIS
-        LoginVO loginVO = checkTicketIdUtil.checkTicketId(openId);
+        LoginVO loginVO = checkTicketIdUtil.checkTicketId(openId,hasUserInfo);
 
         logger.info("<-USER_LOGIN->\t"+"UserName："+userInfo.getNickName()+"\tUserOpenId："+userInfo.getOpenId()+"\tDate："+new Date());
 

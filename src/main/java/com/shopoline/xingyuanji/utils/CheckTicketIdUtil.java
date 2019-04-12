@@ -5,7 +5,7 @@ import com.shopoline.xingyuanji.vo.LoginVO;
 
 public class CheckTicketIdUtil {
 
-    public LoginVO checkTicketId(String openId){
+    public LoginVO checkTicketId(String openId,String hasUserInfo){
 
         String ticketId = TicketUtil.getTicketId();
         // 如果Redis内存在当前用户的OpenId，删除
@@ -20,6 +20,8 @@ public class CheckTicketIdUtil {
         loginVO.setTicketId(ticketId);
         loginVO.setCode(openId);
         loginVO.setChannelCode(Constants.CHANNEL_BOXOLINE);
+        loginVO.setHasUserInfo(hasUserInfo);
+
         return loginVO;
     }
 }
