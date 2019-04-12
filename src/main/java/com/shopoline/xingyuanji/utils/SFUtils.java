@@ -59,10 +59,10 @@ public class SFUtils {
         buffer.append("d_address='").append(sendHomeModel.getAddress()).append("' ");
         buffer.append("sendstarttime='").append(sdf.format(new Date())).append("' ");
         buffer.append("parcel_quantity='1' ");
-        buffer.append("is_docall ='1' ");   //特别重要
-        buffer.append("pay_method='1' ");//付款方式
-        buffer.append("routelabelService='1' ");//路由标签查询服务默认0不查询1查询其他不查询
-        //buffer.append("routelabelForReturn='1' ");//签回单路由标签返回：默认0，1：查询，其他：不查询
+        buffer.append("is_docall ='1' ");   // 特别重要
+        buffer.append("pay_method='1' ");// 付款方式
+        buffer.append("routelabelService='1' ");// 路由标签查询服务默认0不查询1查询其他不查询
+        //buffer.append("routelabelForReturn='1' ");// 签回单路由标签返回：默认0，1：查询，其他：不查询
         buffer.append("need_return_tracking_no='1' ");
         buffer.append("custid ='").append(Config.CUST_ID).append("' >");
         buffer.append("</Order>");
@@ -85,7 +85,6 @@ public class SFUtils {
             }
             sfResult.setMessage("快递下单成功");
             JSONObject rls_detail = resp.getJSONObject("Body").getJSONObject("OrderResponse").getJSONObject("rls_info").getJSONObject("rls_detail");
-            System.out.print(rls_detail);
             SFPrintInfoModel sfPrintInfoModel = new SFPrintInfoModel();
             sfPrintInfoModel.setSourceCityCode(rls_detail.getString("@sourceCityCode"));
             sfPrintInfoModel.setDestCityCode(rls_detail.getString("@destCityCode"));

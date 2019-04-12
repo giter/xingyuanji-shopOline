@@ -131,7 +131,7 @@ public class QRCodeUtils {
     public static void main(String[] args) {
         String imgPath = "E:/abc.png";// 最后生成的图片地址
         String logo = "E:/1.png";// 加入的logo照片
-        String acc = "9_xnAK6rJlwGfhkovOhn70km9CF_94T1P83dOucrIPA5FztqYLNbuJdSSEoNjLJQlVJDWbSaWEjPsz_RzRRUusEPDLWeHk0E-S_36yz5uqWU7GNC_vdwte3Jwv8ULheqFWQBK7kEUTzwEEYE7cCWFcAAAMGP";
+        // String acc = "9_xnAK6rJlwGfhkovOhn70km9CF_94T1P83dOucrIPA5FztqYLNbuJdSSEoNjLJQlVJDWbSaWEjPsz_RzRRUusEPDLWeHk0E-S_36yz5uqWU7GNC_vdwte3Jwv8ULheqFWQBK7kEUTzwEEYE7cCWFcAAAMGP";
         QRCodeUtils.createQRCode("xxx",imgPath,logo);
     }
 

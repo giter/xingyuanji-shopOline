@@ -59,7 +59,7 @@ public class OkhttpUtil {
      * @return
      */
     public static String postJson(String url, JSONObject json,String downPath){
-        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        // MediaType  设置Content-Type 标头中包含的媒体类型值
         RequestBody body = FormBody.create(MediaType.parse("application/json; charset=utf-8"),json.toJSONString());
         Request request = new Request.Builder()
                 .url(url)
@@ -76,7 +76,7 @@ public class OkhttpUtil {
      * @return
      */
     public static String postJson(String url, String jsonStr){
-        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        // MediaType  设置Content-Type 标头中包含的媒体类型值
         RequestBody body = FormBody.create(MediaType.parse("application/json; charset=utf-8"),jsonStr);
         Request request = new Request.Builder()
                 .url(url)
