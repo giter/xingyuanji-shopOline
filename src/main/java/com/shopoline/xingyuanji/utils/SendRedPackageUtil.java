@@ -48,6 +48,7 @@ public class SendRedPackageUtil {
             String url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
             WXPay wxPay = new WXPay(WxConfig.getPayInstance());
 
+            // 十秒内只允许领取一次红包，如果缓存内存在KEY则限制
             boolean tokenResult = RedisUtil.hasKey("RED_PACKAGE"+sendRedPackageModel.getOpenId());
 
             if( tokenResult == true ){
