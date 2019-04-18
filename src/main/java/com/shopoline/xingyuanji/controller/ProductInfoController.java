@@ -8,10 +8,13 @@ import com.shopoline.xingyuanji.entity.ProductInfo;
 import com.shopoline.xingyuanji.service.db1.IProductInfoService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.ProductInfoVO;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +27,7 @@ import java.util.List;
  * @author wuty
  * @since 2019-01-09
  */
+@Api(description = "商品详情接口")
 @Controller
 @Scope("prototype")
 @RequestMapping("/productInfo")
@@ -47,11 +51,7 @@ public class ProductInfoController extends BaseController {
         JsonResult<ProductInfoVO> json = new JsonResult<>();
         try {
             json.setData(productInfoService.getBoxInfo(type,kind));
-        }catch (Exception e
-
-
-
-         ){
+        }catch (Exception e){
             logger.info(e.getMessage());
             json.setState(ExceptionEnum.getKeyByValue(e.getMessage()));
             json.setMessage(ExceptionEnum.getValueByKey(json.getState()));

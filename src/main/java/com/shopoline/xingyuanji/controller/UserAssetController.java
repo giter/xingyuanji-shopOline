@@ -8,11 +8,13 @@ import com.shopoline.xingyuanji.service.db1.IUserAssetService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.UserCoinVO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author wuty
  * @since 2019-01-09
  */
-@Api(description = "用户接口1")
+@Api(description = "用户资产相关接口")
 @RestController
 @Scope("prototype")
 @RequestMapping("/userAsset")
@@ -39,9 +41,10 @@ public class UserAssetController extends BaseController {
     /**
      * 查询用户资产表猩币数量
      */
-    @ApiOperation(value = "quertUserCoin" ,  notes="quertUserCoin")
+    @ApiOperation(value = "查询用户资产信息" ,  notes="通过TicketId获取缓存中信息，查询用户资产总数，返回amount资产数量，amountType资产类型两个字段")
+    @ApiImplicitParam(name = "ticketId" ,value = "ticketId",required = true,dataType = "String")
     @ResponseBody
-    @RequestMapping("/quertUserCoin")
+    @RequestMapping(value = "/quertUserCoin",method = RequestMethod.POST)
     public Object quertUserCoin(String ticketId, HttpServletRequest request, HttpServletResponse response){
         JsonResult<UserCoinVO> json = new JsonResult<>();
         try {
@@ -64,7 +67,13 @@ public class UserAssetController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/exchangeCoin")
+    @ApiOperation(value = "卖了换币" ,  notes="用户购买完成后顶级卖了换币接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "TicketId", value = "TicketId", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "goodsId", value = "商品Id", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "shopLogId", value = "购物记录Id", required = true, dataType = "String")
+    })
+    @RequestMapping(value = "/exchangeCoin",method = RequestMethod.POST)
     public Object exchangeCoin(String ticketId,String goodsId,String shopLogId, HttpServletRequest request, HttpServletResponse response){
         JsonResult<Object> json = new JsonResult<>();
         try {
