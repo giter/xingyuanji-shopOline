@@ -7,11 +7,14 @@ import com.shopoline.xingyuanji.controller.baseController.BaseController;
 import com.shopoline.xingyuanji.service.db1.IUserAssetService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.UserCoinVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +27,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author wuty
  * @since 2019-01-09
  */
-@Controller
+@Api(description = "用户接口1")
+@RestController
 @Scope("prototype")
 @RequestMapping("/userAsset")
 public class UserAssetController extends BaseController {
@@ -35,6 +39,7 @@ public class UserAssetController extends BaseController {
     /**
      * 查询用户资产表猩币数量
      */
+    @ApiOperation(value = "quertUserCoin" ,  notes="quertUserCoin")
     @ResponseBody
     @RequestMapping("/quertUserCoin")
     public Object quertUserCoin(String ticketId, HttpServletRequest request, HttpServletResponse response){

@@ -16,6 +16,8 @@ import org.springframework.cache.annotation.EnableCaching;
 @MapperScan(basePackages = {"com.shopoline.xingyuanji.mapper"})
 @EntityScan(basePackages= {"com.shopoline.xingyuanji.entity"})
 public class XingyuanjiApplication extends SpringBootServletInitializer {
+
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         // 注意这里要指向原先用main方法执行的Application启动类

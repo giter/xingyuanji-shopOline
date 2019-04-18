@@ -8,11 +8,15 @@ import com.shopoline.xingyuanji.model.SignModel;
 import com.shopoline.xingyuanji.service.db1.IUserInfoService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.UserInfoVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +29,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author wuty
  * @since 2019-01-09
  */
-@Controller
+@Api(description = "用户接口")
+@RestController
 @Scope("prototype")
 @RequestMapping("/userInfo")
 public class UserInfoController extends BaseController {
@@ -41,6 +46,7 @@ public class UserInfoController extends BaseController {
      * @param response
      * @return
      */
+    @ApiOperation(value = "用户登录" ,  notes="用户登录")
     @ResponseBody
     @RequestMapping("/login")
     public Object login(String code, HttpServletRequest request, HttpServletResponse response){
