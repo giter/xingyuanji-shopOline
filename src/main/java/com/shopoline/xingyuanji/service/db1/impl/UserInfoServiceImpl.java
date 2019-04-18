@@ -81,8 +81,9 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             user.setDeleteFlag(Constants.QIYONG);
             this.insert(user);
             hasUserInfo = "0";
+        }else{
+            hasUserInfo = "1";
         }
-        hasUserInfo = "1";
         CheckTicketIdUtil checkTicketIdUtil = new CheckTicketIdUtil();
         //登陆将openId写入REDIS
         LoginVO loginVO = checkTicketIdUtil.checkTicketId(openId,hasUserInfo);
