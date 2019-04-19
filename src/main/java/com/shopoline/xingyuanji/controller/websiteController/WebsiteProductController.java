@@ -8,6 +8,10 @@ import com.shopoline.xingyuanji.model.WebsiteProductModel;
 import com.shopoline.xingyuanji.service.db1.IWebsiteProductService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.WebsiteProductInfoVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author wuty
  * @since 2019-04-04
  */
+@Api(description = "官网展示接口")
 @Controller
 @RequestMapping("/websiteProduct")
 public class WebsiteProductController extends BaseController {
@@ -39,6 +44,11 @@ public class WebsiteProductController extends BaseController {
      * @param response
      * @return
      */
+    @ApiOperation(value = "获取官网展示商品信息" ,  notes="获取官网展示商品信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "style" ,value ="商品种类0：数码1：娱乐趣味2：美妆个护3：居家生活",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String")
+            })
     @ResponseBody
     @GetMapping("/getProductInfoByStyle")
     public Object getProductInfoByStyle(String style,String pageNum,HttpServletRequest request, HttpServletResponse response){
@@ -60,6 +70,7 @@ public class WebsiteProductController extends BaseController {
      * @param response
      * @return
      */
+    @ApiOperation(value = "增加或更新官网商品" ,  notes="增加或更新官网商品")
     @ResponseBody
     @PutMapping("/insertWebSiteProduct")
     public Object insertWebSiteProduct(@RequestBody WebsiteProductModel websiteProductModel, HttpServletRequest request, HttpServletResponse response){
