@@ -48,7 +48,7 @@ public class UserAddressController extends BaseController {
      */
     @ApiOperation(value = "写入地址信息" ,  notes="写入用户地址信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String")
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/setAdderss",method = RequestMethod.POST)
@@ -72,7 +72,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取用户地址" ,  notes="获取用户地址")
-    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @GetMapping(value = "/getAdderss")
     public Object getAdderss(String ticketId,HttpServletRequest request, HttpServletResponse response) {
@@ -97,8 +97,8 @@ public class UserAddressController extends BaseController {
      */
     @ApiOperation(value = "设置默认地址" ,  notes="设置默认地址")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "id" ,value ="用户地址信息ID",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "id" ,value ="用户地址信息ID",required = true, dataType = "String",paramType = "query"),
     })
     @ResponseBody
     @RequestMapping(value = "/setAddressDef",method = RequestMethod.POST)
@@ -124,8 +124,8 @@ public class UserAddressController extends BaseController {
      */
     @ApiOperation(value = "设置默认地址" ,  notes="设置默认地址")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "id" ,value ="用户地址信息ID",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "id" ,value ="用户地址信息ID",required = true, dataType = "String",paramType = "query"),
     })
     @ResponseBody
     @RequestMapping(value = "/deleteAddress",method = RequestMethod.POST)
@@ -151,8 +151,8 @@ public class UserAddressController extends BaseController {
      */
     @ApiOperation(value = "更新地址" ,  notes="更新地址")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "id" ,value ="用户地址信息ID",required = true, dataType = "String")
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "id" ,value ="用户地址信息ID",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/updateAddress",method = RequestMethod.POST)
@@ -176,7 +176,7 @@ public class UserAddressController extends BaseController {
      * @return
      */
     @ApiOperation(value = "判断用户是否有默认地址" ,  notes="判断用户是否有默认地址")
-    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/isUserAddress",method = RequestMethod.POST)
     public Object isUserAddress(String ticketId,HttpServletRequest request, HttpServletResponse response){

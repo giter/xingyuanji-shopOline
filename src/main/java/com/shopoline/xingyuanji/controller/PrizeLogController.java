@@ -41,7 +41,7 @@ public class PrizeLogController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取用户奖品列表" ,  notes="获取用户奖品列表")
-    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/getPrizeList",method = RequestMethod.POST)
     public Object getPrizeList(String ticketId, HttpServletRequest request, HttpServletResponse response){
@@ -66,8 +66,8 @@ public class PrizeLogController extends BaseController {
      */
     @ApiOperation(value = "获取用户奖品列表" ,  notes="获取用户奖品列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "prizeId" ,value ="奖品Id",required = true, dataType = "String")
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "prizeId" ,value ="奖品Id",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/cashPrize",method = RequestMethod.POST)
@@ -90,7 +90,7 @@ public class PrizeLogController extends BaseController {
      * @return
      */
     @ApiOperation(value = "创建抽奖用二维码" ,  notes="创建抽奖用二维码")
-    @ApiImplicitParam(name = "num" ,value ="生成数量",required = true, dataType = "int")
+    @ApiImplicitParam(name = "num" ,value ="生成数量",required = true, dataType = "int",paramType = "query")
     @ResponseBody
     @PutMapping(value = "/saveCode")
     public Object saveCode( int num,HttpServletRequest request, HttpServletResponse response){

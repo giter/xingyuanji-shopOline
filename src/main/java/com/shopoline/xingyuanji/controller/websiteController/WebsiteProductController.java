@@ -46,8 +46,8 @@ public class WebsiteProductController extends BaseController {
      */
     @ApiOperation(value = "获取官网展示商品信息" ,  notes="获取官网展示商品信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "style" ,value ="商品种类0：数码1：娱乐趣味2：美妆个护3：居家生活",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String")
+            @ApiImplicitParam(name = "style" ,value ="商品种类0：数码1：娱乐趣味2：美妆个护3：居家生活",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String",paramType = "query")
             })
     @ResponseBody
     @GetMapping("/getProductInfoByStyle")

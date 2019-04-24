@@ -54,7 +54,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ApiOperation(value = "支付" ,  notes="支付")
-    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/pay",method = RequestMethod.POST)
     public Object WXPay(String ticketId,@RequestBody PayModel payModel, HttpServletRequest request, HttpServletResponse response){
@@ -77,7 +77,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ApiOperation(value = "扣除猩币" ,  notes="扣除猩币")
-    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/deductXingBi",method = RequestMethod.POST)
     public Object deductXingBi(String ticketId,HttpServletRequest request, HttpServletResponse response){
@@ -98,8 +98,8 @@ public class ShopLogController extends BaseController {
      * @param string
      * @return
      */
-    @ApiOperation(value = "支付结果异步通知" ,  notes="支付结果异步通知")
-    @ApiImplicitParam(name = "string" ,value ="string",required = true, dataType = "String")
+    @ApiOperation(value = "支付结果异步通知（未用接口）" ,  notes="支付结果异步通知")
+    @ApiImplicitParam(name = "string" ,value ="string",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/notify",method = RequestMethod.POST)
     public Object payNotify(String string){
@@ -121,11 +121,11 @@ public class ShopLogController extends BaseController {
      */
     @ApiOperation(value = "扣除猩币" ,  notes="扣除猩币")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "useXingBi" ,value ="是否使用猩币 使用传1",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "isPay" ,value ="是否支付 支付传1",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "randomToken" ,value ="随机TOKEN，支付成功后回传前端，返回后端校验REDIS中数据，如果没有相关数据前端页面跳转个人中心",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "UUID" ,value ="UUID，支付成功后回传前端，返回后端校验REDIS中数据，如果没有相关数据前端页面跳转个人中心",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "useXingBi" ,value ="是否使用猩币 使用传1",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "isPay" ,value ="是否支付 支付传1",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "randomToken" ,value ="随机TOKEN，支付成功后回传前端，返回后端校验REDIS中数据，如果没有相关数据前端页面跳转个人中心",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "UUID" ,value ="UUID，支付成功后回传前端，返回后端校验REDIS中数据，如果没有相关数据前端页面跳转个人中心",required = true, dataType = "String",paramType = "query"),
     })
     @ResponseBody
     @RequestMapping(value = "/getOpenRandomGoods",method = RequestMethod.POST)
@@ -147,7 +147,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ApiOperation(value = "查看订单记录基本信息" ,  notes="查看订单记录基本信息")
-    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/getShopLog",method = RequestMethod.POST)
     public Object getShopLog(String ticketId,HttpServletRequest request, HttpServletResponse response){
@@ -168,7 +168,7 @@ public class ShopLogController extends BaseController {
      * @return
      */
     @ApiOperation(value = "查看订单记录商品详情" ,  notes="查看订单记录商品详情")
-    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/getShopLogInfo",method = RequestMethod.POST)
     public Object getShopLogInfo(String ticketId,HttpServletRequest request, HttpServletResponse response){
@@ -187,7 +187,7 @@ public class ShopLogController extends BaseController {
      * 获取运费
      */
     @ApiOperation(value = "获取运费" ,  notes="获取运费")
-    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/getZIPAmount",method = RequestMethod.POST)
     public Object getZIPAmount(String ticketId, HttpServletRequest request, HttpServletResponse response){
@@ -207,9 +207,9 @@ public class ShopLogController extends BaseController {
      */
     @ApiOperation(value = "邮回家" ,  notes="邮回家")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "productId" ,value ="商品Id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "shopLogId" ,value ="购买记录Id",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "productId" ,value ="商品Id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "shopLogId" ,value ="购买记录Id",required = true, dataType = "String",paramType = "query"),
             })
     @ResponseBody
     @RequestMapping(value = "/sendHome",method = RequestMethod.POST)
@@ -230,8 +230,8 @@ public class ShopLogController extends BaseController {
      */
     @ApiOperation(value = "取消订单" ,  notes="取消订单")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId", value = "ticketId", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "orderId", value = "付款订单号", required = true, dataType = "String")
+            @ApiImplicitParam(name = "ticketId", value = "ticketId", required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "orderId", value = "付款订单号", required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/deleteOrder",method = RequestMethod.POST)
@@ -253,8 +253,8 @@ public class ShopLogController extends BaseController {
      */
     @ApiOperation(value = "购买积分商品" ,  notes="购买积分商品")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId", value = "ticketId", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "productId", value ="商品Id", required = true, dataType = "String")
+            @ApiImplicitParam(name = "ticketId", value = "ticketId", required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "productId", value ="商品Id", required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/buyXingBiProduct",method = RequestMethod.POST)
@@ -281,9 +281,9 @@ public class ShopLogController extends BaseController {
      */
     @ApiOperation(value = "获取物流信息" ,  notes="获取物流信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId", value = "ticketId", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "productId", value ="商品Id", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "tradeNo", value ="运单号", required = true, dataType = "String")
+            @ApiImplicitParam(name = "ticketId", value = "ticketId", required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "productId", value ="商品Id", required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "tradeNo", value ="运单号", required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/getLogisticInformation",method = RequestMethod.POST)

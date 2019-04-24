@@ -64,7 +64,7 @@ public class WebsiteArticleController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取文章列表" ,  notes="获取文章列表")
-    @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String")
+    @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @GetMapping("/getArticleList")
     public Object getArticleList(String pageNum,HttpServletRequest request, HttpServletResponse response){
@@ -88,7 +88,7 @@ public class WebsiteArticleController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取文章内容" ,  notes="获取文章内容")
-    @ApiImplicitParam(name = "id" ,value ="文章Id",required = true, dataType = "String")
+    @ApiImplicitParam(name = "id" ,value ="文章Id",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @GetMapping("/getArticleInfo")
     public Object getArticleInfo(String id,HttpServletRequest request, HttpServletResponse response){

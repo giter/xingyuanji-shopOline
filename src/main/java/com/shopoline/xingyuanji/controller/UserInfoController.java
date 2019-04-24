@@ -48,7 +48,7 @@ public class UserInfoController extends BaseController {
      */
     @ApiOperation(value = "用户登录" ,  notes="前端请求微信Auth2接口返回CODE参数，通过CODE值请求微信获取用户信息API获取USERINFO并存入t_user_info表，" +
             "并在REDIS中存入ticketId（REDIS中结构：KEY:ticketId。Value：openId）" )
-    @ApiImplicitParam(name = "code" ,value = "前端请求微信统一认证接口返回code参数",required = true,dataType = "String")
+    @ApiImplicitParam(name = "code" ,value = "前端请求微信统一认证接口返回code参数",required = true,dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public Object login(String code, HttpServletRequest request, HttpServletResponse response){
@@ -71,7 +71,7 @@ public class UserInfoController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取用户信息" ,  notes="通过ticketId获取redis中相应的VALUE，通过VALUE（openId）获取t_user_info表中响应信息" )
-    @ApiImplicitParam(name = "ticketId" ,value = "ticketId",required = true,dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value = "ticketId",required = true,dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/getUserInfo",method = RequestMethod.POST)
     public Object getUserInfo(String ticketId,HttpServletRequest request, HttpServletResponse response){

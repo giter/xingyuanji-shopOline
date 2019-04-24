@@ -49,8 +49,8 @@ public class UploadController extends BaseController {
      */
     @ApiOperation(value = "上传图片" ,  notes="上传图片")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "style" ,value ="图片类型（0：盒子商品1：积分商品2：积分商品展示图）",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "productId" ,value ="商品Id",required = true, dataType = "String")
+            @ApiImplicitParam(name = "style" ,value ="图片类型（0：盒子商品1：积分商品2：积分商品展示图）",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "productId" ,value ="商品Id",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/uploadImage",method = RequestMethod.POST)

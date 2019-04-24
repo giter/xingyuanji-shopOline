@@ -42,7 +42,7 @@ public class UserAssetController extends BaseController {
      * 查询用户资产表猩币数量
      */
     @ApiOperation(value = "查询用户资产信息" ,  notes="通过TicketId获取缓存中信息，查询用户资产总数，返回amount资产数量，amountType资产类型两个字段")
-    @ApiImplicitParam(name = "ticketId" ,value = "ticketId",required = true,dataType = "String")
+    @ApiImplicitParam(name = "ticketId" ,value = "ticketId",required = true,dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/quertUserCoin",method = RequestMethod.POST)
     public Object quertUserCoin(String ticketId, HttpServletRequest request, HttpServletResponse response){
@@ -69,9 +69,9 @@ public class UserAssetController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "卖了换币" ,  notes="用户购买完成后顶级卖了换币接口")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "TicketId", value = "TicketId", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "goodsId", value = "商品Id", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "shopLogId", value = "购物记录Id", required = true, dataType = "String")
+            @ApiImplicitParam(name = "ticketId", value = "TicketId", required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "goodsId", value = "商品Id", required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "shopLogId", value = "购物记录Id", required = true, dataType = "String",paramType = "query")
     })
     @RequestMapping(value = "/exchangeCoin",method = RequestMethod.POST)
     public Object exchangeCoin(String ticketId,String goodsId,String shopLogId, HttpServletRequest request, HttpServletResponse response){

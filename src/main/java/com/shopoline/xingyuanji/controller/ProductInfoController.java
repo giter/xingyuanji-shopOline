@@ -51,8 +51,9 @@ public class ProductInfoController extends BaseController {
      */
     @ApiOperation(value = "获取盒子信息" ,  notes="获取盒子信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "type" ,value ="商品类型，获取盒子传0",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "kind" ,value ="商品分类，盒子传2",required = true, dataType = "String")
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = false, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "type" ,value ="商品类型，获取盒子传0",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "kind" ,value ="商品分类，盒子传2",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/getBoxInfo",method = RequestMethod.POST)
@@ -77,10 +78,10 @@ public class ProductInfoController extends BaseController {
      */
     @ApiOperation(value = "获取盒子抵扣价格" ,  notes="获取盒子抵扣价格")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "type" ,value ="商品类型 0：盒子商品  1：积分商品 ",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "kind" ,value ="商品分类：0：开盒商品1：积分兑换商品2，盒子",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "boxCount" ,value ="购买盒子数量",required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "type" ,value ="商品类型 0：盒子商品  1：积分商品 ",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "kind" ,value ="商品分类：0：开盒商品1：积分兑换商品2，盒子",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "boxCount" ,value ="购买盒子数量",required = true, dataType = "Integer",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/getBoxDeductionPrice",method = RequestMethod.POST)
@@ -129,7 +130,7 @@ public class ProductInfoController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取积分商城商品列表" ,  notes="获取积分商城商品列表")
-    @ApiImplicitParam(name = "productId" ,value ="商品Id",required = true, dataType = "String")
+    @ApiImplicitParam(name = "productId" ,value ="商品Id",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @RequestMapping(value = "/getShopProductInfo",method = RequestMethod.POST)
     public Object getShopProductInfo(String ticketId,String productId,HttpServletRequest request,HttpServletResponse response){

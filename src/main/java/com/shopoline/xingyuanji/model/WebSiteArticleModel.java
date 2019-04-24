@@ -1,29 +1,40 @@
 package com.shopoline.xingyuanji.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "官网文章对象")
 public class WebSiteArticleModel {
 
+    @ApiModelProperty(value = "文章id",required = false)
    private String id;
     /**
      * 标题
      */
+    @ApiModelProperty(value = "标题",required = false)
     private String title;
     /**
      * 正文
      */
+    @ApiModelProperty(value = "正文",required = false)
     private String text;
     /**
      * 作者
      */
+    @ApiModelProperty(value = "作者",required = false)
     private String author;
     /**
      * 创建人
      */
+    @ApiModelProperty(value = "创建人",required = false)
     private String editBy;
     /**
      * 状态 0：未启用 1：启用
      */
+    @ApiModelProperty(value = "状态 0：未启用 1：启用",required = false)
     private String deleteFlag;
 
+    @ApiModelProperty(value = "备注",required = false)
     private String mark;
 
     public String getMark() {

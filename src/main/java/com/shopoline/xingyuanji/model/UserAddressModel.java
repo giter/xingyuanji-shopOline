@@ -1,17 +1,27 @@
 package com.shopoline.xingyuanji.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "用户地址对象")
 public class UserAddressModel {
 
+    @ApiModelProperty(value = "姓名",required = false)
     private String name;
 
+    @ApiModelProperty(value = "电话",required = false)
     private String phone;
 
+    @ApiModelProperty(value = "省",required = false)
     private String province;
 
+    @ApiModelProperty(value = "市",required = false)
     private String city;
 
+    @ApiModelProperty(value = "地址",required = false)
     private String address;
 
+    @ApiModelProperty(value = "区",required = false)
     private String area;
 
     public String getArea() {

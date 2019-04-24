@@ -1,11 +1,16 @@
 package com.shopoline.xingyuanji.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 
+@ApiModel(value = "管理员登陆对象。无需JSON传值直接下方两个参数拼接",description ="无需JSON直接下方两个参数拼接" )
 public class AdminLoginModel {
 
+    @ApiModelProperty(value = "用户名",required = true)
     private String userName;
 
+    @ApiModelProperty(value = "密码",required = true)
     private String passWord;
 
     public String getUserName() {

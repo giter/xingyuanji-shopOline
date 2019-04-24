@@ -9,10 +9,7 @@ import com.shopoline.xingyuanji.service.db1.IUserAddressService;
 import com.shopoline.xingyuanji.service.db1.IUserAssetService;
 import com.shopoline.xingyuanji.utils.JSONUtil;
 import com.shopoline.xingyuanji.vo.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -46,8 +43,8 @@ public class ManageController extends BaseController {
      */
     @ApiOperation(value = "后台管理登陆" ,  notes="后台管理登陆")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userName" ,value ="用户名",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "passWord" ,value ="密码",required = true, dataType = "String")
+            @ApiImplicitParam(name = "userName" ,value ="用户名",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "passWord" ,value ="密码",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @PostMapping("/adminLogin")
@@ -113,11 +110,11 @@ public class ManageController extends BaseController {
      * @param response
      * @return
      */
-    @ApiOperation(value = "获取用户信息列表(包含条件查询)" ,  notes="获取用户信息列表(包含条件查询)")
+    @ApiOperation(value = "获取用户信息列表(包含条件查询)" ,  notes="获取用户信息列表(包含条件查询)，nickName不为空为按昵称模糊查询，openId不为空为按openId查询，页码必传")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nickName" ,value ="ticketId",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "openId" ,value ="用户标识",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String")
+            @ApiImplicitParam(name = "nickName" ,value ="用户昵称",required = false, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "openId" ,value ="用户标识",required = false, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @GetMapping("/getUserInfoList")
@@ -143,8 +140,8 @@ public class ManageController extends BaseController {
      */
     @ApiOperation(value = "查询用户资产列表" ,  notes="查询用户资产列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId" ,value ="用户id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String")
+            @ApiImplicitParam(name = "userId" ,value ="用户id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @GetMapping("/getUserAssetLog")
@@ -169,8 +166,8 @@ public class ManageController extends BaseController {
      */
     @ApiOperation(value = "更新用户资产状态" ,  notes="更新用户资产状态")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "amountId" ,value ="用户资产表id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "deleteFlag" ,value ="启用状态0禁用 1启用",required = true, dataType = "String")
+            @ApiImplicitParam(name = "amountId" ,value ="用户资产表id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "deleteFlag" ,value ="启用状态0禁用 1启用",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @PutMapping("/replaceUserAsset")
@@ -195,7 +192,7 @@ public class ManageController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取用户地址信息" ,  notes="获取用户地址信息")
-    @ApiImplicitParam(name = "userId" ,value ="用户id",required = true, dataType = "String")
+    @ApiImplicitParam(name = "userId" ,value ="用户id",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @GetMapping("/getUserAddressList")
     public Object getUserAddressList(String userId,HttpServletRequest request, HttpServletResponse response){
@@ -217,7 +214,7 @@ public class ManageController extends BaseController {
      * @return
      */
     @ApiOperation(value = "删除用户地址" ,  notes="删除用户地址")
-    @ApiImplicitParam(name = "addressId" ,value ="用户地址id",required = true, dataType = "String")
+    @ApiImplicitParam(name = "addressId" ,value ="用户地址id",required = true, dataType = "String",paramType = "query")
     @ResponseBody
     @DeleteMapping("/deleteUserAddress")
     public Object deleteUserAddress(String addressId,HttpServletRequest request, HttpServletResponse response){
@@ -241,8 +238,8 @@ public class ManageController extends BaseController {
      */
     @ApiOperation(value = "删除用户地址" ,  notes="删除用户地址")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "addressId" ,value ="用户地址id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "userId" ,value ="用户id",required = true, dataType = "String")
+            @ApiImplicitParam(name = "addressId" ,value ="用户地址id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "userId" ,value ="用户id",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @PutMapping("/changeUserDefAddress")
@@ -285,8 +282,8 @@ public class ManageController extends BaseController {
      */
     @ApiOperation(value = "获取用户购买记录" ,  notes="获取用户购买记录")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "openId" ,value ="用户标识",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String")
+            @ApiImplicitParam(name = "openId" ,value ="用户标识",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "pageNum" ,value ="页码",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @GetMapping("/getUserShopLogInfo")
@@ -309,8 +306,8 @@ public class ManageController extends BaseController {
      */
     @ApiOperation(value = "删除用户购买记录" ,  notes="删除用户购买记录")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "shopLogId" ,value ="购买记录id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "deleteFlag" ,value ="启用状态0禁用 1启用",required = true, dataType = "String")
+            @ApiImplicitParam(name = "shopLogId" ,value ="购买记录id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "deleteFlag" ,value ="启用状态0禁用 1启用",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @PutMapping("/deleteShopLog")
@@ -333,8 +330,8 @@ public class ManageController extends BaseController {
      */
     @ApiOperation(value = "输入用户运单号+变更物流状态" ,  notes="输入用户运单号+变更物流状态")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "shopLogId" ,value ="购买记录id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "ZIPNum" ,value ="运单号",required = true, dataType = "String")
+            @ApiImplicitParam(name = "shopLogId" ,value ="购买记录id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "ZIPNum" ,value ="运单号",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @PutMapping("/inputUserWaybill")
@@ -355,12 +352,12 @@ public class ManageController extends BaseController {
      * @param pageNum
      * @return
      */
-    @ApiOperation(value = "获取全部用户购买记录" ,  notes="获取全部用户购买记录")
+    @ApiOperation(value = "获取全部用户购买记录" ,  notes="获取全部用户购买记录,nickName不为空为按昵称模糊查询，openId不为空为按openId查询，days不为空按天数查询，页码必传")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum" ,value ="购买记录id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "days" ,value ="天数，搜索几天内数据",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "nickName" ,value ="用户昵称，模糊查询",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "openId" ,value ="用户标识",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "pageNum" ,value ="购买记录id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "days" ,value ="天数，搜索几天内数据",required = false, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "nickName" ,value ="用户昵称，模糊查询",required = false, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "openId" ,value ="用户标识",required = false, dataType = "String",paramType = "query"),
     })
     @ResponseBody
     @GetMapping("/getAllShopLog")
@@ -383,8 +380,8 @@ public class ManageController extends BaseController {
      */
     @ApiOperation(value = "获取商品列表" ,  notes="获取商品列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum" ,value ="购买记录id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "productType" ,value ="商品类型，1积分商品0盒子商品",required = true, dataType = "String")
+            @ApiImplicitParam(name = "pageNum" ,value ="购买记录id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "productType" ,value ="商品类型，1积分商品0盒子商品",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @GetMapping("/adminGetProductList")
@@ -425,15 +422,15 @@ public class ManageController extends BaseController {
      * @param productInfoModel
      * @return
      */
-    @ApiOperation(value = "添加产品" ,  notes="添加产品")
+    @ApiOperation(value = "添加产品" ,  notes="添加产品,model不用填写，直接拼接")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id" ,value ="购买记录id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "productName" ,value ="商品名称，1积分商品0盒子商品",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "price" ,value ="价格",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "productNum" ,value ="商品数量",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "style" ,value ="商品类型， 0：盒子商品  1：积分商品 ",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "socer" ,value ="商品积分",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "status" ,value ="是否启用 0：否 1：是",required = true, dataType = "String")
+            @ApiImplicitParam(name = "id" ,value ="购买记录id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "productName" ,value ="商品名称，1积分商品0盒子商品",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "price" ,value ="价格",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "productNum" ,value ="商品数量",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "style" ,value ="商品类型， 0：盒子商品  1：积分商品 ",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "socer" ,value ="商品积分",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "status" ,value ="是否启用 0：否 1：是",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @RequestMapping(value = "/insertProductInfo",method = RequestMethod.POST)
@@ -455,8 +452,8 @@ public class ManageController extends BaseController {
      */
     @ApiOperation(value = "更改产品状态" ,  notes="更改产品状态")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "productId" ,value ="商品id",required = true, dataType = "String"),
-            @ApiImplicitParam(name = "status" ,value ="是否启用 0：否 1：是",required = true, dataType = "String")
+            @ApiImplicitParam(name = "productId" ,value ="商品id",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "status" ,value ="是否启用 0：否 1：是",required = true, dataType = "String",paramType = "query")
     })
     @ResponseBody
     @PutMapping("/changeProductStatus")
