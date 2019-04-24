@@ -85,7 +85,7 @@ public class ProductInfoController extends BaseController {
     })
     @ResponseBody
     @RequestMapping(value = "/getBoxDeductionPrice",method = RequestMethod.POST)
-    public Object getBoxDeductionPrice(String ticketId,String type,String kind,Integer boxCount,String boxId,HttpServletRequest request,HttpServletResponse response){
+    public Object getBoxDeductionPrice(String ticketId,String type,String kind,Integer boxCount,HttpServletRequest request,HttpServletResponse response){
         JsonResult<Float> json = new JsonResult<>();
         try {
             json.setData(productInfoService.getBoxDeductionPrice(ticketId,type,kind,boxCount));
@@ -106,6 +106,7 @@ public class ProductInfoController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取积分商城商品列表" ,  notes="获取积分商城商品列表")
+    @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = false, dataType = "String")
     @ResponseBody
     @RequestMapping(value = "/getShopList",method = RequestMethod.POST)
     public Object getShopList(String ticketId,HttpServletRequest request,HttpServletResponse response){
@@ -130,7 +131,10 @@ public class ProductInfoController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取积分商城商品列表" ,  notes="获取积分商城商品列表")
-    @ApiImplicitParam(name = "productId" ,value ="商品Id",required = true, dataType = "String",paramType = "query")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String"),
+            @ApiImplicitParam(name = "productId" ,value ="商品Id",required = true, dataType = "String",paramType = "query")
+    })
     @ResponseBody
     @RequestMapping(value = "/getShopProductInfo",method = RequestMethod.POST)
     public Object getShopProductInfo(String ticketId,String productId,HttpServletRequest request,HttpServletResponse response){
@@ -154,7 +158,10 @@ public class ProductInfoController extends BaseController {
      * @return
      */
     @ApiOperation(value = "获取积分商城商品列表" ,  notes="获取积分商城商品列表")
-    @ApiImplicitParam(name = "boxId" ,value ="盒子id，盒子Id为0",required = true, dataType = "String")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "boxId" ,value ="盒子id，盒子Id为0",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query")
+    })
     @ResponseBody
     @RequestMapping(value = "/getBoxImg",method = RequestMethod.POST)
     public Object getBoxImg(String ticketId,String boxId,HttpServletRequest request,HttpServletResponse response){

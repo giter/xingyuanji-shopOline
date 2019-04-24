@@ -122,10 +122,10 @@ public class ShopLogController extends BaseController {
     @ApiOperation(value = "扣除猩币" ,  notes="扣除猩币")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ticketId" ,value ="ticketId",required = true, dataType = "String",paramType = "query"),
-            @ApiImplicitParam(name = "useXingBi" ,value ="是否使用猩币 使用传1",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "useXingBi" ,value ="是否使用猩币 使用传1",required = false, dataType = "String",paramType = "query"),
             @ApiImplicitParam(name = "isPay" ,value ="是否支付 支付传1",required = true, dataType = "String",paramType = "query"),
-            @ApiImplicitParam(name = "randomToken" ,value ="随机TOKEN，支付成功后回传前端，返回后端校验REDIS中数据，如果没有相关数据前端页面跳转个人中心",required = true, dataType = "String",paramType = "query"),
-            @ApiImplicitParam(name = "UUID" ,value ="UUID，支付成功后回传前端，返回后端校验REDIS中数据，如果没有相关数据前端页面跳转个人中心",required = true, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "randomToken" ,value ="随机TOKEN，支付成功后回传前端，返回后端校验REDIS中数据，如果没有相关数据前端页面跳转个人中心",required = false, dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "UUID" ,value ="UUID，支付成功后回传前端，返回后端校验REDIS中数据，如果没有相关数据前端页面跳转个人中心",required = false, dataType = "String",paramType = "query"),
     })
     @ResponseBody
     @RequestMapping(value = "/getOpenRandomGoods",method = RequestMethod.POST)
@@ -228,7 +228,7 @@ public class ShopLogController extends BaseController {
     /**
      * 取消订单
      */
-    @ApiOperation(value = "取消订单" ,  notes="取消订单")
+    @ApiOperation(value = "取消顺丰订单，弃用" ,  notes="取消订单")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ticketId", value = "ticketId", required = true, dataType = "String",paramType = "query"),
             @ApiImplicitParam(name = "orderId", value = "付款订单号", required = true, dataType = "String",paramType = "query")
@@ -279,7 +279,7 @@ public class ShopLogController extends BaseController {
      * @param response
      * @return
      */
-    @ApiOperation(value = "获取物流信息" ,  notes="获取物流信息")
+    @ApiOperation(value = "获取顺丰物流信息，弃用" ,  notes="获取物流信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ticketId", value = "ticketId", required = true, dataType = "String",paramType = "query"),
             @ApiImplicitParam(name = "productId", value ="商品Id", required = true, dataType = "String",paramType = "query"),
